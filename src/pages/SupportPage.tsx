@@ -16,6 +16,12 @@ import {
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 import { TopContactBar } from '../components/TopContactBar';
+import {
+  COMPANY_PHONE_DISPLAY,
+  COMPANY_PHONE_TEL,
+  REGISTERED_OFFICE_ADDRESS,
+  PHYSICAL_OFFICE_ADDRESS,
+} from '../constants/companyContact';
 
 export const SupportPage = () => {
   const socialLinks = [
@@ -27,12 +33,12 @@ export const SupportPage = () => {
   const offices = [
     {
       title: 'Registered Office',
-      address: 'Ground Floor, The Sotheby Building, Rodney Village, Rodney Bay, Gros-Islet, Saint Lucia',
+      address: REGISTERED_OFFICE_ADDRESS,
       icon: <Globe className="text-primary" size={24} />
     },
     {
       title: 'Physical Office',
-      address: '33F3+654, Castries - Gros Islet Hwy, Rodney Bay, St. Lucia, Office 20',
+      address: PHYSICAL_OFFICE_ADDRESS,
       icon: <MapPin className="text-primary" size={24} />
     }
   ];
@@ -102,8 +108,8 @@ export const SupportPage = () => {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Phone</h3>
               <p className="text-gray-600 mb-4">Call us anytime</p>
-              <a href="tel:+447868811937" className="text-xl font-bold text-primary hover:underline">
-                +44 7868 811937
+              <a href={`tel:${COMPANY_PHONE_TEL}`} className="text-xl font-bold text-primary hover:underline">
+                {COMPANY_PHONE_DISPLAY}
               </a>
             </motion.div>
 

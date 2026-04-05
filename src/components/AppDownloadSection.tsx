@@ -1,27 +1,5 @@
 import React from 'react';
-import {Apple, Smartphone} from 'lucide-react';
-
-function GooglePlayGlyph({className}: {className?: string}) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" aria-hidden>
-      <path fill="#EA4335" d="M3.04 3.65c-.12.21-.19.45-.19.7v15.3c0 .25.07.49.19.7l8.55-8.65L3.04 3.65z" />
-      <path fill="#FBBC04" d="M16.81 15.41 11.59 20.6l8.55-4.9c.8-.46 1.27-1.32 1.27-2.25v-.18l-4.6-2.86z" />
-      <path fill="#34A853" d="M3.04 20.35c.12.21.28.39.48.52l8.07-8.07-8.55-8.65c-.2.13-.36.31-.48.52v15.68z" />
-      <path fill="#4285F4" d="M16.81 8.59 20.41 5.73c-.8-.46-1.8-.46-2.6 0l-8.22 4.7 5.22 5.19 2.21-1.37z" />
-    </svg>
-  );
-}
-
-function AndroidGlyph({className}: {className?: string}) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" aria-hidden fill="currentColor">
-      <path d="M17.6 9.48c-.47 0-.86.38-.86.86v4.15c0 .47.38.86.86.86.47 0 .86-.38.86-.86v-4.15c0-.48-.39-.86-.86-.86zm-11.2 0c-.47 0-.86.38-.86.86v4.15c0 .47.38.86.86.86.47 0 .86-.38.86-.86v-4.15c0-.48-.39-.86-.86-.86zm5.69-6.86 1.03-1.89a.34.34 0 0 0-.13-.45.34.34 0 0 0-.45.13L10.65 2.7a5.89 5.89 0 0 0-5.4 3.35H18.8a5.89 5.89 0 0 0-5.4-3.35l-1.31-2.43a.34.34 0 0 0-.45-.13.34.34 0 0 0-.13.45l1.03 1.89c-.84.38-1.58.95-2.16 1.67H9.07c-.2 0-.36.16-.36.36s.16.36.36.36h1.04v1.43H7.31c-.2 0-.36.16-.36.36s.16.36.36.36h2.8v1.43H9.07c-.2 0-.36.16-.36.36s.16.36.36.36h1.04v1.43H7.31c-.2 0-.36.16-.36.36s.16.36.36.36h2.8v1.08c0 .47.38.86.86.86.47 0 .86-.38.86-.86v-1.08h2.8c.2 0 .36-.16.36-.36s-.16-.36-.36-.36h-2.8v-1.43h1.04c.2 0 .36-.16.36-.36s-.16-.36-.36-.36h-1.04v-1.43h2.8c.2 0 .36-.16.36-.36s-.16-.36-.36-.36h-2.8V9.5h1.04c.2 0 .36-.16.36-.36s-.16-.36-.36-.36h-1.04V7.35h-1.43V5.92h1.04c.2 0 .36-.16.36-.36s-.16-.36-.36-.36h-1.04V4.13c0-1.02-.83-1.86-1.86-1.86-.56 0-1.06.25-1.4.65z" />
-    </svg>
-  );
-}
-
-const storeBtnClass =
-  'flex min-h-[52px] w-full items-center gap-3 rounded-lg border border-white/90 bg-black px-4 py-2.5 text-left text-white transition-colors hover:bg-white/[0.06] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400';
+import {Smartphone} from 'lucide-react';
 
 export const AppDownloadSection = () => {
   return (
@@ -55,31 +33,51 @@ export const AppDownloadSection = () => {
                 </p>
               </div>
 
-              <div className="min-w-0 flex-1 space-y-3">
+              <div className="min-w-0 flex-1 space-y-3 -ml-2 mt-5 sm:-ml-3 sm:mt-6 lg:-ml-5 lg:mt-8">
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  <a href="#" className={storeBtnClass}>
-                    <Apple className="h-8 w-8 shrink-0" strokeWidth={1.25} aria-hidden />
-                    <span className="min-w-0 leading-tight">
-                      <span className="block text-[10px] font-medium uppercase tracking-wide text-white/80">
-                        Download on the
-                      </span>
-                      <span className="block text-sm font-semibold">App Store</span>
-                    </span>
+                  <a
+                    href="#"
+                    className="inline-flex rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+                  >
+                    <img
+                      src="/images/logos/appstore.svg"
+                      alt="Download on the App Store"
+                      width={180}
+                      height={54}
+                      className="h-12 w-auto max-w-full sm:h-[54px]"
+                      loading="lazy"
+                      decoding="async"
+                    />
                   </a>
-                  <a href="#" className={storeBtnClass}>
-                    <GooglePlayGlyph className="h-7 w-7 shrink-0" />
-                    <span className="min-w-0 leading-tight">
-                      <span className="block text-[10px] font-medium uppercase tracking-wide text-white/80">
-                        GET IT ON
-                      </span>
-                      <span className="block text-sm font-semibold">Google Play</span>
-                    </span>
+                  <a
+                    href="#"
+                    className="inline-flex rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+                  >
+                    <img
+                      src="/images/logos/googleplay.svg"
+                      alt="Get it on Google Play"
+                      width={180}
+                      height={54}
+                      className="h-12 w-auto max-w-full sm:h-[54px]"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </a>
+                  <a
+                    href="#"
+                    className="flex w-full rounded-lg border border-white/90 bg-black p-1.5 sm:col-span-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+                  >
+                    <img
+                      src="/images/logos/apk-file.svg"
+                      alt="Download the APK file"
+                      width={560}
+                      height={54}
+                      className="h-12 w-full min-h-[48px] object-fill sm:h-[54px]"
+                      loading="lazy"
+                      decoding="async"
+                    />
                   </a>
                 </div>
-                <a href="#" className={`${storeBtnClass} sm:col-span-2`}>
-                  <AndroidGlyph className="h-7 w-7 shrink-0 text-[#3DDC84]" />
-                  <span className="text-sm font-semibold">Download the APK File</span>
-                </a>
               </div>
             </div>
         </div>

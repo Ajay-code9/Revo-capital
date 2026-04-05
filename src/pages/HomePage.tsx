@@ -8,7 +8,7 @@ import {CreateAccountBar} from '../components/CreateAccountBar';
 import {TradingAchievements} from '../components/TradingAchievements';
 import {AppDownloadSection} from '../components/AppDownloadSection';
 import {ReadyForNextMoveSection} from '../components/ReadyForNextMoveSection';
-import {AboutUs} from '../components/AboutUs';
+import {StartTradingStepsSection} from '../components/StartTradingStepsSection';
 import {Footer} from '../components/Footer';
 
 export function HomePage() {
@@ -26,7 +26,7 @@ export function HomePage() {
         <TradingAchievements />
         <AppDownloadSection />
         <ReadyForNextMoveSection />
-        <AboutUs />
+        <StartTradingStepsSection />
       </main>
 
       <Footer />

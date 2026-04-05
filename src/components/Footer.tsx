@@ -2,6 +2,12 @@ import React from 'react';
 import {useNavigate} from 'react-router-dom';
 import {Facebook, Twitter, Instagram, Linkedin, Youtube} from 'lucide-react';
 import {ROUTES} from '../routes/paths';
+import {
+  COMPANY_PHONE_DISPLAY,
+  COMPANY_PHONE_TEL,
+  REGISTERED_OFFICE_ADDRESS,
+  PHYSICAL_OFFICE_ADDRESS,
+} from '../constants/companyContact';
 import {RevoLogo} from './RevoLogo';
 
 export const Footer = () => {
@@ -176,32 +182,38 @@ export const Footer = () => {
             </ul>
           </div>
 
-          <div className="space-y-6 col-span-2 lg:col-span-1">
-            <h4 className="font-bold text-gray-900">Contact</h4>
-            <ul className="space-y-4 text-gray-500 text-sm">
-              <li>
-                <a href="tel:+447868811937" className="hover:text-primary transition-colors">
-                  +44 7868 811937
-                </a>
-              </li>
-              <li>
-                <a href="mailto:support@revocp.com" className="hover:text-primary transition-colors">
-                  support@revocp.com
-                </a>
-              </li>
-            </ul>
-            <div className="mt-6 space-y-4">
-              <div>
-                <h5 className="font-bold text-gray-900 text-xs uppercase tracking-wider mb-2">Registered Office</h5>
-                <p className="text-gray-500 text-xs leading-relaxed">
-                  Ground Floor, The Sotheby Building, Rodney Village, Rodney Bay, Gros-Islet, Saint Lucia
-                </p>
-              </div>
-              <div>
-                <h5 className="font-bold text-gray-900 text-xs uppercase tracking-wider mb-2">Physical Office</h5>
-                <p className="text-gray-500 text-xs leading-relaxed">
-                  33F3+654, Castries - Gros Islet Hwy, Rodney Bay, St. Lucia, Office 20
-                </p>
+          <div className="col-span-2 md:col-span-3 lg:col-span-6">
+            <div className="rounded-2xl bg-linear-to-br from-[#2a0505] via-[#8f1010] via-45% to-primary px-6 py-8 shadow-[0_12px_40px_-12px_rgba(0,0,0,0.35)] sm:px-8 sm:py-10 lg:px-10">
+              <div className="grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-6 lg:gap-10">
+                <div className="space-y-4">
+                  <h4 className="font-bold text-white">Contact</h4>
+                  <ul className="space-y-3 text-sm text-white/85">
+                    <li>
+                      <a
+                        href={`tel:${COMPANY_PHONE_TEL}`}
+                        className="transition-colors hover:text-white hover:underline underline-offset-2"
+                      >
+                        {COMPANY_PHONE_DISPLAY}
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="mailto:support@revocp.com"
+                        className="transition-colors hover:text-white hover:underline underline-offset-2"
+                      >
+                        support@revocp.com
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div className="space-y-3">
+                  <h5 className="text-xs font-bold uppercase tracking-wider text-white">Registered Office</h5>
+                  <p className="text-xs leading-relaxed text-white/80">{REGISTERED_OFFICE_ADDRESS}</p>
+                </div>
+                <div className="space-y-3">
+                  <h5 className="text-xs font-bold uppercase tracking-wider text-white">Physical Office</h5>
+                  <p className="text-xs leading-relaxed text-white/80">{PHYSICAL_OFFICE_ADDRESS}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -210,7 +222,9 @@ export const Footer = () => {
         <div className="pt-8 border-t border-gray-100 space-y-6">
           <div className="text-[11px] text-gray-400 leading-relaxed space-y-4">
             <p>
-              Revo Capital is the trading name of Revo Capital Limited, a reputable financial services company licensed under Investment and Legal Services LTD, located at Ground Floor, The Sotheby Building, Saint Lucia. Revo Capital Limited, registered in Saint Lucia (Reg. No. 2025-00585).
+              Revo Capital is the trading name of Revo Capital Limited, a reputable financial services company
+              licensed under Investment and Legal Services LTD, located at {REGISTERED_OFFICE_ADDRESS}. Revo
+              Capital Limited, registered in Saint Lucia (Reg. No. 2025-00585).
             </p>
             <p>
               Risk Warning: Trading leveraged financial instruments such as Forex, CFDs, and Commodities carries a significant risk of loss and may not be suitable for all investors. Due to the high level of leverage, you may lose more than your initial investment. Please ensure you fully understand the risks involved and seek advice from an independent financial advisor if necessary before engaging in any trading activities.

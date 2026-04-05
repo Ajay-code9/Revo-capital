@@ -2,9 +2,9 @@ import React from 'react';
 import {motion, useReducedMotion} from 'motion/react';
 import {ArrowRight, Shield} from 'lucide-react';
 
-/** Default: subtle on red. Focus / typing: white field + dark text. */
+/** Dark bar: red-outline fields. Focus: white fill + dark text. */
 const inputClass =
-  'w-full rounded-full border border-white/50 bg-white/10 px-4 py-2 text-sm font-medium text-white shadow-none placeholder:text-white/65 transition-[background-color,border-color,color,box-shadow] duration-200 focus:border-white focus:bg-white focus:text-gray-900 focus:placeholder:text-gray-400 focus:shadow-md focus:outline-none focus:ring-2 focus:ring-white/90 focus:ring-offset-2 focus:ring-offset-primary sm:px-5 sm:py-2.5 sm:text-[15px]';
+  'w-full rounded-full border border-primary/45 bg-white/[0.06] px-4 py-2 text-sm font-medium text-white shadow-none placeholder:text-white/50 transition-[background-color,border-color,color,box-shadow] duration-200 focus:border-primary focus:bg-white focus:text-gray-900 focus:placeholder:text-gray-400 focus:shadow-md focus:outline-none focus:ring-2 focus:ring-primary/80 focus:ring-offset-2 focus:ring-offset-black sm:px-5 sm:py-2.5 sm:text-[15px]';
 
 type FloatLogo = {
   src: string;
@@ -96,7 +96,7 @@ function FloatingLogoCluster({items}: {items: FloatLogo[]}) {
           className={`${item.className} select-none object-contain ${
             item.whiteHalo
               ? 'filter-[drop-shadow(0_14px_28px_rgba(0,0,0,0.35))_drop-shadow(0_0_1px_rgb(255,255,255))_drop-shadow(0_0_2px_rgb(255,255,255))_drop-shadow(0_0_5px_rgba(255,255,255,0.85))_drop-shadow(0_0_10px_rgba(255,255,255,0.45))]'
-              : 'drop-shadow-[0_14px_28px_rgba(0,0,0,0.38)]'
+              : 'drop-shadow-[0_12px_24px_rgba(0,0,0,0.65)]'
           }`}
           initial={false}
           animate={reduce ? {} : {y: [0, -7, 0]}}
@@ -113,7 +113,7 @@ function FloatingLogoCluster({items}: {items: FloatLogo[]}) {
 }
 
 export const CreateAccountBar = () => (
-  <section className="relative overflow-x-clip bg-primary py-10 sm:py-11 lg:py-12">
+  <section className="relative overflow-x-clip border-y border-primary bg-black py-10 sm:py-11 lg:py-12">
     {/* floating-logo1–8 — edges bleed slightly */}
     <div
       className="pointer-events-none absolute inset-0 z-1 min-h-32 sm:min-h-36"
@@ -134,17 +134,17 @@ export const CreateAccountBar = () => (
     <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
       <div className="flex flex-col items-stretch gap-8 sm:gap-10 lg:flex-row lg:items-center lg:justify-between lg:gap-14 xl:gap-16">
         <div className="space-y-2 text-center text-white sm:space-y-2.5 lg:max-w-lg lg:text-left">
-          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/90 sm:text-xs">
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary sm:text-xs">
             Start Your Journey
           </span>
           <h2 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl">Create an account</h2>
-          <p className="text-xs text-white/85 sm:text-sm lg:text-[15px]">
+          <p className="text-xs text-white/75 sm:text-sm lg:text-[15px]">
             Join in minutes — email, password, and you are ready to explore the markets.
           </p>
         </div>
 
         <div className="w-full min-w-0 lg:max-w-2xl lg:flex-1 xl:max-w-3xl">
-          <div className="rounded-2xl border border-white/25 bg-black/10 p-3 shadow-inner shadow-black/10 backdrop-blur-sm sm:rounded-3xl sm:p-4">
+          <div className="rounded-2xl border border-primary/55 bg-neutral-950/80 p-3 shadow-[inset_0_1px_0_rgba(255,45,45,0.12)] backdrop-blur-sm sm:rounded-3xl sm:p-4">
             <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-stretch sm:gap-3 lg:flex-nowrap lg:items-center">
               <div className="relative min-w-0 flex-1 sm:min-w-[min(100%,11rem)] sm:flex-1 lg:min-w-0">
                 <label htmlFor="cta-email" className="sr-only">
@@ -166,13 +166,13 @@ export const CreateAccountBar = () => (
                 <Shield
                   size={16}
                   strokeWidth={2}
-                  className="pointer-events-none absolute right-3.5 top-1/2 z-10 -translate-y-1/2 text-white/55 transition-colors group-focus-within:text-gray-400 sm:right-4"
+                  className="pointer-events-none absolute right-3.5 top-1/2 z-10 -translate-y-1/2 text-primary/60 transition-colors group-focus-within:text-gray-400 sm:right-4"
                   aria-hidden
                 />
               </div>
               <button
                 type="button"
-                className="inline-flex w-full shrink-0 items-center justify-center gap-1 rounded-full bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-wide text-primary shadow-md shadow-black/10 transition-all hover:bg-gray-50 sm:w-auto sm:gap-1.5 sm:px-4 sm:py-2 sm:text-xs sm:normal-case sm:tracking-normal lg:px-4 lg:py-2"
+                className="inline-flex w-full shrink-0 items-center justify-center gap-1 rounded-full border border-primary/90 bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-wide text-primary shadow-[0_0_20px_-4px_rgba(255,45,45,0.45)] transition-all hover:border-primary hover:bg-white hover:shadow-[0_0_24px_-4px_rgba(255,45,45,0.55)] sm:w-auto sm:gap-1.5 sm:px-4 sm:py-2 sm:text-xs sm:normal-case sm:tracking-normal lg:px-4 lg:py-2"
               >
                 <span>Sign up</span>
                 <ArrowRight size={14} className="shrink-0" aria-hidden />

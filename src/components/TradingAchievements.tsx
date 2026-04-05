@@ -80,18 +80,21 @@ const AWARDS: AwardBlock[] = [
 const awardCopyWrapClass =
   'mt-2 flex w-full min-w-0 max-w-full flex-col gap-0.5 px-0.5 text-center sm:px-1';
 
+/** lg+ nowrap so these awards stay 3 single lines each (no 4th wrap inside a <p>) */
+const NOWRAP_LG_INDICES = new Set([1, 3, 6]);
+
 export const TradingAchievements = () => {
   return (
     <section className="bg-[#ffffff] py-12 lg:py-16">
-      <div className="mx-auto max-w-[1240px] px-3 sm:px-5 lg:px-6">
+      <div className="mx-auto max-w-[1320px] px-3 sm:px-5 lg:px-6">
         <h2 className="mx-auto max-w-4xl text-center text-2xl font-semibold leading-tight tracking-tight text-[#333] sm:text-3xl lg:text-[2rem] lg:leading-snug xl:text-[2.25rem]">
           Trade With An Award Winning Broker
         </h2>
 
-        {/* 4th column gets extra fr on lg+ so "Top 100 Trusted" block stays 3 visual lines */}
-        <div className="mt-10 grid grid-cols-2 gap-x-3 gap-y-10 sm:grid-cols-3 sm:gap-x-4 lg:mt-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,2.15fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)] lg:gap-x-1.5 lg:gap-y-0 xl:gap-x-2.5 2xl:gap-x-3">
+        {/* Equal columns + one gap value on lg so spacing between badges is uniform */}
+        <div className="mt-10 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 sm:gap-y-10 lg:mt-14 lg:grid-cols-7 lg:gap-y-0">
           {AWARDS.map((award, index) => {
-            const isCenterWide = index === 3;
+            const nowrapLg = NOWRAP_LG_INDICES.has(index);
             return (
             <div
               key={index}
@@ -101,19 +104,15 @@ export const TradingAchievements = () => {
               <p className="mt-3 text-[13px] font-bold uppercase tracking-[1px] text-black sm:text-sm">
                 WINNER
               </p>
-              <div
-                className={
-                  awardCopyWrapClass + (isCenterWide ? ' lg:px-0' : '')
-                }
-              >
+              <div className={awardCopyWrapClass}>
                 {award.lines.map((line, i) => (
                   <p
                     key={i}
                     className={
                       (line.tone === 'muted'
-                        ? 'text-[12px] font-normal leading-tight text-[#888] sm:text-[13px] lg:text-[12px] xl:text-[13px]'
-                        : 'text-[12px] font-medium leading-tight text-[#555] sm:text-[13px] lg:text-[11.5px] xl:text-[12.5px] 2xl:text-[13px]') +
-                      (isCenterWide ? ' lg:whitespace-nowrap' : '')
+                        ? 'text-[12px] font-normal leading-tight text-[#888] sm:text-[13px] lg:text-[10px] xl:text-[11px] 2xl:text-[12px]'
+                        : 'text-[12px] font-medium leading-tight text-[#555] sm:text-[13px] lg:text-[10px] xl:text-[11px] 2xl:text-[12px]') +
+                      (nowrapLg ? ' lg:whitespace-nowrap' : '')
                     }
                   >
                     {line.text}
