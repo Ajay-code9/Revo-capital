@@ -28,10 +28,10 @@ import {RevoLogo} from './RevoLogo';
 function SocialTradingNavLabel({className = ''}: {className?: string}) {
   return (
     <span
-      className={`inline-block select-none whitespace-nowrap text-[14px] font-bold leading-tight text-gray-900 pointer-events-none xl:text-[15px] ${className}`}
+      className={`inline-block select-none whitespace-nowrap text-[11px] font-bold leading-tight text-gray-900 pointer-events-none lg:text-[12px] xl:text-[13px] ${className}`}
     >
       Social Trading
-      <sup className="ml-0.5 text-[9px] font-semibold leading-none tracking-wide text-gray-500 sm:text-[10px]">
+      <sup className="ml-0.5 align-baseline text-[8px] font-semibold leading-none tracking-wide text-gray-500 lg:text-[9px]">
         Soon
       </sup>
     </span>
@@ -78,23 +78,23 @@ export const Navbar = () => {
     | {kind: 'link'; label: string; path: string; icon: MarketIcon}
     | {kind: 'soon'; label: string; icon: MarketIcon};
 
+  /* Partnership is only the accordion above — do not duplicate here */
   const mobileNavItems: MobileNavItem[] = [
     {kind: 'link', label: 'Account Types', path: ROUTES.accounts, icon: Wallet},
     {kind: 'link', label: 'Platforms', path: ROUTES.platforms, icon: LayoutDashboard},
-    {kind: 'link', label: 'Partnership', path: ROUTES.partners, icon: Handshake},
     {kind: 'soon', label: 'Social Trading', icon: Share2},
     {kind: 'link', label: 'Support', path: ROUTES.support, icon: Headphones},
   ];
 
-  const navText = 'text-[14px] xl:text-[15px]';
+  const navText = 'text-[11px] font-bold lg:text-[12px] xl:text-[13px]';
 
   const navLinkClass = (path: string) =>
-    `inline-flex items-center justify-center ${navText} font-bold text-gray-900 hover:text-primary transition-all px-3 py-2 rounded-full whitespace-nowrap shrink-0 xl:px-4 ${
+    `inline-flex items-center justify-center ${navText} text-gray-900 hover:text-primary transition-all px-2 py-1.5 rounded-full whitespace-nowrap shrink-0 lg:px-2.5 lg:py-2 xl:px-3 ${
       pathname === path ? 'bg-gray-100 text-primary' : ''
     }`;
 
   const dropdownTriggerClass = (sectionActive: boolean) =>
-    `${navText} font-bold rounded-full px-3 py-2 whitespace-nowrap shrink-0 transition-all flex items-center gap-1 xl:px-4 ${
+    `${navText} rounded-full px-2 py-1.5 whitespace-nowrap shrink-0 transition-all flex items-center gap-0.5 lg:gap-1 lg:px-2.5 lg:py-2 xl:px-3 ${
       sectionActive ? 'bg-gray-100 text-primary' : 'text-gray-900 hover:text-primary'
     }`;
 
@@ -102,9 +102,9 @@ export const Navbar = () => {
   const isPartnerActive = PARTNER_PATHS.includes(pathname);
 
   return (
-    <nav className="sticky top-0 z-50 bg-white border-b border-gray-100">
-      <div className="max-w-7xl mx-auto px-4 lg:px-8">
-        <div className="flex justify-between items-center h-20">
+    <nav className="sticky top-0 z-50 w-full max-w-[100vw] bg-white border-b border-gray-100">
+      <div className="w-full px-3 sm:px-4 lg:px-6 xl:px-8">
+        <div className="flex justify-between items-center h-20 w-full">
           <div className="flex lg:hidden w-full items-center justify-between h-16">
             <div className="flex items-center gap-3">
               <Search size={20} className="text-gray-400" />
@@ -141,18 +141,18 @@ export const Navbar = () => {
             </button>
           </div>
 
-          <div className="hidden lg:grid lg:h-20 lg:w-full lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:items-center">
+          <div className="hidden lg:flex lg:h-20 lg:w-full lg:min-w-0 lg:items-center lg:gap-3">
             <div
-              className="flex cursor-pointer items-center justify-self-start"
+              className="flex min-w-0 flex-1 cursor-pointer items-center justify-start"
               onClick={() => go(ROUTES.home)}
               onKeyDown={(e) => e.key === 'Enter' && go(ROUTES.home)}
               role="button"
               tabIndex={0}
             >
-              <RevoLogo className="h-9 w-auto max-w-[220px] aspect-1432/504 object-contain object-left lg:h-10 lg:max-w-[240px]" />
+              <RevoLogo className="h-8 w-auto max-w-[min(200px,28vw)] shrink-0 object-contain object-left aspect-1432/504 lg:h-9 xl:h-10 xl:max-w-[220px]" />
             </div>
 
-            <div className="flex min-w-0 max-w-[min(100vw-22rem,52rem)] flex-nowrap items-center justify-center gap-x-5 xl:gap-x-7">
+            <div className="flex min-w-0 shrink-0 flex-nowrap items-center justify-center gap-x-1.5 xl:gap-x-3 2xl:gap-x-4">
               <div
                 className="relative group flex h-20 shrink-0 cursor-pointer items-center"
                 onMouseEnter={() => setIsMarketsOpen(true)}
@@ -160,7 +160,7 @@ export const Navbar = () => {
               >
                 <span className={dropdownTriggerClass(isMarketsActive)}>
                   Markets
-                  <ChevronDown size={16} className={`shrink-0 transition-transform ${isMarketsOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown size={14} className={`shrink-0 transition-transform ${isMarketsOpen ? 'rotate-180' : ''}`} />
                 </span>
 
                 <AnimatePresence>
@@ -206,7 +206,7 @@ export const Navbar = () => {
               >
                 <span className={dropdownTriggerClass(isPartnerActive)}>
                   Partnership
-                  <ChevronDown size={16} className={`shrink-0 transition-transform ${isPartnerOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown size={14} className={`shrink-0 transition-transform ${isPartnerOpen ? 'rotate-180' : ''}`} />
                 </span>
 
                 <AnimatePresence>
@@ -242,35 +242,42 @@ export const Navbar = () => {
                 </AnimatePresence>
               </div>
               <span
-                className="inline-flex shrink-0 items-center px-2 py-2 xl:px-3"
+                className="inline-flex shrink-0 items-center px-1 py-1.5 lg:px-1.5 xl:px-2"
                 aria-label="Social Trading, coming soon"
               >
                 <SocialTradingNavLabel />
               </span>
-              <a href={ROUTES.support} onClick={(e) => { e.preventDefault(); go(ROUTES.support); }} className={navLinkClass(ROUTES.support)}>
+              <a
+                href={ROUTES.support}
+                onClick={(e) => {
+                  e.preventDefault();
+                  go(ROUTES.support);
+                }}
+                className={navLinkClass(ROUTES.support)}
+              >
                 Support
               </a>
             </div>
 
-            <div className="flex shrink-0 items-center justify-self-end gap-2 xl:gap-3">
+            <div className="flex min-w-0 flex-1 items-center justify-end gap-1.5 pl-1 xl:gap-2.5 xl:pl-2">
               <button
                 type="button"
                 onClick={() => go(ROUTES.signup)}
-                className="flex items-center gap-2 rounded-full border border-gray-100 bg-gray-50 px-4 py-2 text-[13px] font-bold text-gray-900 transition-all hover:bg-gray-100 xl:px-5 xl:text-[14px] xl:py-1.5"
+                className="flex items-center gap-1.5 rounded-full border border-gray-100 bg-gray-50 px-3 py-1.5 text-[11px] font-bold text-gray-900 transition-all hover:bg-gray-100 lg:gap-2 lg:px-3.5 lg:text-[12px] xl:px-4 xl:text-[13px]"
               >
                 <span className="whitespace-nowrap">Sign up</span>
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gray-200">
-                  <ArrowUpRight size={16} className="shrink-0" />
+                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gray-200 lg:h-7 lg:w-7">
+                  <ArrowUpRight size={14} className="shrink-0 lg:h-4 lg:w-4" />
                 </div>
               </button>
               <button
                 type="button"
                 onClick={() => go(ROUTES.login)}
-                className="btn-primary flex items-center gap-2 rounded-full px-5 py-2 text-[13px] font-bold xl:px-6 xl:text-[14px] xl:py-1.5"
+                className="btn-primary flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[11px] font-bold lg:gap-2 lg:px-4 lg:text-[12px] xl:px-5 xl:text-[13px]"
               >
                 <span className="whitespace-nowrap">Login</span>
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white/20">
-                  <ArrowUpRight size={16} className="shrink-0" />
+                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/20 lg:h-7 lg:w-7">
+                  <ArrowUpRight size={14} className="shrink-0 lg:h-4 lg:w-4" />
                 </div>
               </button>
             </div>

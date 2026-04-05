@@ -12,9 +12,9 @@ type TopContactBarProps = {
 
 export const TopContactBar = ({className = ''}: TopContactBarProps) => (
   <div
-    className={['bg-white border-b border-gray-100 py-2 px-4', className].filter(Boolean).join(' ')}
+    className={['w-full max-w-[100vw] bg-white border-b border-gray-100 py-2 px-3 sm:px-4 lg:px-6 xl:px-8', className].filter(Boolean).join(' ')}
   >
-    <div className="mx-auto flex max-w-7xl flex-col items-center gap-2 text-[11px] text-gray-600 sm:text-xs lg:flex-row lg:items-start lg:justify-between lg:gap-6">
+    <div className="mx-auto flex w-full flex-col items-center gap-2 text-[11px] text-gray-600 sm:text-xs lg:flex-row lg:items-start lg:justify-between lg:gap-6">
       <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1 lg:justify-start">
         <div className="flex items-center gap-1.5">
           <Smartphone size={14} className="shrink-0 text-gray-400" aria-hidden />
