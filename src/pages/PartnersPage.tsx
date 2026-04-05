@@ -287,10 +287,9 @@ export const PartnersPage = () => {
             >
               {(
                 [
-                  {label: 'MT4', sub: 'MetaTrader 4', icon: 'mt4'},
-                  {label: 'MT5', sub: 'MetaTrader 5', icon: 'mt5'},
                   {label: 'Web Trader', sub: 'Trade in browser', icon: 'web'},
-                  {label: 'Mobile App', sub: 'iOS & Android', icon: 'mob'},
+                  {label: 'iOS', sub: 'App Store', icon: 'ios'},
+                  {label: 'Android', sub: 'Google Play', icon: 'android'},
                 ] as const
               ).map((p) => (
                 <button
@@ -331,12 +330,16 @@ export const PartnersPage = () => {
                     }}
                   >
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.primary} strokeWidth="1.8">
-                      {p.icon === 'mt4' || p.icon === 'mt5' ? (
-                        <path d="M4 6h16v12H4z M8 10h8M8 14h5" strokeLinecap="round" />
-                      ) : p.icon === 'web' ? (
+                      {p.icon === 'web' ? (
                         <path d="M4 5h16v14H4z M2 9h20M8 5v14" strokeLinecap="round" />
+                      ) : p.icon === 'ios' ? (
+                        <path d="M8 3h8v18H8z M12 18h.01 M10 5h4" strokeLinecap="round" />
                       ) : (
-                        <path d="M8 3h8v18H8z M12 18h.01" strokeLinecap="round" />
+                        <path
+                          d="M8 3h8v18H8z M12 18h.01 M11 11l4 3-4 3v-6z"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
                       )}
                     </svg>
                   </div>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useLayoutEffect, useRef, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {Navbar} from '../components/Navbar';
 import {Footer} from '../components/Footer';
@@ -67,6 +67,12 @@ export const PlatformsPage = () => {
   const [ctaHover, setCtaHover] = useState(false);
   const [heroCtaHover, setHeroCtaHover] = useState(false);
   const [accessCtaHover, setAccessCtaHover] = useState(false);
+  const [howStepHover, setHowStepHover] = useState<number | null>(null);
+  const howTimelineRef = useRef<HTMLDivElement>(null);
+  const howDotRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [howLine, setHowLine] = useState({top: 0, height: 0, left: 14});
+
+  const howActiveIndex = howStepHover !== null ? howStepHover : 0;
 
   const featureTabs = [
     {
@@ -126,6 +132,31 @@ export const PlatformsPage = () => {
     {n: 3, title: 'Analyze charts and markets', desc: 'Review instruments, watchlists, and technical studies in real time.'},
     {n: 4, title: 'Place trades and manage positions', desc: 'Execute orders and monitor P&L from a unified dashboard.'},
   ];
+
+  useLayoutEffect(() => {
+    const measure = () => {
+      const root = howTimelineRef.current;
+      const first = howDotRefs.current[0];
+      const end = howDotRefs.current[howActiveIndex];
+      if (!root || !first || !end) return;
+      const rr = root.getBoundingClientRect();
+      const fr = first.getBoundingClientRect();
+      const er = end.getBoundingClientRect();
+      const top = fr.top - rr.top + fr.height / 2;
+      const endY = er.top - rr.top + er.height / 2;
+      const left = fr.left - rr.left + fr.width / 2;
+      setHowLine({top, height: Math.max(endY - top, 6), left});
+    };
+    measure();
+    const rootEl = howTimelineRef.current;
+    const ro = new ResizeObserver(() => measure());
+    if (rootEl) ro.observe(rootEl);
+    window.addEventListener('resize', measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', measure);
+    };
+  }, [howActiveIndex]);
 
   return (
     <div style={{minHeight: '100vh', background: C.white, fontFamily: font, color: C.navy, WebkitFontSmoothing: 'antialiased'}}>
@@ -346,50 +377,113 @@ export const PlatformsPage = () => {
               >
                 How to Start
               </h2>
-              <div style={{position: 'relative', paddingLeft: 24}}>
+              <div
+                ref={howTimelineRef}
+                style={{
+                  position: 'relative',
+                  overflow: 'visible',
+                  paddingTop: 12,
+                  paddingBottom: 10,
+                  paddingRight: 10,
+                }}
+                onMouseLeave={() => setHowStepHover(null)}
+              >
+                {/* Match PartnerStepsTimeline: full-height grey track + animated red progress */}
                 <div
                   aria-hidden
                   style={{
                     position: 'absolute',
-                    left: 7,
-                    top: 12,
-                    bottom: 12,
+                    left: howLine.left,
+                    top: 0,
+                    bottom: 0,
                     width: 2,
-                    background: C.greyBg,
+                    background: '#e2e8f0',
                     borderRadius: 1,
+                    transform: 'translateX(-50%)',
+                    opacity: 0.9,
+                    zIndex: 0,
                   }}
                 />
-                {howSteps.map((s) => {
-                  const active = s.n === 1;
+                <div
+                  aria-hidden
+                  style={{
+                    position: 'absolute',
+                    left: howLine.left,
+                    top: howLine.top,
+                    width: 2,
+                    height: howLine.height,
+                    background: C.primary,
+                    borderRadius: 1,
+                    transform: 'translateX(-50%)',
+                    boxShadow: `0 0 12px ${C.primary}66`,
+                    transition:
+                      'top 0.4s cubic-bezier(0.4, 0, 0.2, 1), height 0.4s cubic-bezier(0.4, 0, 0.2, 1), left 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                    zIndex: 1,
+                  }}
+                />
+                {howSteps.map((s, i) => {
+                  const active = i === howActiveIndex;
+                  const explicitHover = howStepHover === i;
+                  const dimOthers = howStepHover !== null && howStepHover !== i;
                   return (
                     <div
                       key={s.n}
+                      role="presentation"
+                      onMouseEnter={() => setHowStepHover(i)}
                       style={{
+                        display: 'flex',
+                        gap: 18,
+                        alignItems: 'flex-start',
+                        marginBottom: s.n < 4 ? 20 : 0,
                         position: 'relative',
-                        paddingBottom: s.n < 4 ? 28 : 0,
-                        paddingLeft: 8,
+                        zIndex: explicitHover ? 3 : 2,
+                        cursor: 'default',
+                        opacity: dimOthers ? 0.42 : 1,
+                        boxSizing: 'border-box',
+                        transition: 'opacity 0.35s ease',
                       }}
                     >
                       <div
                         style={{
-                          position: 'absolute',
-                          left: -21,
-                          top: 4,
-                          width: active ? 18 : 14,
-                          height: active ? 18 : 14,
-                          borderRadius: '50%',
-                          background: active ? C.primary : '#cbd5e1',
-                          boxShadow: active ? `0 0 0 4px ${C.primary}33` : 'none',
-                          transition,
+                          width: 28,
+                          flexShrink: 0,
+                          display: 'flex',
+                          justifyContent: 'center',
+                          paddingTop: 18,
                         }}
-                      />
+                      >
+                        <div
+                          ref={(el) => {
+                            howDotRefs.current[i] = el;
+                          }}
+                          style={{
+                            width: active ? 16 : 13,
+                            height: active ? 16 : 13,
+                            borderRadius: '50%',
+                            background: active ? C.primary : '#cbd5e1',
+                            boxShadow: active
+                              ? `0 0 0 5px ${C.primary}28, 0 2px 8px ${C.primary}44`
+                              : 'none',
+                            transition: 'all 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
+                            flexShrink: 0,
+                          }}
+                        />
+                      </div>
                       <div
                         style={{
-                          padding: '14px 18px',
-                          borderRadius: 12,
-                          border: active ? `2px solid ${C.primary}` : '2px solid transparent',
-                          background: active ? `${C.primary}08` : 'transparent',
-                          transition,
+                          flex: 1,
+                          minWidth: 0,
+                          padding: '16px 18px 18px',
+                          borderRadius: 14,
+                          borderWidth: 2,
+                          borderStyle: 'solid',
+                          borderColor: active ? C.primary : 'transparent',
+                          background: explicitHover ? C.white : active ? `${C.primary}08` : 'transparent',
+                          transform: explicitHover && i > 0 ? 'translateY(-4px)' : 'none',
+                          boxShadow: explicitHover ? '0 16px 40px -16px rgba(15, 23, 42, 0.16)' : 'none',
+                          boxSizing: 'border-box',
+                          transition:
+                            'transform 0.35s cubic-bezier(0.34, 1.2, 0.64, 1), box-shadow 0.35s ease, border-color 0.25s ease, background 0.35s ease',
                         }}
                       >
                         <div
@@ -397,14 +491,36 @@ export const PlatformsPage = () => {
                             fontSize: 12,
                             fontWeight: 800,
                             letterSpacing: '0.12em',
-                            color: active ? C.primary : C.grey,
+                            color: active ? C.primary : C.greyLight,
                             marginBottom: 6,
+                            transition: 'color 0.3s ease',
                           }}
                         >
                           STEP {s.n}
                         </div>
-                        <div style={{fontSize: 17, fontWeight: 700, color: C.navy, marginBottom: 6}}>{s.title}</div>
-                        <p style={{margin: 0, fontSize: 14, lineHeight: 1.55, color: C.grey}}>{s.desc}</p>
+                        <div
+                          style={{
+                            fontSize: 17,
+                            fontWeight: 700,
+                            color: active ? C.navy : C.greyLight,
+                            marginBottom: 6,
+                            lineHeight: 1.28,
+                            transition: 'color 0.3s ease',
+                          }}
+                        >
+                          {s.title}
+                        </div>
+                        <p
+                          style={{
+                            margin: 0,
+                            fontSize: 14,
+                            lineHeight: 1.55,
+                            color: active ? C.grey : C.greyLight,
+                            transition: 'color 0.3s ease',
+                          }}
+                        >
+                          {s.desc}
+                        </p>
                       </div>
                     </div>
                   );
