@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --color-primary: #FF2D2D;
+  --color-primary-hover: #E62929;
+}
+
+@layer base {
+  body {
+    @apply font-sans text-[#1A1A1A] bg-white antialiased;
+  }
+}
+
+.dropdown-shadow {
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+}
+
+/**
+ * Solid primary (red) buttons — shimmer sweep + lift + glow on hover.
+ */
+@layer components {
+  .btn-primary {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background-color: var(--color-primary);
+    color: #fff;
+    transition:
+      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 0.25s ease,
+      filter 0.25s ease;
+    box-shadow: 0 4px 16px -4px color-mix(in srgb, var(--color-primary) 45%, transparent);
+  }
+
+  .btn-primary:hover {
+    background-color: var(--color-primary-hover);
+    transform: translateY(-2px);
+    box-shadow:
+      0 16px 40px -10px color-mix(in srgb, var(--color-primary) 55%, transparent),
+      0 6px 20px -6px color-mix(in srgb, var(--color-primary) 40%, transparent);
+    filter: brightness(1.03);
+  }
+
+  .btn-primary:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 2px 12px -2px color-mix(in srgb, var(--color-primary) 35%, transparent);
+    filter: brightness(0.98);
+  }
+
+  .btn-primary::after {
+    content: "";
+    position: absolute;
+    inset: -20% -40%;
+    background: linear-gradient(
+      105deg,
+      transparent 0%,
+      transparent 42%,
+      rgba(255, 255, 255, 0.28) 50%,
+      transparent 58%,
+      transparent 100%
+    );
+    transform: translateX(-120%) skewX(-14deg);
+    transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .btn-primary:hover::after {
+    transform: translateX(120%) skewX(-14deg);
+  }
+
+  .btn-primary > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn-primary:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+    filter: none;
+  }
+
+  .btn-primary:disabled:hover {
+    transform: none;
+    box-shadow: 0 4px 16px -4px color-mix(in srgb, var(--color-primary) 35%, transparent);
+    filter: none;
+  }
+
+  .btn-primary:disabled:hover::after {
+    transform: translateX(-120%) skewX(-14deg);
+  }
+}
