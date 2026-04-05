@@ -1,36 +1,114 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Search, 
-  ArrowRight, 
-  Star, 
-  Award, 
-  Zap, 
-  Monitor, 
-  TrendingUp, 
-  BarChart3, 
-  Clock, 
-  LayoutGrid, 
+import React from 'react';
+import { motion } from 'motion/react';
+import {
+  ArrowRight,
   ArrowUpRight,
-  CheckCircle2,
-  Calendar
+  Calendar,
+  ChevronDown,
+  ExternalLink,
+  FileText,
 } from 'lucide-react';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
+import { WhyTradeRevoSection } from '../components/WhyTradeRevoSection';
 import { MarketTabs } from '../components/MarketTabs';
 import { TopContactBar } from '../components/TopContactBar';
+import { FUTURES_CFD_ROWS } from '../data/futuresCfdTable';
+import type { IndicesSpecRow } from '../data/indicesPairsTables';
+
+function FuturesChartIcon() {
+  return (
+    <div
+      className="flex h-10 w-10 shrink-0 items-center justify-center rounded bg-primary text-white"
+      aria-hidden
+    >
+      <svg
+        width={20}
+        height={20}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2.2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
+        <path d="M8 12V8a4 4 0 0 1 8 0v4" />
+        <rect x="6" y="12" width="12" height="8" rx="1" />
+      </svg>
+    </div>
+  );
+}
+
+function DownloadPdfLink() {
+  return (
+    <a
+      href="#"
+      className="inline-flex w-fit items-center gap-2 self-start rounded-full border border-gray-300 bg-white px-5 py-2.5 text-sm font-semibold text-gray-900 transition-colors hover:border-gray-400 hover:bg-gray-50 sm:self-auto"
+    >
+      <FileText size={18} className="shrink-0 text-gray-600" aria-hidden />
+      Download PDF
+      <ExternalLink size={16} className="shrink-0 text-gray-500" aria-hidden />
+    </a>
+  );
+}
+
+function FuturesCfdSpecsTable({ rows }: { rows: IndicesSpecRow[] }) {
+  return (
+    <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white">
+      <table className="w-full min-w-[720px] border-collapse text-left text-sm">
+        <thead>
+          <tr className="border-b border-gray-200 bg-gray-50">
+            <th className="px-4 py-3 font-bold text-gray-900 lg:px-5">Symbol</th>
+            <th className="px-4 py-3 font-bold text-gray-900 lg:px-5">Currency Base</th>
+            <th className="px-4 py-3 text-center font-bold text-gray-900 lg:px-5">Margin</th>
+            <th className="px-4 py-3 text-right font-bold text-gray-900 lg:px-5">Swap Long</th>
+            <th className="px-4 py-3 text-right font-bold text-gray-900 lg:px-5">Swap Short</th>
+            <th className="px-4 py-3 text-right font-bold text-gray-900 lg:px-5">Spread</th>
+            <th className="w-12 px-2 py-3 lg:w-14" aria-label="Expand row" />
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row) => (
+            <tr key={row.symbol} className="border-b border-gray-200 last:border-b-0">
+              <td className="px-4 py-4 align-middle lg:px-5">
+                <div className="flex items-center gap-3">
+                  <FuturesChartIcon />
+                  <div className="min-w-0">
+                    <div className="font-bold text-gray-900">{row.symbol}</div>
+                    <div className="text-xs text-gray-500">{row.label}</div>
+                  </div>
+                </div>
+              </td>
+              <td className="px-4 py-4 align-middle font-medium text-gray-900 lg:px-5">{row.base}</td>
+              <td className="px-4 py-4 text-center align-middle text-gray-900 lg:px-5">{row.margin}</td>
+              <td className="px-4 py-4 text-right align-middle tabular-nums text-gray-900 lg:px-5">
+                {row.swapLong}
+              </td>
+              <td className="px-4 py-4 text-right align-middle tabular-nums text-gray-900 lg:px-5">
+                {row.swapShort}
+              </td>
+              <td className="px-4 py-4 text-right align-middle tabular-nums text-gray-900 lg:px-5">
+                {row.spread}
+              </td>
+              <td className="px-2 py-4 align-middle text-center text-gray-400">
+                <button
+                  type="button"
+                  className="inline-flex rounded-md p-1 hover:bg-gray-100 hover:text-gray-700"
+                  aria-label={`More details for ${row.symbol}`}
+                >
+                  <ChevronDown size={18} aria-hidden />
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
 
 export const FuturesPage = () => {
-  const futuresList = [
-    { name: 'Brent Crude Oil', fullName: 'Brent Crude Oil Future', price: '82.45', change: '+0.15%', isNegative: false, expiry: '28/04/2026', isExpiringSoon: true, icon: '🛢️' },
-    { name: 'WTI Crude Oil', fullName: 'WTI Crude Oil Future', price: '78.12', change: '-0.22%', isNegative: true, expiry: '20/04/2026', isExpiringSoon: true, icon: '🛢️' },
-    { name: 'Natural Gas', fullName: 'Natural Gas Future', price: '1.85', change: '+1.45%', isNegative: false, expiry: '26/04/2026', isExpiringSoon: true, icon: '🔥' },
-    { name: 'Gold', fullName: 'Gold Future', price: '2,085.50', change: '+0.45%', isNegative: false, expiry: '27/05/2026', isExpiringSoon: false, icon: '🥇' },
-    { name: 'Silver', fullName: 'Silver Future', price: '23.15', change: '+0.12%', isNegative: false, expiry: '27/05/2026', isExpiringSoon: false, icon: '🥈' },
-    { name: 'Copper', fullName: 'Copper Future', price: '3.85', change: '-0.05%', isNegative: true, expiry: '28/05/2026', isExpiringSoon: false, icon: '🥉' },
-    { name: 'Cocoa', fullName: 'Cocoa Future', price: '6,450.00', change: '+2.15%', isNegative: false, expiry: '15/05/2026', isExpiringSoon: false, icon: '🍫' },
-    { name: 'Coffee', fullName: 'Coffee Future', price: '185.45', change: '-0.10%', isNegative: true, expiry: '20/05/2026', isExpiringSoon: false, icon: '☕' },
-  ];
 
   return (
     <div className="min-h-screen bg-white font-sans">
@@ -61,7 +139,7 @@ export const FuturesPage = () => {
             transition={{ delay: 0.2 }}
             className="text-gray-600 text-lg max-w-3xl mx-auto mb-10"
           >
-            Speculate on the future price of commodities, energies, and more. Trade global futures with competitive conditions and transparent expiry dates.
+            Speculate on the future price of Commodities, energies, and more. Trade global Futures with competitive conditions and transparent expiry dates.
           </motion.p>
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -87,118 +165,60 @@ export const FuturesPage = () => {
 
       <MarketTabs initialTab="Commodities" />
 
-      {/* Futures Table Section */}
-      <section className="pb-14 lg:pb-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          {/* Search Bar */}
-          <div className="max-w-2xl mx-auto mb-10 relative">
-            <input 
-              type="text" 
-              placeholder="Search Futures..." 
-              className="w-full py-4 px-12 rounded-2xl border border-gray-100 focus:outline-none focus:border-primary transition-all text-lg shadow-sm"
-            />
-            <Search size={24} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+      {/* CFD Futures specs table (Indices-style) */}
+      <section className="bg-white pb-14 lg:pb-16">
+        <div className="mx-auto max-w-7xl px-4">
+          <h2 className="mb-4 text-3xl font-bold text-gray-900 lg:text-4xl">CFD Futures Trading</h2>
+          <p className="mb-10 max-w-4xl text-lg leading-relaxed text-gray-600">
+            REVO CAPITAL offers futures CFDs based on futures contracts that are traded, for example, on the Chicago
+            Mercantile Exchange (CME). Furthermore, there is no delivery of the underlying asset with futures CFDs.
+          </p>
+
+          <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <h3 className="text-xl font-bold text-gray-900 lg:text-2xl">Futures</h3>
+            <DownloadPdfLink />
           </div>
 
-          {/* Futures Table */}
-          <div className="overflow-x-auto rounded-3xl border border-gray-100 shadow-sm">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-gray-50/50">
-                  <th className="px-8 py-6 text-sm font-bold text-gray-400 uppercase tracking-widest">Instrument</th>
-                  <th className="px-8 py-6 text-sm font-bold text-gray-400 uppercase tracking-widest">Full Name</th>
-                  <th className="px-8 py-6 text-sm font-bold text-gray-400 uppercase tracking-widest text-right">Price</th>
-                  <th className="px-8 py-6 text-sm font-bold text-gray-400 uppercase tracking-widest text-right">Change</th>
-                  <th className="px-8 py-6 text-sm font-bold text-gray-400 uppercase tracking-widest text-center">Expiry Date</th>
-                  <th className="px-8 py-6 text-sm font-bold text-gray-400 uppercase tracking-widest text-right">Action</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-50">
-                {futuresList.map((future) => (
-                  <tr key={future.name} className="hover:bg-gray-50/30 transition-colors group">
-                    <td className="px-8 py-6">
-                      <div className="flex items-center gap-4">
-                        <span className="text-2xl">{future.icon}</span>
-                        <span className="font-bold text-gray-900">{future.name}</span>
-                      </div>
-                    </td>
-                    <td className="px-8 py-6 text-gray-500 font-medium">{future.fullName}</td>
-                    <td className="px-8 py-6 text-right font-bold text-gray-900">{future.price}</td>
-                    <td className={`px-8 py-6 text-right font-bold ${future.isNegative ? 'text-primary' : 'text-green-500'}`}>
-                      {future.change}
-                    </td>
-                    <td className="px-8 py-6 text-center">
-                      <div className="flex flex-col items-center gap-1">
-                        <span className={`text-sm font-bold ${future.isExpiringSoon ? 'text-amber-600' : 'text-gray-600'}`}>
-                          {future.expiry}
-                        </span>
-                        {future.isExpiringSoon && (
-                          <span className="text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
-                            Expiring Soon
-                          </span>
-                        )}
-                      </div>
-                    </td>
-                    <td className="px-8 py-6 text-right">
-                      <button className="bg-gray-900 text-white px-6 py-2 rounded-full text-sm font-bold hover:bg-primary transition-all">
-                        Trade
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          
-          <div className="mt-12 text-center">
-            <p className="text-gray-500 mb-6">Looking for more futures?</p>
-            <button className="inline-flex items-center gap-2 font-bold text-gray-900 hover:text-primary transition-colors">
-              View all 1200+ instruments <ArrowRight size={18} />
-            </button>
+          <FuturesCfdSpecsTable rows={FUTURES_CFD_ROWS} />
+
+          <div className="mx-auto mt-10 max-w-3xl space-y-4 text-center text-gray-600">
+            <p>Futures are suitable for hedging a portfolio or speculating on price movements.</p>
+            <p>
+              REVO CAPITAL offers you professional access to Futures CFDs on Indices, Commodities, fuels, precious metals
+              and bonds.
+            </p>
+            <p>Compared to spot CFDs, futures CFDs are ideal instruments for handling larger trading volumes.</p>
           </div>
         </div>
       </section>
 
       {/* Expiry Info Section */}
       <section className="py-14 lg:py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-10 lg:gap-12 items-center">
-            <div className="order-2 lg:order-1">
-              <div className="bg-white p-4 rounded-[2.5rem] shadow-2xl relative z-10">
-                <img 
-                  src="https://picsum.photos/seed/futures-expiry/800/600" 
-                  alt="Futures Expiry" 
-                  className="rounded-[2rem] w-full"
-                  referrerPolicy="no-referrer"
-                />
+        <div className="mx-auto max-w-3xl px-4 text-center">
+          <span className="mb-4 block text-sm font-bold uppercase tracking-widest text-primary">TRANSPARENCY</span>
+          <h2 className="mb-6 text-4xl font-bold leading-tight text-gray-900 lg:text-5xl">
+            Clear Expiry Dates & <br /> <span className="text-primary">Transparent Trading</span>
+          </h2>
+          <p className="mb-10 text-lg text-gray-600">
+            Futures trading involves contracts with specific expiration dates. At REVO CAPITAL, we provide clear
+            information about contract expiries so you can manage your positions effectively.
+          </p>
+          <div className="space-y-8">
+            {[
+              { title: 'Automatic Rollover', desc: 'We handle contract transitions smoothly to ensure continuous trading.' },
+              { title: 'Expiry Notifications', desc: 'Receive alerts before your futures contracts reach their expiration date.' },
+              { title: 'No Hidden Fees', desc: 'Trade futures with transparent pricing and no unexpected rollover costs.' },
+            ].map((item, idx) => (
+              <div key={idx} className="flex flex-col items-center gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white shadow-sm">
+                  <Calendar className="text-primary" size={24} aria-hidden />
+                </div>
+                <div>
+                  <h3 className="mb-1 text-xl font-bold text-gray-900">{item.title}</h3>
+                  <p className="text-gray-600">{item.desc}</p>
+                </div>
               </div>
-            </div>
-            <div className="order-1 lg:order-2">
-              <span className="text-sm font-bold text-primary uppercase tracking-widest mb-4 block">TRANSPARENCY</span>
-              <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-8 leading-tight">
-                Clear Expiry Dates & <br /> <span className="text-primary">Transparent Trading</span>
-              </h2>
-              <p className="text-gray-600 text-lg mb-8">
-                Futures trading involves contracts with specific expiration dates. At REVO CAPITAL, we provide clear information about contract expiries so you can manage your positions effectively.
-              </p>
-              <div className="space-y-6">
-                {[
-                  { title: 'Automatic Rollover', desc: 'We handle contract transitions smoothly to ensure continuous trading.' },
-                  { title: 'Expiry Notifications', desc: 'Receive alerts before your futures contracts reach their expiration date.' },
-                  { title: 'No Hidden Fees', desc: 'Trade futures with transparent pricing and no unexpected rollover costs.' }
-                ].map((item, idx) => (
-                  <div key={idx} className="flex gap-4">
-                    <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shrink-0 shadow-sm">
-                      <Calendar className="text-primary" size={24} />
-                    </div>
-                    <div>
-                      <h4 className="text-xl font-bold text-gray-900 mb-1">{item.title}</h4>
-                      <p className="text-gray-600">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -228,64 +248,7 @@ export const FuturesPage = () => {
         </div>
       </section>
 
-      {/* Account Steps Section (Reused) */}
-      <section className="py-14 lg:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-10">
-            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-              Open Your Trading Account <br /> & <span className="text-primary">Start Investing Today</span>
-            </h2>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { step: '01', title: 'Tell us about yourself', desc: 'Fill the welcome form & Submit your KYC from given list' },
-              { step: '02', title: 'Welcome to Platform', desc: 'Find your credentials to access CRM.' },
-              { step: '03', title: 'Choose your Account', desc: 'Select your account type that suits your trading pattern' },
-              { step: '04', title: 'Start trading with us', desc: 'Check your email for credentials and Start your journey' }
-            ].map((item, idx) => (
-              <div key={idx} className="text-center group">
-                <div className="w-16 h-16 bg-primary/5 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-primary group-hover:text-white transition-all">
-                  <span className="text-2xl font-bold">{item.step}</span>
-                </div>
-                <h4 className="text-xl font-bold text-gray-900 mb-3">{item.title}</h4>
-                <p className="text-gray-500 text-sm">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Platform Section (Reused) */}
-      <section className="py-14 lg:py-16 bg-gray-900 text-white overflow-hidden relative">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row items-center gap-10 lg:gap-12">
-          <div className="lg:w-1/2 space-y-8">
-            <span className="text-primary font-bold uppercase tracking-widest">TRADING PLATFORM</span>
-            <h2 className="text-4xl lg:text-6xl font-bold leading-tight">
-              Trade Smarter with the <br /> <span className="text-primary">Right Platform</span>
-            </h2>
-            <p className="text-gray-400 text-lg">
-              Low Fixed Spreads & Negative Balance Protection for a seamless trading experience.
-            </p>
-            <div className="grid sm:grid-cols-2 gap-6">
-              {['Single Click Trading.', 'Custom Trading Templates.', 'Available on iOS, Android & Windows.', 'Preinstalled Indicators.'].map((f) => (
-                <div key={f} className="flex items-center gap-3">
-                  <div className="w-6 h-6 bg-primary/20 rounded-full flex items-center justify-center shrink-0">
-                    <CheckCircle2 size={14} className="text-primary" />
-                  </div>
-                  <span className="text-gray-300 font-medium">{f}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="lg:w-1/2 relative">
-            <div className="relative z-10 bg-gray-800 p-4 rounded-3xl border border-white/10 shadow-2xl">
-              <img src="https://picsum.photos/seed/platform-futures/800/600" alt="Platform" className="rounded-2xl" referrerPolicy="no-referrer" />
-            </div>
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-primary/20 blur-[120px] rounded-full -z-10" />
-          </div>
-        </div>
-      </section>
-
+      <WhyTradeRevoSection />
       <Footer />
     </div>
   );

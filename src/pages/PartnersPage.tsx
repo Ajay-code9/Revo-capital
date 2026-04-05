@@ -1,18 +1,15 @@
 import React from 'react';
-import { 
-  TrendingUp, 
-  ChevronRight, 
-  CheckCircle2, 
-  BarChart3, 
-  Users, 
-  Zap, 
-  Globe, 
-  Headphones, 
+import {
+  TrendingUp,
+  ChevronRight,
+  CheckCircle2,
+  BarChart3,
+  Users,
+  Zap,
+  Globe,
+  Headphones,
   ShieldCheck,
-  Layout,
-  Smartphone,
-  Monitor,
-  ArrowRight
+  ArrowRight,
 } from 'lucide-react';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
@@ -181,34 +178,6 @@ export const PartnersPage = () => {
               </div>
               <div className="absolute -inset-4 bg-primary/5 rounded-[2.5rem] -z-10 transform rotate-2" />
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Platform Section (Reused Style) */}
-      <section className="py-14 lg:py-20 bg-[#F8F9FA]">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl lg:text-5xl font-bold mb-6 tracking-tight">Trade Smarter with the Right Platform</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Low Fixed Spreads & Negative Balance Protection for a seamless trading experience.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { icon: <Zap size={24} />, title: "Single Click Trading" },
-              { icon: <Layout size={24} />, title: "Custom Trading Templates" },
-              { icon: <Smartphone size={24} />, title: "Available on iOS, Android & Windows" },
-              { icon: <Monitor size={24} />, title: "Preinstalled Indicators & Analysis Tools" }
-            ].map((feature, index) => (
-              <div key={index} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center group hover:shadow-md transition-all">
-                <div className="w-16 h-16 bg-primary/5 rounded-2xl flex items-center justify-center text-primary mb-6 group-hover:scale-110 transition-transform">
-                  {feature.icon}
-                </div>
-                <h3 className="font-bold text-lg">{feature.title}</h3>
-              </div>
-            ))}
           </div>
         </div>
       </section>

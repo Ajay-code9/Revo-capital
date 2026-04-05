@@ -1,52 +1,23 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Search, 
-  ArrowRight, 
-  Facebook, 
-  Twitter, 
-  Instagram, 
-  Linkedin, 
-  Youtube,
-  ShieldCheck,
-  Award,
-  Zap,
-  Smartphone,
-  Globe,
-  Monitor,
-  TrendingUp,
-  BarChart3,
-  Clock,
-  Bitcoin,
-  Coins,
-  LayoutGrid,
-  Menu,
-  X,
-  ArrowUpRight
-} from 'lucide-react';
-import { Navbar } from '../components/Navbar';
-import { Footer } from '../components/Footer';
-import { MarketTabs } from '../components/MarketTabs';
-import { TopContactBar } from '../components/TopContactBar';
+import React, {useMemo, useState} from 'react';
+import {ArrowRight, ChevronDown, ExternalLink, FileText} from 'lucide-react';
+import {Navbar} from '../components/Navbar';
+import {Footer} from '../components/Footer';
+import {WhyTradeRevoSection} from '../components/WhyTradeRevoSection';
+import {MarketTabs} from '../components/MarketTabs';
+import {TopContactBar} from '../components/TopContactBar';
+import {
+  FOREX_PAIR_TABS,
+  type ForexPairCategory,
+  forexPairIconLines,
+} from '../data/forexPairsTables';
 
 export const ForexPage = () => {
-  const topPairs = [
-    { name: 'EURUSD', price: '1.151685', change: '-0.23%', isNegative: true, icon: '🇪🇺🇺🇸' },
-    { name: 'GBPUSD', price: '1.31961', change: '-0.28%', isNegative: true, icon: '🇬🇧🇺🇸' },
-    { name: 'USDJPY', price: '159.673', change: '0.02%', isNegative: false, icon: '🇺🇸🇯🇵' },
-    { name: 'EURGBP', price: '0.87249', change: '-0.07%', isNegative: true, icon: '🇪🇺🇬🇧' },
-  ];
+  const [pairTab, setPairTab] = useState<ForexPairCategory>('majors');
 
-  const forexList = [
-    { name: 'USDTRY', price: '44.58555', change: '0.07%', isNegative: false, icon: '🇺🇸🇹🇷' },
-    { name: 'AUDNOK', price: '6.72568', change: '-0.38%', isNegative: true, icon: '🇦🇺🇳🇴' },
-    { name: 'USDCAD', price: '1.394525', change: '0.17%', isNegative: false, icon: '🇺🇸🇨🇦' },
-    { name: 'NZDJPY', price: '90.871', change: '-0.51%', isNegative: true, icon: '🇳🇿🇯🇵' },
-    { name: 'NZDUSD', price: '0.56917', change: '-0.56%', isNegative: true, icon: '🇳🇿🇺🇸' },
-    { name: 'USDCZK', price: '21.28985', change: '0.05%', isNegative: false, icon: '🇺🇸🇨🇿' },
-    { name: 'USDMXN', price: '17.9001', change: '0.15%', isNegative: false, icon: '🇺🇸🇲🇽' },
-    { name: 'USDPLN', price: '3.71365', change: '0.11%', isNegative: false, icon: '🇺🇸🇵🇱' },
-  ];
+  const activeTabConfig = useMemo(
+    () => FOREX_PAIR_TABS.find((t) => t.id === pairTab) ?? FOREX_PAIR_TABS[0],
+    [pairTab],
+  );
 
   return (
     <div className="min-h-screen bg-white font-sans">
@@ -68,41 +39,114 @@ export const ForexPage = () => {
 
       <MarketTabs initialTab="Forex" />
 
-      {/* Search + Forex List */}
-      <section className="py-16 bg-white">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="relative mb-12">
-            <input 
-              type="text" 
-              placeholder="Search Forex" 
-              className="w-full py-4 px-12 rounded-full border border-gray-200 focus:outline-none focus:border-primary transition-all text-lg"
-            />
-            <Search size={24} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+      {/* Trade Forex Online — majors table (reference layout) */}
+      <section className="bg-white py-12 lg:py-16">
+        <div className="mx-auto max-w-5xl px-4 lg:max-w-6xl lg:px-6">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 lg:text-4xl">Trade Forex Online</h2>
+            <p className="mx-auto mt-4 max-w-3xl text-base leading-relaxed text-gray-600 lg:text-lg">
+              With an estimated average daily turnover volume of USD 7 trillion, the foreign exchange market is the
+              world&apos;s largest financial market.
+            </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            {forexList.map((item) => (
-              <div key={item.name} className="flex items-center justify-between p-6 bg-white border border-gray-50 rounded-2xl hover:shadow-sm transition-all">
-                <div className="flex items-center gap-4">
-                  <div className="text-3xl">{item.icon}</div>
-                  <div>
-                    <div className="font-bold text-gray-900">{item.name}</div>
-                    <div className="text-xs text-gray-400 uppercase">{item.name}</div>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <div className="font-bold text-gray-900">{item.price}</div>
-                  <div className={`text-sm font-bold ${item.isNegative ? 'text-primary' : 'text-green-500'}`}>
-                    {item.change}
-                  </div>
-                </div>
-              </div>
-            ))}
+          <div
+            className="mt-8 flex w-full justify-center sm:mt-10"
+            role="tablist"
+            aria-label="Forex pair category"
+          >
+            <div className="inline-flex w-full max-w-lg rounded-full bg-gray-100 p-1 sm:max-w-xl lg:max-w-2xl">
+              {FOREX_PAIR_TABS.map((tab) => {
+                const selected = pairTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={selected}
+                    onClick={() => setPairTab(tab.id)}
+                    className={`min-w-0 flex-1 rounded-full px-2 py-2.5 text-center text-[11px] font-semibold transition-all sm:px-3 sm:text-sm ${
+                      selected
+                        ? 'bg-white text-primary shadow-md shadow-black/8'
+                        : 'text-slate-600 hover:text-slate-800'
+                    }`}
+                  >
+                    {tab.segmentLabel}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-          <div className="mt-8 text-right">
-            <a href="#" className="inline-flex items-center gap-1 font-bold text-gray-900 hover:text-primary transition-colors">
-              See all instruments <ArrowRight size={16} />
+
+          <div className="mt-8 flex flex-col gap-4 sm:mt-10 sm:flex-row sm:items-center sm:justify-between">
+            <h3 className="text-lg font-bold text-gray-900 lg:text-xl">{activeTabConfig.tableHeading}</h3>
+            <a
+              href="#"
+              className="inline-flex w-fit items-center gap-2 self-start rounded-full border border-gray-300 bg-white px-5 py-2.5 text-sm font-semibold text-gray-900 transition-colors hover:border-gray-400 hover:bg-gray-50 sm:self-auto"
+            >
+              <FileText size={18} className="shrink-0 text-gray-600" aria-hidden />
+              Download PDF
+              <ExternalLink size={16} className="shrink-0 text-gray-500" aria-hidden />
             </a>
+          </div>
+
+          <div className="mt-6 overflow-x-auto rounded-lg border border-gray-200 bg-white">
+            <table className="w-full min-w-[720px] border-collapse text-left text-sm" role="tabpanel">
+              <thead>
+                <tr className="border-b border-gray-200 bg-gray-50">
+                  <th className="px-4 py-3 font-bold text-gray-900 lg:px-5">Symbol</th>
+                  <th className="px-4 py-3 font-bold text-gray-900 lg:px-5">Currency Base</th>
+                  <th className="px-4 py-3 text-center font-bold text-gray-900 lg:px-5">Margin</th>
+                  <th className="px-4 py-3 text-right font-bold text-gray-900 lg:px-5">Swap Long</th>
+                  <th className="px-4 py-3 text-right font-bold text-gray-900 lg:px-5">Swap Short</th>
+                  <th className="px-4 py-3 text-right font-bold text-gray-900 lg:px-5">Spread</th>
+                  <th className="w-12 px-2 py-3 lg:w-14" aria-label="Expand row" />
+                </tr>
+              </thead>
+              <tbody>
+                {activeTabConfig.rows.map((row) => (
+                  <tr key={row.symbol} className="border-b border-gray-200 last:border-b-0">
+                    <td className="px-4 py-4 align-middle lg:px-5">
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={`flex h-10 w-10 shrink-0 flex-col items-center justify-center rounded bg-primary text-center font-bold leading-tight text-white ${row.icon ? 'text-[10px]' : 'text-[8px] sm:text-[9px]'}`}
+                        >
+                          {forexPairIconLines(row).map((line, i) => (
+                            <span key={i} className="block">
+                              {line}
+                            </span>
+                          ))}
+                        </div>
+                        <div className="min-w-0">
+                          <div className="font-bold text-gray-900">{row.symbol}</div>
+                          <div className="text-xs text-gray-500">{row.label}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-4 py-4 align-middle font-medium text-gray-900 lg:px-5">{row.base}</td>
+                    <td className="px-4 py-4 text-center align-middle text-gray-900 lg:px-5">{row.margin}</td>
+                    <td className="px-4 py-4 text-right align-middle tabular-nums text-gray-900 lg:px-5">
+                      {row.swapLong}
+                    </td>
+                    <td className="px-4 py-4 text-right align-middle tabular-nums text-gray-900 lg:px-5">
+                      {row.swapShort}
+                    </td>
+                    <td className="px-4 py-4 text-right align-middle tabular-nums text-gray-900 lg:px-5">
+                      {row.spread}
+                    </td>
+                    <td className="px-2 py-4 align-middle text-center text-gray-400">
+                      <button
+                        type="button"
+                        className="inline-flex rounded-md p-1 hover:bg-gray-100 hover:text-gray-700"
+                        aria-label={`More details for ${row.symbol}`}
+                      >
+                        <ChevronDown size={18} aria-hidden />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
@@ -117,7 +161,7 @@ export const ForexPage = () => {
               with <span className="text-white">Forex</span>
             </h2>
             <p className="text-lg opacity-90 leading-relaxed">
-              Place trades on some of the industry's most popular forex pairs including EURUSD, GBPUSD and USDJPY with very competitive spreads.
+              Place trades on some of the industry&apos;s most popular Forex pairs including EURUSD, GBPUSD and USDJPY with very competitive Spreads.
             </p>
             <p className="text-lg opacity-90 leading-relaxed">
               With over 70 different currency pairs to choose from including major, minor and exotics, you'll always have good options to choose from.
@@ -138,130 +182,7 @@ export const ForexPage = () => {
         </div>
       </section>
 
-      {/* Platforms Banner */}
-      <section className="py-16 px-4">
-        <div className="max-w-7xl mx-auto bg-[#0A1128] rounded-[2rem] p-12 lg:p-20 relative overflow-hidden text-white">
-          <div className="relative z-10 lg:w-1/2 space-y-8">
-            <span className="text-sm font-bold uppercase tracking-widest opacity-60">PLATFORMS</span>
-            <h2 className="text-4xl lg:text-6xl font-bold leading-tight">
-              Trade with <span className="text-primary">bigger volume</span> <br />
-              on any platform
-            </h2>
-            <p className="text-lg opacity-80">
-              Trade it on REVO Trader, TradingView, MetaTrader 4 or cTrader.
-            </p>
-            <div className="flex flex-wrap gap-8 items-center py-4">
-              <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center font-bold text-2xl">R</div>
-              <div className="w-12 h-12 bg-red-600 rounded-full" />
-              <div className="w-12 h-12 bg-green-600 rounded-lg" />
-              <div className="w-12 h-12 bg-blue-600 rounded-md" />
-            </div>
-            <div className="flex flex-wrap gap-4 pt-4">
-              <button className="bg-white text-black px-6 py-3 rounded-lg font-bold flex items-center gap-2">
-                <Smartphone size={20} /> App Store
-              </button>
-              <button className="bg-white text-black px-6 py-3 rounded-lg font-bold flex items-center gap-2">
-                <Smartphone size={20} /> Google Play
-              </button>
-              <button className="bg-transparent border border-white text-white px-6 py-3 rounded-lg font-bold flex items-center gap-2">
-                Trade on TradingView
-              </button>
-            </div>
-          </div>
-          <div className="absolute right-0 top-0 h-full w-1/2 hidden lg:block">
-            <img 
-              src="https://picsum.photos/seed/forex-platform/800/800" 
-              alt="Platform Mockup" 
-              className="h-full w-full object-cover opacity-40"
-              referrerPolicy="no-referrer"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Why REVO CAPITAL Section */}
-      <section className="py-14 lg:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-10">
-            <span className="text-sm font-bold text-gray-400 uppercase tracking-widest">WHY REVO CAPITAL?</span>
-            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mt-4">
-              Trading <span className="text-primary">made simple</span>
-            </h2>
-            <p className="text-gray-500 mt-4 text-lg">Why the Pros prefer REVO CAPITAL?</p>
-          </div>
-
-          <div className="grid lg:grid-cols-2 gap-8">
-            <div className="bg-[#F8F9FA] rounded-[2rem] p-12 flex flex-col lg:flex-row items-center gap-8">
-              <div className="w-full lg:w-1/2">
-                <img src="https://picsum.photos/seed/why1/400/400" alt="Feature" className="rounded-2xl" referrerPolicy="no-referrer" />
-              </div>
-              <div className="w-full lg:w-1/2 space-y-4">
-                <h3 className="text-3xl font-bold text-gray-900">Powerful & competitive</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  Industry leading conditions designed to take your trading to the next level.
-                </p>
-              </div>
-            </div>
-            <div className="bg-[#EBF5FF] rounded-[2rem] p-12 flex flex-col lg:flex-row-reverse items-center gap-8">
-              <div className="w-full lg:w-1/2">
-                <img src="https://picsum.photos/seed/why2/400/400" alt="Feature" className="rounded-2xl" referrerPolicy="no-referrer" />
-              </div>
-              <div className="w-full lg:w-1/2 space-y-4">
-                <h3 className="text-3xl font-bold text-gray-900">Competitive spreads from as low as 0.1 pips</h3>
-                <ul className="space-y-2 text-gray-600">
-                  <li>No hidden cost. Full transparency.</li>
-                  <li>Promotions, bonuses & more.</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Award Section */}
-      <section className="py-14 lg:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-8">
-            <div className="bg-[#003566] rounded-[2rem] p-12 text-white relative overflow-hidden">
-              <div className="relative z-10 space-y-6">
-                <h3 className="text-3xl font-bold leading-tight">
-                  Trusted and Scandinavian to the core. At the cutting edge of fintech.
-                </h3>
-                <p className="opacity-80">
-                  Experience a new way of trading, where your needs come first.
-                </p>
-              </div>
-              <div className="absolute right-0 bottom-0 opacity-20">
-                <Globe size={300} />
-              </div>
-            </div>
-            <div className="bg-[#001D3D] rounded-[2rem] p-12 text-white flex flex-col justify-between">
-              <div className="space-y-6">
-                <h3 className="text-4xl font-bold">We are a Multi Award Winning broker</h3>
-                <p className="opacity-80">
-                  We take pride in what we have achieved, it keeps us motivated.
-                </p>
-              </div>
-              <div className="grid grid-cols-2 gap-8 mt-12">
-                <div className="flex items-center gap-4">
-                  <Award size={48} className="text-yellow-500" />
-                  <div className="text-xs uppercase font-bold tracking-widest opacity-60">Best Forex Trading Platform Global 2022</div>
-                </div>
-                <div className="flex items-center gap-4">
-                  <Award size={48} className="text-yellow-500" />
-                  <div className="text-xs uppercase font-bold tracking-widest opacity-60">Best Forex Trading Platform Europe 2022</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Need Help Bar */}
-      <div className="bg-[#1A1A1A] py-6 text-center text-white font-bold">
-        Need help? Get in touch with us <a href="#" className="underline hover:text-primary transition-colors">here</a>
-      </div>
-
+      <WhyTradeRevoSection />
       <Footer />
     </div>
   );

@@ -77,7 +77,7 @@ export const Features = () => {
                 Ultra-Low Latency
               </h3>
               <p className="mt-4 text-base leading-relaxed text-white/95 sm:mt-5 sm:text-lg sm:leading-relaxed">
-                Execute trades in milliseconds with our high-performance infrastructure.
+                Execute trades in milliseconds with our High-Performance infrastructure.
               </p>
             </div>
             <div

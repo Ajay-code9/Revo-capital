@@ -249,7 +249,7 @@ export const Navbar = () => {
                     </span>
                     <span className="min-w-0">
                       <span className="block font-bold text-gray-900 text-[17px] leading-tight">Markets</span>
-                      <span className="block text-xs font-medium text-gray-500 mt-0.5">Forex, indices, crypto & more</span>
+                      <span className="block text-xs font-medium text-gray-500 mt-0.5">Forex, Indices, Crypto & more</span>
                     </span>
                   </span>
                   <ChevronDown

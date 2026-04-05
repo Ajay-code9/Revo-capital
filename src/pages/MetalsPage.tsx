@@ -1,26 +1,104 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Search, 
-  ArrowRight, 
-  Star, 
-  Award, 
-  Zap, 
-  Monitor, 
-  TrendingUp, 
-  BarChart3, 
-  Clock, 
-  LayoutGrid, 
+import React from 'react';
+import { motion } from 'motion/react';
+import {
+  ArrowRight,
   ArrowUpRight,
   CheckCircle2,
+  ChevronDown,
+  Droplets,
+  ExternalLink,
+  FileText,
   Gem,
-  Flame,
-  Droplets
+  Network,
+  Star,
+  Sun,
 } from 'lucide-react';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
+import { WhyTradeRevoSection } from '../components/WhyTradeRevoSection';
 import { MarketTabs } from '../components/MarketTabs';
 import { TopContactBar } from '../components/TopContactBar';
+import { METALS_CFD_ROWS, type MetalsSpecRow } from '../data/metalsCfdTable';
+
+function MetalChartIcon({ variant }: { variant: MetalsSpecRow['icon'] }) {
+  const Icon = variant === 'sun' ? Sun : Network;
+  return (
+    <div
+      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-primary text-white"
+      aria-hidden
+    >
+      <Icon size={20} strokeWidth={2.2} />
+    </div>
+  );
+}
+
+function DownloadPdfLink() {
+  return (
+    <a
+      href="#"
+      className="inline-flex w-fit items-center gap-2 self-start rounded-full border border-gray-300 bg-white px-5 py-2.5 text-sm font-semibold text-gray-900 transition-colors hover:border-gray-400 hover:bg-gray-50 sm:self-auto"
+    >
+      <FileText size={18} className="shrink-0 text-gray-600" aria-hidden />
+      Download PDF
+      <ExternalLink size={16} className="shrink-0 text-gray-500" aria-hidden />
+    </a>
+  );
+}
+
+function MetalsCfdSpecsTable({ rows }: { rows: MetalsSpecRow[] }) {
+  return (
+    <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white">
+      <table className="w-full min-w-[720px] border-collapse text-left text-sm">
+        <thead>
+          <tr className="border-b border-gray-200 bg-gray-50">
+            <th className="px-4 py-3 font-bold text-gray-900 lg:px-5">Symbol</th>
+            <th className="px-4 py-3 font-bold text-gray-900 lg:px-5">Currency Base</th>
+            <th className="px-4 py-3 text-center font-bold text-gray-900 lg:px-5">Margin</th>
+            <th className="px-4 py-3 text-right font-bold text-gray-900 lg:px-5">Swap Long</th>
+            <th className="px-4 py-3 text-right font-bold text-gray-900 lg:px-5">Swap Short</th>
+            <th className="px-4 py-3 text-right font-bold text-gray-900 lg:px-5">Spread</th>
+            <th className="w-12 px-2 py-3 lg:w-14" aria-label="Expand row" />
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row) => (
+            <tr key={row.symbol} className="border-b border-gray-200 last:border-b-0">
+              <td className="px-4 py-4 align-middle lg:px-5">
+                <div className="flex items-center gap-3">
+                  <MetalChartIcon variant={row.icon} />
+                  <div className="min-w-0">
+                    <div className="font-bold text-gray-900">{row.symbol}</div>
+                    <div className="text-xs text-gray-500">{row.label}</div>
+                  </div>
+                </div>
+              </td>
+              <td className="px-4 py-4 align-middle font-medium text-gray-900 lg:px-5">{row.base}</td>
+              <td className="px-4 py-4 text-center align-middle text-gray-900 lg:px-5">{row.margin}</td>
+              <td className="px-4 py-4 text-right align-middle tabular-nums text-gray-900 lg:px-5">
+                {row.swapLong}
+              </td>
+              <td className="px-4 py-4 text-right align-middle tabular-nums text-gray-900 lg:px-5">
+                {row.swapShort}
+              </td>
+              <td className="px-4 py-4 text-right align-middle tabular-nums text-gray-900 lg:px-5">
+                {row.spread}
+              </td>
+              <td className="px-2 py-4 align-middle text-center text-gray-400">
+                <button
+                  type="button"
+                  className="inline-flex rounded-md p-1 hover:bg-gray-100 hover:text-gray-700"
+                  aria-label={`More details for ${row.symbol}`}
+                >
+                  <ChevronDown size={18} aria-hidden />
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
 
 export const MetalsPage = () => {
   const highlightedMetals = [
@@ -134,86 +212,60 @@ export const MetalsPage = () => {
         </div>
       </section>
 
-      {/* Metals List Section */}
-      <section className="py-16 bg-gray-50/50">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="relative mb-12">
-            <input 
-              type="text" 
-              placeholder="Search Metals & Energies..." 
-              className="w-full py-4 px-12 rounded-2xl border border-gray-100 focus:outline-none focus:border-primary transition-all text-lg shadow-sm"
-            />
-            <Search size={24} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+      {/* Precious metals specs table */}
+      <section className="bg-white py-14 lg:py-16">
+        <div className="mx-auto max-w-7xl px-4">
+          <div className="mb-10 text-center">
+            <h2 className="mb-4 text-3xl font-bold text-gray-900 lg:text-4xl">Precious Metals Trading</h2>
+            <p className="mx-auto max-w-3xl text-lg leading-relaxed text-gray-600">
+              Our range for trading precious metals includes the base metals gold, silver, palladium, platinum and
+              copper, which we offer at attractive prices. Precious metals provide a good basis for diversifying a
+              portfolio with Shares, Indices and bonds.
+            </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            {metalsList.map((item) => (
-              <div key={item.name} className="flex items-center justify-between p-6 bg-white border border-gray-100 rounded-2xl hover:shadow-md transition-all group">
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center text-gray-400 group-hover:bg-primary group-hover:text-white transition-all">
-                    <BarChart3 size={20} />
-                  </div>
-                  <div>
-                    <div className="font-bold text-gray-900">{item.name}</div>
-                    <div className="text-xs text-gray-400 uppercase font-medium">{item.symbol}</div>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <div className="font-bold text-gray-900">${item.price}</div>
-                  <div className={`text-sm font-bold ${item.isNegative ? 'text-primary' : 'text-green-500'}`}>
-                    {item.change}
-                  </div>
-                </div>
-              </div>
-            ))}
+          <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <h3 className="text-xl font-bold text-gray-900 lg:text-2xl">Metals</h3>
+            <DownloadPdfLink />
           </div>
-          <div className="mt-12 text-center">
-            <button className="inline-flex items-center gap-2 font-bold text-gray-900 hover:text-primary transition-colors">
-              See all commodities <ArrowRight size={18} />
-            </button>
+
+          <MetalsCfdSpecsTable rows={METALS_CFD_ROWS} />
+
+          <div className="mx-auto mt-10 max-w-3xl space-y-4 text-center text-gray-600">
+            <p>In addition, they can reduce major market fluctuations as an admixture in the portfolio.</p>
+            <p>Precious metals are often used as an investment in uncertain times.</p>
+            <p>
+              Especially in an environment characterised by rising inflation, precious metals offer a certain stability of
+              value.
+            </p>
           </div>
         </div>
       </section>
 
       {/* Why Trade Metals Section */}
       <section className="py-14 lg:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-10 lg:gap-12 items-center">
-            <div>
-              <span className="text-sm font-bold text-primary uppercase tracking-widest mb-4 block">SAFE HAVEN</span>
-              <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-8 leading-tight">
-                Premium <span className="text-primary">Commodity Trading</span> <br /> Infrastructure
-              </h2>
-              <div className="space-y-6">
-                {[
-                  { title: 'Safe-Haven Assets', desc: 'Protect your wealth during market volatility with Gold and Silver trading.' },
-                  { title: 'Global Energy Demand', desc: 'Trade Brent and WTI Crude Oil to capitalize on global economic trends.' },
-                  { title: 'Institutional Execution', desc: 'Benefit from ultra-fast execution and deep liquidity on all metals and energies.' },
-                  { title: 'Flexible Contract Sizes', desc: 'Trade with sizes that suit your strategy, from micro lots to institutional volumes.' }
-                ].map((item, idx) => (
-                  <div key={idx} className="flex gap-4">
-                    <div className="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center shrink-0 shadow-sm">
-                      <CheckCircle2 className="text-primary" size={24} />
-                    </div>
-                    <div>
-                      <h4 className="text-xl font-bold text-gray-900 mb-1">{item.title}</h4>
-                      <p className="text-gray-600">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
+        <div className="mx-auto max-w-3xl px-4 text-center">
+          <span className="mb-4 block text-sm font-bold uppercase tracking-widest text-primary">SAFE HAVEN</span>
+          <h2 className="mb-8 text-4xl font-bold leading-tight text-gray-900 lg:text-5xl">
+            Premium <span className="text-primary">Commodity Trading</span> <br /> Infrastructure
+          </h2>
+          <div className="space-y-8">
+            {[
+              { title: 'Safe-Haven Assets', desc: 'Protect your wealth during market volatility with Gold and Silver trading.' },
+              { title: 'Global Energy Demand', desc: 'Trade Brent and WTI Crude Oil to capitalize on global economic trends.' },
+              { title: 'Institutional Execution', desc: 'Benefit from ultra-fast execution and deep liquidity on all metals and energies.' },
+              { title: 'Flexible Contract Sizes', desc: 'Trade with sizes that suit your strategy, from micro lots to institutional volumes.' },
+            ].map((item, idx) => (
+              <div key={idx} className="flex flex-col items-center gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gray-50 shadow-sm">
+                  <CheckCircle2 className="text-primary" size={24} aria-hidden />
+                </div>
+                <div>
+                  <h3 className="mb-1 text-xl font-bold text-gray-900">{item.title}</h3>
+                  <p className="text-gray-600">{item.desc}</p>
+                </div>
               </div>
-            </div>
-            <div className="relative">
-              <div className="bg-white p-4 rounded-[2.5rem] shadow-2xl relative z-10">
-                <img 
-                  src="https://picsum.photos/seed/gold-bars/800/600" 
-                  alt="Gold Trading" 
-                  className="rounded-[2rem] w-full"
-                  referrerPolicy="no-referrer"
-                />
-              </div>
-              <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl -z-0" />
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -243,64 +295,7 @@ export const MetalsPage = () => {
         </div>
       </section>
 
-      {/* Account Steps Section (Reused) */}
-      <section className="py-14 lg:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-10">
-            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-              Open Your Trading Account <br /> & <span className="text-primary">Start Investing Today</span>
-            </h2>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { step: '01', title: 'Tell us about yourself', desc: 'Fill the welcome form & Submit your KYC from given list' },
-              { step: '02', title: 'Welcome to Platform', desc: 'Find your credentials to access CRM.' },
-              { step: '03', title: 'Choose your Account', desc: 'Select your account type that suits your trading pattern' },
-              { step: '04', title: 'Start trading with us', desc: 'Check your email for credentials and Start your journey' }
-            ].map((item, idx) => (
-              <div key={idx} className="text-center group">
-                <div className="w-16 h-16 bg-primary/5 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-primary group-hover:text-white transition-all">
-                  <span className="text-2xl font-bold">{item.step}</span>
-                </div>
-                <h4 className="text-xl font-bold text-gray-900 mb-3">{item.title}</h4>
-                <p className="text-gray-500 text-sm">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Platform Section (Reused) */}
-      <section className="py-14 lg:py-16 bg-gray-900 text-white overflow-hidden relative">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row items-center gap-10 lg:gap-12">
-          <div className="lg:w-1/2 space-y-8">
-            <span className="text-primary font-bold uppercase tracking-widest">TRADING PLATFORM</span>
-            <h2 className="text-4xl lg:text-6xl font-bold leading-tight">
-              Trade Smarter with the <br /> <span className="text-primary">Right Platform</span>
-            </h2>
-            <p className="text-gray-400 text-lg">
-              Low Fixed Spreads & Negative Balance Protection for a seamless trading experience.
-            </p>
-            <div className="grid sm:grid-cols-2 gap-6">
-              {['Single Click Trading.', 'Custom Trading Templates.', 'Available on iOS, Android & Windows.', 'Preinstalled Indicators.'].map((f) => (
-                <div key={f} className="flex items-center gap-3">
-                  <div className="w-6 h-6 bg-primary/20 rounded-full flex items-center justify-center shrink-0">
-                    <CheckCircle2 size={14} className="text-primary" />
-                  </div>
-                  <span className="text-gray-300 font-medium">{f}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="lg:w-1/2 relative">
-            <div className="relative z-10 bg-gray-800 p-4 rounded-3xl border border-white/10 shadow-2xl">
-              <img src="https://picsum.photos/seed/platform-metals/800/600" alt="Platform" className="rounded-2xl" referrerPolicy="no-referrer" />
-            </div>
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-primary/20 blur-[120px] rounded-full -z-10" />
-          </div>
-        </div>
-      </section>
-
+      <WhyTradeRevoSection />
       <Footer />
     </div>
   );

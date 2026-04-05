@@ -1,17 +1,11 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  ArrowRight, 
+import {
+  ArrowRight,
   ArrowUpRight,
-  Check,
-  Smartphone,
   Monitor,
   ShieldCheck,
   Zap,
-  UserPlus,
-  Key,
-  LayoutGrid,
-  TrendingUp,
   Facebook,
   Linkedin,
   Instagram,
@@ -57,34 +51,11 @@ export const AccountTypesPage = () => {
     { label: 'Min Internal Transfer', value: '$1' },
     { label: 'Margin Call', value: '50%' },
     { label: 'Stop Out', value: '20%' },
-    { label: 'Asset Classes', value: 'Forex, Indices, Metals, Energies, Stocks CFD, Cryptos, Futures' },
+    { label: 'Asset Classes', value: 'Forex, Indices, Metals, Energies, Stocks CFD, Crypto, Futures' },
     { label: 'Max Open Positions', value: '100 Positions' },
     { label: 'Max Lot Size', value: '100' },
     { label: 'Min Lot Size', value: '0.01' },
     { label: 'Negative Balance Protection', value: 'Yes' },
-  ];
-
-  const steps = [
-    {
-      title: 'Tell us about yourself.',
-      desc: 'Fill the welcome form & Submit your KYC from given list',
-      icon: <UserPlus className="text-white" size={24} />
-    },
-    {
-      title: 'Welcome to Platform',
-      desc: 'Find your credentials to access CRM.',
-      icon: <Key className="text-white" size={24} />
-    },
-    {
-      title: 'Choose your Account',
-      desc: 'Select your account type that suits your trading pattern',
-      icon: <LayoutGrid className="text-white" size={24} />
-    },
-    {
-      title: 'Start trading with us',
-      desc: 'Check your email for credentials and Start your journey',
-      icon: <TrendingUp className="text-white" size={24} />
-    }
   ];
 
   return (
@@ -116,7 +87,7 @@ export const AccountTypesPage = () => {
             transition={{ delay: 0.2 }}
             className="text-gray-600 text-lg max-w-3xl mx-auto mb-10"
           >
-            Whether you're a beginner, professional, or institutional trader, Revo Capital offers account types designed to match your trading style. Benefit from low spreads, fast execution, and flexible conditions—trade the way you want.
+            Whether you're a beginner, professional, or institutional trader, Revo Capital offers account types designed to match your trading style. Benefit from low Spreads, fast execution, and flexible conditions—trade the way you want.
           </motion.p>
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -199,89 +170,6 @@ export const AccountTypesPage = () => {
                 </button>
               </motion.div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* How to Open Account */}
-      <section className="py-14 lg:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-10">
-            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-              Open Your Trading Account <br /> & <span className="text-primary">Start Investing Today</span>
-            </h2>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              Open your trading account quickly and start accessing global markets with ease. A seamless, hassle-free process designed to get you trading in no time.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
-            {/* Connecting Line (Desktop) */}
-            <div className="hidden lg:block absolute top-1/2 left-0 w-full h-0.5 bg-gray-100 -translate-y-1/2 z-0" />
-            
-            {steps.map((step, idx) => (
-              <div key={idx} className="relative z-10 flex flex-col items-center text-center group">
-                <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
-                  {step.icon}
-                </div>
-                <h4 className="text-xl font-bold text-gray-900 mb-3">{step.title}</h4>
-                <p className="text-gray-500 text-sm leading-relaxed">{step.desc}</p>
-                <div className="mt-4 text-primary font-bold text-lg opacity-20">0{idx + 1}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Trading Platform Section */}
-      <section className="py-14 lg:py-16 bg-gray-900 text-white overflow-hidden relative">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row items-center gap-10 lg:gap-12">
-          <div className="lg:w-1/2 space-y-8">
-            <span className="text-primary font-bold uppercase tracking-widest">TRADING PLATFORM</span>
-            <h2 className="text-4xl lg:text-6xl font-bold leading-tight">
-              Trade Smarter with the <br /> <span className="text-primary">Right Platform</span>
-            </h2>
-            <p className="text-gray-400 text-lg">
-              Low Fixed Spreads & Negative Balance Protection for a seamless trading experience.
-            </p>
-            
-            <div className="grid sm:grid-cols-2 gap-6">
-              {[
-                'Single Click Trading.',
-                'Custom Trading Templates.',
-                'Available on iOS, Android & Windows.',
-                'Preinstalled Indicators & Analysis Tools.'
-              ].map((feature) => (
-                <div key={feature} className="flex items-center gap-3">
-                  <div className="w-6 h-6 bg-primary/20 rounded-full flex items-center justify-center shrink-0">
-                    <Check size={14} className="text-primary" />
-                  </div>
-                  <span className="text-gray-300 font-medium">{feature}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="pt-6 flex flex-wrap gap-4">
-              <button className="bg-white text-gray-900 px-8 py-3 rounded-full font-bold flex items-center gap-2 hover:bg-gray-100 transition-all">
-                <Smartphone size={20} /> App Store
-              </button>
-              <button className="bg-white text-gray-900 px-8 py-3 rounded-full font-bold flex items-center gap-2 hover:bg-gray-100 transition-all">
-                <Smartphone size={20} /> Play Store
-              </button>
-            </div>
-          </div>
-          
-          <div className="lg:w-1/2 relative">
-            <div className="relative z-10 bg-gray-800 p-4 rounded-3xl border border-white/10 shadow-2xl">
-              <img 
-                src="https://picsum.photos/seed/trading-platform/800/600" 
-                alt="Platform Preview" 
-                className="rounded-2xl w-full"
-                referrerPolicy="no-referrer"
-              />
-            </div>
-            {/* Decorative Glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-primary/20 blur-[120px] rounded-full -z-10" />
           </div>
         </div>
       </section>

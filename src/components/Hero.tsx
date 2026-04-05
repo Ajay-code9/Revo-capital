@@ -215,7 +215,7 @@ export const Hero = () => (
             transition={{delay: 0.15, duration: 0.45}}
             className="mx-auto max-w-xl text-base leading-relaxed text-gray-500 lg:mx-0 lg:text-lg"
           >
-            Trade CFDs on Forex, Indices, Shares, Commodities and Crypto with Tight Spreads and a Platform built for Serious Traders—on Web and Mobile.
+            Trade CFDs on Forex, Indices, Shares, Commodities, Crypto and ETFs with Tight Spreads and a Platform built for Serious Traders—on Web and Mobile.
           </motion.p>
 
           <motion.div

@@ -15,15 +15,17 @@ import {
 } from 'lucide-react';
 import { ROUTES } from '../routes/paths';
 import { RevoLogo } from '../components/RevoLogo';
+import { Footer } from '../components/Footer';
 
 export const LoginPage = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="min-h-screen bg-white flex flex-col lg:flex-row font-sans selection:bg-primary/10 selection:text-primary">
+    <div className="flex min-h-screen flex-col bg-white font-sans selection:bg-primary/10 selection:text-primary">
+      <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
       {/* Left Side: Visual Content */}
-      <div className="hidden lg:flex w-1/2 bg-gray-900 relative overflow-hidden items-center justify-center p-16">
+      <div className="relative hidden w-1/2 overflow-hidden bg-gray-900 lg:flex lg:items-center lg:justify-center lg:p-16">
         {/* Decorative Background */}
         <div className="absolute top-0 left-0 w-full h-full">
           <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-primary/20 blur-[120px] rounded-full" />
@@ -90,7 +92,7 @@ export const LoginPage = () => {
       </div>
 
       {/* Right Side: Form */}
-      <div className="w-full lg:w-1/2 p-8 lg:p-16 flex flex-col justify-center relative overflow-y-auto">
+      <div className="relative flex w-full flex-col justify-center overflow-y-auto p-8 lg:w-1/2 lg:p-16">
         <div className="absolute top-8 left-8 right-8 z-10 flex items-center justify-between gap-4">
           <motion.button
             type="button"
@@ -212,6 +214,8 @@ export const LoginPage = () => {
           </div>
         </div>
       </div>
+      </div>
+      <Footer />
     </div>
   );
 };

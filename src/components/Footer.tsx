@@ -9,6 +9,7 @@ import {
   PHYSICAL_OFFICE_ADDRESS,
 } from '../constants/companyContact';
 import {RevoLogo} from './RevoLogo';
+import {StartTradingStepsSection} from './StartTradingStepsSection';
 
 export const Footer = () => {
   const navigate = useNavigate();
@@ -18,7 +19,9 @@ export const Footer = () => {
   };
 
   return (
-    <footer className="bg-white pt-14 pb-10 border-t border-gray-100">
+    <>
+      <StartTradingStepsSection />
+      <footer className="bg-white pt-14 pb-10 border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-4 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10 mb-14">
           <div className="col-span-2 space-y-6">
@@ -227,7 +230,7 @@ export const Footer = () => {
               Capital Limited, registered in Saint Lucia (Reg. No. 2025-00585).
             </p>
             <p>
-              Risk Warning: Trading leveraged financial instruments such as Forex, CFDs, and Commodities carries a significant risk of loss and may not be suitable for all investors. Due to the high level of leverage, you may lose more than your initial investment. Please ensure you fully understand the risks involved and seek advice from an independent financial advisor if necessary before engaging in any trading activities.
+              Risk Warning: Trading leveraged financial instruments such as Forex, CFDs, and Commodities carries a significant risk of loss and may not be suitable for all investors. Due to the high level of Leverage, you may lose more than your initial investment. Please ensure you fully understand the risks involved and seek advice from an independent financial advisor if necessary before engaging in any trading activities.
             </p>
             <p>
               Restricted Regions: Revo Capital Limited strictly prohibits providing services to residents of the United States, Cuba, Iraq, Myanmar, North Korea, Sudan, and any other jurisdictions where such activities are restricted or prohibited by local law.
@@ -253,5 +256,6 @@ export const Footer = () => {
         </div>
       </div>
     </footer>
+    </>
   );
 };

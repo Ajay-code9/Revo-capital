@@ -1,17 +1,14 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { 
-  TrendingUp, 
-  ArrowUpRight, 
-  CheckCircle2, 
-  Monitor, 
-  Globe, 
-  Smartphone, 
-  Apple, 
-  Layout,
-  MousePointer2,
-  Settings2,
-  Zap
+import {
+  TrendingUp,
+  ArrowUpRight,
+  CheckCircle2,
+  Monitor,
+  Globe,
+  Smartphone,
+  Apple,
+  Zap,
 } from 'lucide-react';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
@@ -78,7 +75,7 @@ export const PlatformsPage = () => {
                   MetaTrader 5 (MT5) at Revo Capital Markets delivers a professional-grade trading experience built for speed, precision, and total flexibility. Whether you're just starting out or managing a diverse portfolio, MT5 equips you with powerful tools—real-time market data, customizable charts, and seamless multi-asset access.
                 </p>
                 <p>
-                  Trade Forex, stocks, commodities, indices, and crypto—all in one platform, without restrictions. MT5 supports automated strategies, in-depth technical analysis, and advanced order execution to help you refine your edge and trade with confidence.
+                  Trade Forex, Shares, Commodities, Indices, and Crypto—all in one platform, without restrictions. MT5 supports automated strategies, in-depth technical analysis, and advanced order execution to help you refine your edge and trade with confidence.
                 </p>
                 <p>
                   Fully compatible across desktop, mobile, and web, MT5 with Revo Capital Markets keeps you connected to global opportunities with institutional-grade infrastructure, competitive pricing, and 100% STP execution.
@@ -226,91 +223,6 @@ export const PlatformsPage = () => {
                 </button>
               </motion.div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Account Opening Section */}
-      <section className="py-14 lg:py-16 bg-gray-900 text-white overflow-hidden relative">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8 relative z-10">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl lg:text-5xl font-bold mb-6">Open Your Trading Account & Start Investing Today</h2>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              Open your trading account quickly and start accessing global markets with ease. A seamless, hassle-free process designed to get you trading in no time.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { step: '01', title: 'Tell us about yourself', desc: 'Fill in your personal details and complete our quick registration form.' },
-              { step: '02', title: 'Welcome to Platform', desc: 'Get access to your personalized dashboard and trading tools.' },
-              { step: '03', title: 'Choose your Account', desc: 'Select the account type that best fits your trading style and goals.' },
-              { step: '04', title: 'Start trading with us', desc: 'Fund your account and begin your journey in the global markets.' }
-            ].map((item, index) => (
-              <div key={index} className="relative group">
-                <div className="bg-white/5 border border-white/10 p-10 rounded-3xl h-full hover:bg-white/10 transition-all">
-                  <div className="text-5xl font-black text-white/10 mb-8 group-hover:text-primary/30 transition-colors">
-                    {item.step}
-                  </div>
-                  <h3 className="text-2xl font-bold mb-4">{item.title}</h3>
-                  <p className="text-gray-400 leading-relaxed">{item.desc}</p>
-                </div>
-                {index < 3 && (
-                  <div className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 z-20">
-                    <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                      <ArrowUpRight size={16} className="text-white" />
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-        {/* Background Accent */}
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(255,45,45,0.1),transparent_50%)]" />
-      </section>
-
-      {/* Trading Platform Section */}
-      <section className="py-14 lg:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">Trade Smarter with the Right Platform</h2>
-              <p className="text-xl text-primary font-bold mb-10">
-                Low Fixed Spreads & Negative Balance Protection for a seamless trading experience.
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {[
-                  { title: 'Single Click Trading', icon: <MousePointer2 size={24} /> },
-                  { title: 'Custom Trading Templates', icon: <Layout size={24} /> },
-                  { title: 'Available on iOS, Android & Windows', icon: <Smartphone size={24} /> },
-                  { title: 'Preinstalled Indicators & Analysis Tools', icon: <Settings2 size={24} /> }
-                ].map((feature, index) => (
-                  <div key={index} className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                    <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-primary shadow-sm">
-                      {feature.icon}
-                    </div>
-                    <span className="font-bold text-gray-900 leading-tight">{feature.title}</span>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="relative"
-            >
-              <img 
-                src="https://picsum.photos/seed/trading/1000/800" 
-                alt="Trading Platform" 
-                className="rounded-3xl shadow-2xl"
-                referrerPolicy="no-referrer"
-              />
-            </motion.div>
           </div>
         </div>
       </section>

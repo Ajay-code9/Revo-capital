@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { ROUTES } from '../routes/paths';
 import { RevoLogo } from '../components/RevoLogo';
+import { Footer } from '../components/Footer';
 
 export const SignUpPage = () => {
   const navigate = useNavigate();
@@ -39,9 +40,10 @@ export const SignUpPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white flex flex-col lg:flex-row font-sans selection:bg-primary/10 selection:text-primary">
+    <div className="flex min-h-screen flex-col bg-white font-sans selection:bg-primary/10 selection:text-primary">
+      <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
       {/* Left Side: Form */}
-      <div className="w-full lg:w-1/2 p-8 lg:p-16 flex flex-col justify-center relative overflow-y-auto">
+      <div className="relative flex w-full flex-col justify-center overflow-y-auto p-8 lg:w-1/2 lg:p-16">
         <div className="absolute top-8 left-8 right-8 z-10 flex items-center justify-between gap-4">
           <motion.button
             type="button"
@@ -275,6 +277,8 @@ export const SignUpPage = () => {
           </div>
         </motion.div>
       </div>
+      </div>
+      <Footer />
     </div>
   );
 };
