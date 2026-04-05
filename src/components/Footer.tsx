@@ -1,7 +1,7 @@
 import React from 'react';
-import {useNavigate} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import {Facebook, Twitter, Instagram, Linkedin, Youtube} from 'lucide-react';
-import {ROUTES} from '../routes/paths';
+import {PARTNER_PATHS, ROUTES} from '../routes/paths';
 import {
   COMPANY_PHONE_DISPLAY,
   COMPANY_PHONE_TEL,
@@ -13,6 +13,8 @@ import {StartTradingStepsSection} from './StartTradingStepsSection';
 
 export const Footer = () => {
   const navigate = useNavigate();
+  const {pathname} = useLocation();
+  const showStartTradingSteps = !PARTNER_PATHS.includes(pathname);
 
   const go = (path: string) => {
     navigate(path);
@@ -20,7 +22,7 @@ export const Footer = () => {
 
   return (
     <>
-      <StartTradingStepsSection />
+      {showStartTradingSteps && <StartTradingStepsSection />}
       <footer className="bg-white pt-14 pb-10 border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-4 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10 mb-14">

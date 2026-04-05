@@ -174,30 +174,6 @@ export const AccountTypesPage = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-14 lg:py-16 bg-white">
-        <div className="max-w-5xl mx-auto px-4 text-center bg-primary rounded-[3rem] p-12 lg:p-20 text-white relative overflow-hidden">
-          <div className="relative z-10">
-            <h2 className="text-4xl lg:text-5xl font-bold mb-6">Ready to Take the Next Step?</h2>
-            <p className="text-white/80 text-lg mb-10 max-w-2xl mx-auto">
-              Unlock global financial markets with a single account. Start trading today and grow your investment portfolio.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <button className="bg-white text-primary px-10 py-4 rounded-full font-bold flex items-center gap-2 hover:bg-gray-100 transition-all">
-                Open Live Account <ArrowUpRight size={20} />
-              </button>
-              <button className="bg-transparent border border-white text-white px-10 py-4 rounded-full font-bold flex items-center gap-2 hover:bg-white/10 transition-all">
-                Open Demo Account <ArrowUpRight size={20} />
-              </button>
-            </div>
-          </div>
-          
-          {/* Abstract Pattern */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
-        </div>
-      </section>
-
       <Footer />
     </div>
   );

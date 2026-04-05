@@ -9,6 +9,9 @@ export const ROUTES = {
   accounts: '/accounts',
   platforms: '/platforms',
   partners: '/partners',
+  partnersIntroducingBroker: '/partners/introducing-broker',
+  partnersAffiliate: '/partners/affiliate',
+  partnersMoneyManager: '/partners/money-manager',
   support: '/support',
   signup: '/signup',
   login: '/login',
@@ -21,4 +24,11 @@ export const MARKET_PATHS: readonly string[] = [
   ROUTES.crypto,
   ROUTES.metals,
   ROUTES.stocks,
+];
+
+export const PARTNER_PATHS: readonly string[] = [
+  ROUTES.partners,
+  ROUTES.partnersIntroducingBroker,
+  ROUTES.partnersAffiliate,
+  ROUTES.partnersMoneyManager,
 ];

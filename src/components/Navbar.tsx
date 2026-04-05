@@ -18,8 +18,11 @@ import {
   Handshake,
   Headphones,
   Share2,
+  Building2,
+  Link2,
+  Landmark,
 } from 'lucide-react';
-import {MARKET_PATHS, ROUTES} from '../routes/paths';
+import {MARKET_PATHS, PARTNER_PATHS, ROUTES} from '../routes/paths';
 import {RevoLogo} from './RevoLogo';
 
 function SocialTradingNavLabel({className = ''}: {className?: string}) {
@@ -41,14 +44,18 @@ export const Navbar = () => {
   const navigate = useNavigate();
   const {pathname} = useLocation();
   const [isMarketsOpen, setIsMarketsOpen] = useState(false);
+  const [isPartnerOpen, setIsPartnerOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [mobileMarketsOpen, setMobileMarketsOpen] = useState(false);
+  const [mobilePartnerOpen, setMobilePartnerOpen] = useState(false);
 
   const go = (path: string) => {
     navigate(path);
     setIsMobileMenuOpen(false);
     setIsMarketsOpen(false);
+    setIsPartnerOpen(false);
     setMobileMarketsOpen(false);
+    setMobilePartnerOpen(false);
   };
 
   type MarketIcon = React.ComponentType<{size?: number; className?: string; strokeWidth?: number}>;
@@ -62,6 +69,13 @@ export const Navbar = () => {
     {name: 'Stocks', path: ROUTES.stocks, Icon: TrendingUp},
   ];
 
+  const partnerProgramItems: {name: string; path: string; Icon: MarketIcon}[] = [
+    {name: 'Partner', path: ROUTES.partners, Icon: Handshake},
+    {name: 'Introducing Broker', path: ROUTES.partnersIntroducingBroker, Icon: Building2},
+    {name: 'Affiliate', path: ROUTES.partnersAffiliate, Icon: Link2},
+    {name: 'Money Manager', path: ROUTES.partnersMoneyManager, Icon: Landmark},
+  ];
+
   type MobileNavItem =
     | {kind: 'link'; label: string; path: string; icon: MarketIcon}
     | {kind: 'soon'; label: string; icon: MarketIcon};
@@ -69,7 +83,7 @@ export const Navbar = () => {
   const mobileNavItems: MobileNavItem[] = [
     {kind: 'link', label: 'Account Types', path: ROUTES.accounts, icon: Wallet},
     {kind: 'link', label: 'Platforms', path: ROUTES.platforms, icon: LayoutDashboard},
-    {kind: 'link', label: 'Partners', path: ROUTES.partners, icon: Handshake},
+    {kind: 'link', label: 'Partnership', path: ROUTES.partners, icon: Handshake},
     {kind: 'soon', label: 'Social Trading', icon: Share2},
     {kind: 'link', label: 'Support', path: ROUTES.support, icon: Headphones},
   ];
@@ -80,6 +94,7 @@ export const Navbar = () => {
     }`;
 
   const isMarketsActive = MARKET_PATHS.includes(pathname);
+  const isPartnerActive = PARTNER_PATHS.includes(pathname);
 
   return (
     <nav className="sticky top-0 z-50 bg-white border-b border-gray-100">
@@ -182,9 +197,51 @@ export const Navbar = () => {
               <a href={ROUTES.platforms} onClick={(e) => { e.preventDefault(); go(ROUTES.platforms); }} className={navLinkClass(ROUTES.platforms)}>
                 Platforms
               </a>
-              <a href={ROUTES.partners} onClick={(e) => { e.preventDefault(); go(ROUTES.partners); }} className={navLinkClass(ROUTES.partners)}>
-                Partners
-              </a>
+              <div
+                className="relative group h-20 flex items-center cursor-pointer px-4"
+                onMouseEnter={() => setIsPartnerOpen(true)}
+                onMouseLeave={() => setIsPartnerOpen(false)}
+              >
+                <span
+                  className={`text-[15px] font-bold text-gray-900 group-hover:text-primary flex items-center gap-1 ${
+                    isPartnerActive ? 'text-primary' : ''
+                  }`}
+                >
+                  Partnership <ChevronDown size={16} className={`transition-transform ${isPartnerOpen ? 'rotate-180' : ''}`} />
+                </span>
+
+                <AnimatePresence>
+                  {isPartnerOpen && (
+                    <motion.div
+                      initial={{opacity: 0, y: 10}}
+                      animate={{opacity: 1, y: 0}}
+                      exit={{opacity: 0, y: 10}}
+                      className="absolute left-0 top-full z-50 -mt-2 min-w-[260px] rounded-xl border border-gray-100 bg-white px-4 pb-4 pt-3 dropdown-shadow flex flex-col gap-2"
+                    >
+                      {partnerProgramItems.map((item) => {
+                        const PIcon = item.Icon;
+                        return (
+                          <div
+                            key={item.path}
+                            className="flex items-center gap-4 p-2 rounded-lg hover:bg-gray-50 transition-colors group/item cursor-pointer"
+                            onClick={() => go(item.path)}
+                            onKeyDown={(e) => e.key === 'Enter' && go(item.path)}
+                            role="button"
+                            tabIndex={0}
+                          >
+                            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shrink-0">
+                              <PIcon size={20} className="text-white" />
+                            </div>
+                            <span className="font-bold text-gray-900 group-hover/item:text-primary whitespace-nowrap">
+                              {item.name}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
               <span className="inline-flex items-center px-4 py-2" aria-label="Social Trading, coming soon">
                 <SocialTradingNavLabel />
               </span>
@@ -286,6 +343,74 @@ export const Navbar = () => {
                               >
                                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary text-white">
                                   <MIcon size={18} className="text-white" strokeWidth={2.25} />
+                                </span>
+                                <span className="min-w-0 flex-1 font-bold text-[15px] text-gray-900">{item.name}</span>
+                                <ChevronRight size={18} className={active ? 'text-primary' : 'text-gray-300'} />
+                              </button>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Partner accordion */}
+              <div className="rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden mb-3">
+                <button
+                  type="button"
+                  id="mobile-partner-trigger"
+                  aria-expanded={mobilePartnerOpen}
+                  aria-controls="mobile-partner-panel"
+                  className={`flex w-full items-center justify-between gap-3 px-3 py-3.5 text-left transition-colors ${
+                    isPartnerActive ? 'bg-primary/[0.06]' : 'active:bg-gray-50'
+                  }`}
+                  onClick={() => setMobilePartnerOpen((v) => !v)}
+                >
+                  <span className="flex min-w-0 flex-1 items-center gap-3">
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary text-white shadow-sm shadow-primary/25">
+                      <Handshake size={22} strokeWidth={2.25} />
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block font-bold text-gray-900 text-[17px] leading-tight">Partnership</span>
+                      <span className="block text-xs font-medium text-gray-500 mt-0.5">IB, Affiliate & Money Manager</span>
+                    </span>
+                  </span>
+                  <ChevronDown
+                    size={22}
+                    className={`shrink-0 text-gray-400 transition-transform duration-200 ${mobilePartnerOpen ? 'rotate-180 text-primary' : ''}`}
+                    aria-hidden
+                  />
+                </button>
+
+                <AnimatePresence initial={false}>
+                  {mobilePartnerOpen && (
+                    <motion.div
+                      id="mobile-partner-panel"
+                      role="region"
+                      aria-labelledby="mobile-partner-trigger"
+                      initial={{height: 0, opacity: 0}}
+                      animate={{height: 'auto', opacity: 1}}
+                      exit={{height: 0, opacity: 0}}
+                      transition={{duration: 0.22, ease: [0.25, 0.46, 0.45, 0.94]}}
+                      className="overflow-hidden border-t border-gray-100 bg-gray-50/95"
+                    >
+                      <ul className="space-y-1 px-2 py-3">
+                        {partnerProgramItems.map((item) => {
+                          const active = pathname === item.path;
+                          const PIcon = item.Icon;
+                          return (
+                            <li key={item.path}>
+                              <button
+                                type="button"
+                                onClick={() => go(item.path)}
+                                className={`flex w-full items-center gap-3 rounded-xl px-2 py-2.5 text-left transition-colors ${
+                                  active ? 'bg-white shadow-sm ring-1 ring-primary/15' : 'hover:bg-white/80 active:bg-white'
+                                }`}
+                              >
+                                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary text-white">
+                                  <PIcon size={18} className="text-white" strokeWidth={2.25} />
                                 </span>
                                 <span className="min-w-0 flex-1 font-bold text-[15px] text-gray-900">{item.name}</span>
                                 <ChevronRight size={18} className={active ? 'text-primary' : 'text-gray-300'} />
