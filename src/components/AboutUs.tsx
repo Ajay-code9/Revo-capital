@@ -53,7 +53,7 @@ export const AboutUs = () => {
                 </div>
                 <div>
                   <div className="text-lg font-bold text-gray-900">4.8/5 Rating</div>
-                  <div className="text-sm text-gray-500">On Trustpilot</div>
+                  <div className="text-sm text-gray-500">Client satisfaction</div>
                 </div>
               </div>
             </div>

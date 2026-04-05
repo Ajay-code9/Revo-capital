@@ -15,7 +15,6 @@ import {
 } from 'lucide-react';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
-import { RiskWarningBar } from '../components/RiskWarningBar';
 import { TopContactBar } from '../components/TopContactBar';
 
 export const SupportPage = () => {
@@ -40,7 +39,6 @@ export const SupportPage = () => {
 
   return (
     <div className="min-h-screen bg-white font-sans selection:bg-primary/10 selection:text-primary">
-      <RiskWarningBar />
       <TopContactBar />
       <Navbar />
 

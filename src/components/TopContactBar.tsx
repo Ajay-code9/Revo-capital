@@ -3,7 +3,7 @@ import {Smartphone, Mail, MapPin} from 'lucide-react';
 
 /** Registered office — shown in header; keep in sync with legal docs if you change it. */
 const OFFICE_ADDRESS =
-  '28 Oktovriou 237, Lophitis Business Center II, Limassol 3035, Cyprus';
+  '33F3+654, Castries - Gros Islet Hwy, Rodney Bay, St. Lucia, Office 20';
 
 type TopContactBarProps = {
   className?: string;
@@ -17,14 +17,14 @@ export const TopContactBar = ({className = ''}: TopContactBarProps) => (
       <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1 lg:justify-start">
         <div className="flex items-center gap-1.5">
           <Smartphone size={14} className="shrink-0 text-gray-400" aria-hidden />
-          <a href="tel:+35722276710" className="font-medium text-primary hover:underline">
-            +357 22 276710
+          <a href="tel:+447868811937" className="font-medium text-primary hover:underline">
+            +44 7868 811937
           </a>
         </div>
         <div className="flex items-center gap-1.5">
           <Mail size={14} className="shrink-0 text-gray-400" aria-hidden />
-          <a href="mailto:info@revocp.com" className="font-medium text-primary hover:underline">
-            info@revocp.com
+          <a href="mailto:support@revocp.com" className="font-medium text-primary hover:underline">
+            support@revocp.com
           </a>
         </div>
       </div>

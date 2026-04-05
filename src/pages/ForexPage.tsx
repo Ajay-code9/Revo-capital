@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'motion/react';
 import { 
   Search, 
   ArrowRight, 
-  Star, 
   Facebook, 
   Twitter, 
   Instagram, 
@@ -30,16 +29,6 @@ import { Footer } from '../components/Footer';
 import { MarketTabs } from '../components/MarketTabs';
 import { TopContactBar } from '../components/TopContactBar';
 
-// --- Shared Components for Forex Page ---
-
-const RiskWarningBar = () => (
-  <div className="bg-[#F8F9FA] border-b border-gray-200 py-2 px-4 text-[11px] text-gray-500 leading-tight text-center lg:text-left">
-    <div className="max-w-7xl mx-auto">
-      CFDs are complex instruments and come with a high risk of losing money rapidly due to leverage. 65% of retail investor accounts lose money when trading CFDs with this provider. You should consider whether you understand how CFDs work and whether you can afford to take the high risk of losing your money.
-    </div>
-  </div>
-);
-
 export const ForexPage = () => {
   const topPairs = [
     { name: 'EURUSD', price: '1.151685', change: '-0.23%', isNegative: true, icon: '🇪🇺🇺🇸' },
@@ -61,7 +50,6 @@ export const ForexPage = () => {
 
   return (
     <div className="min-h-screen bg-white font-sans">
-      <RiskWarningBar />
       <TopContactBar className="hidden lg:block" />
       <Navbar />
 
@@ -264,21 +252,6 @@ export const ForexPage = () => {
                   <div className="text-xs uppercase font-bold tracking-widest opacity-60">Best Forex Trading Platform Europe 2022</div>
                 </div>
               </div>
-            </div>
-          </div>
-
-          {/* Trustpilot Bar */}
-          <div className="mt-8 bg-[#001D3D] rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between gap-8 text-white">
-            <div className="flex items-center gap-2">
-              {[...Array(5)].map((_, i) => (
-                <div key={i} className="w-8 h-8 bg-[#00b67a] flex items-center justify-center">
-                  <Star size={20} className="text-white fill-current" />
-                </div>
-              ))}
-            </div>
-            <div className="text-2xl font-bold">We are rated 4.2 out of 5</div>
-            <div className="flex items-center gap-2 text-2xl font-bold">
-              <Star size={32} className="text-[#00b67a] fill-current" /> Trustpilot
             </div>
           </div>
         </div>

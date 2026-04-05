@@ -21,14 +21,6 @@ import { Footer } from '../components/Footer';
 import { MarketTabs } from '../components/MarketTabs';
 import { TopContactBar } from '../components/TopContactBar';
 
-const RiskWarningBar = () => (
-  <div className="bg-[#F8F9FA] border-b border-gray-200 py-2 px-4 text-[11px] text-gray-500 leading-tight text-center lg:text-left">
-    <div className="max-w-7xl mx-auto">
-      CFDs are complex instruments and come with a high risk of losing money rapidly due to leverage. 65% of retail investor accounts lose money when trading CFDs with this provider. You should consider whether you understand how CFDs work and whether you can afford to take the high risk of losing your money.
-    </div>
-  </div>
-);
-
 const StockTicker = () => {
   const stocks = [
     { name: 'AAPL', price: '185.45', change: '+1.25%', isNegative: false },
@@ -83,7 +75,6 @@ export const StocksPage = () => {
   return (
     <div className="min-h-screen bg-white font-sans">
       <StockTicker />
-      <RiskWarningBar />
       <TopContactBar className="hidden lg:block" />
       <Navbar />
 

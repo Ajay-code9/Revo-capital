@@ -21,14 +21,6 @@ import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 import { TopContactBar } from '../components/TopContactBar';
 
-const RiskWarningBar = () => (
-  <div className="bg-[#F8F9FA] border-b border-gray-200 py-2 px-4 text-[11px] text-gray-500 leading-tight text-center lg:text-left">
-    <div className="max-w-7xl mx-auto">
-      Risk Warning: Trading leveraged financial instruments such as Forex, CFDs, and Commodities carries a significant risk of loss and may not be suitable for all investors. Due to the high level of leverage, you may lose more than your initial investment.
-    </div>
-  </div>
-);
-
 export const AccountTypesPage = () => {
   const accountTypes = [
     {
@@ -97,7 +89,6 @@ export const AccountTypesPage = () => {
 
   return (
     <div className="min-h-screen bg-white font-sans">
-      <RiskWarningBar />
       <TopContactBar className="hidden lg:block" />
       <Navbar />
 

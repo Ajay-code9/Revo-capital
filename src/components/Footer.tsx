@@ -184,8 +184,16 @@ export const Footer = () => {
           <div className="space-y-6 col-span-2 lg:col-span-1">
             <h4 className="font-bold text-gray-900">Contact</h4>
             <ul className="space-y-4 text-gray-500 text-sm">
-              <li>+44 7868 811937</li>
-              <li>info@revocp.com</li>
+              <li>
+                <a href="tel:+447868811937" className="hover:text-primary transition-colors">
+                  +44 7868 811937
+                </a>
+              </li>
+              <li>
+                <a href="mailto:support@revocp.com" className="hover:text-primary transition-colors">
+                  support@revocp.com
+                </a>
+              </li>
             </ul>
             <div className="mt-6 space-y-4">
               <div>

@@ -176,7 +176,7 @@ function RotatingHeroHeadline() {
       className="text-4xl font-bold tracking-tight text-gray-900 lg:text-6xl xl:text-7xl"
       style={{perspective: 900}}
     >
-      Trade global markets with{' '}
+      Trade Global Markets with{' '}
       <span className="relative inline-block min-h-[1.1em] align-baseline text-primary capitalize">
         <AnimatePresence mode="wait" initial={false}>
           <motion.span
@@ -215,7 +215,7 @@ export const Hero = () => (
             transition={{delay: 0.15, duration: 0.45}}
             className="mx-auto max-w-xl text-base leading-relaxed text-gray-500 lg:mx-0 lg:text-lg"
           >
-            Trade CFDs on forex, indices, shares, commodities and crypto with tight spreads and a platform built for serious traders—on web and mobile.
+            Trade CFDs on Forex, Indices, Shares, Commodities and Crypto with Tight Spreads and a Platform built for Serious Traders—on Web and Mobile.
           </motion.p>
 
           <motion.div
