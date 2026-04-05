@@ -28,14 +28,12 @@ import {RevoLogo} from './RevoLogo';
 function SocialTradingNavLabel({className = ''}: {className?: string}) {
   return (
     <span
-      className={`relative inline-block pr-6 text-[15px] font-bold leading-tight text-gray-900 select-none pointer-events-none ${className}`}
+      className={`inline-block select-none whitespace-nowrap text-[14px] font-bold leading-tight text-gray-900 pointer-events-none xl:text-[15px] ${className}`}
     >
-      <span className="relative inline-block">
-        Social Trading
-        <span className="absolute left-full top-0 z-10 ml-0.5 -translate-y-1/4 whitespace-nowrap text-[9px] font-semibold leading-none text-gray-500 sm:text-[10px]">
-          Soon
-        </span>
-      </span>
+      Social Trading
+      <sup className="ml-0.5 text-[9px] font-semibold leading-none tracking-wide text-gray-500 sm:text-[10px]">
+        Soon
+      </sup>
     </span>
   );
 }
@@ -88,9 +86,16 @@ export const Navbar = () => {
     {kind: 'link', label: 'Support', path: ROUTES.support, icon: Headphones},
   ];
 
+  const navText = 'text-[14px] xl:text-[15px]';
+
   const navLinkClass = (path: string) =>
-    `text-[15px] font-bold text-gray-900 hover:text-primary transition-all px-4 py-2 rounded-full ${
+    `inline-flex items-center justify-center ${navText} font-bold text-gray-900 hover:text-primary transition-all px-3 py-2 rounded-full whitespace-nowrap shrink-0 xl:px-4 ${
       pathname === path ? 'bg-gray-100 text-primary' : ''
+    }`;
+
+  const dropdownTriggerClass = (sectionActive: boolean) =>
+    `${navText} font-bold rounded-full px-3 py-2 whitespace-nowrap shrink-0 transition-all flex items-center gap-1 xl:px-4 ${
+      sectionActive ? 'bg-gray-100 text-primary' : 'text-gray-900 hover:text-primary'
     }`;
 
   const isMarketsActive = MARKET_PATHS.includes(pathname);
@@ -136,9 +141,9 @@ export const Navbar = () => {
             </button>
           </div>
 
-          <div className="hidden lg:flex justify-between items-center w-full h-20">
+          <div className="hidden lg:grid lg:h-20 lg:w-full lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:items-center">
             <div
-              className="flex shrink-0 cursor-pointer items-center"
+              className="flex cursor-pointer items-center justify-self-start"
               onClick={() => go(ROUTES.home)}
               onKeyDown={(e) => e.key === 'Enter' && go(ROUTES.home)}
               role="button"
@@ -147,18 +152,15 @@ export const Navbar = () => {
               <RevoLogo className="h-9 w-auto max-w-[220px] aspect-1432/504 object-contain object-left lg:h-10 lg:max-w-[240px]" />
             </div>
 
-            <div className="flex flex-1 justify-center items-center gap-2">
+            <div className="flex min-w-0 max-w-[min(100vw-22rem,52rem)] flex-nowrap items-center justify-center gap-x-5 xl:gap-x-7">
               <div
-                className="relative group h-20 flex items-center cursor-pointer px-4"
+                className="relative group flex h-20 shrink-0 cursor-pointer items-center"
                 onMouseEnter={() => setIsMarketsOpen(true)}
                 onMouseLeave={() => setIsMarketsOpen(false)}
               >
-                <span
-                  className={`text-[15px] font-bold text-gray-900 group-hover:text-primary flex items-center gap-1 ${
-                    isMarketsActive ? 'text-primary' : ''
-                  }`}
-                >
-                  Markets <ChevronDown size={16} className={`transition-transform ${isMarketsOpen ? 'rotate-180' : ''}`} />
+                <span className={dropdownTriggerClass(isMarketsActive)}>
+                  Markets
+                  <ChevronDown size={16} className={`shrink-0 transition-transform ${isMarketsOpen ? 'rotate-180' : ''}`} />
                 </span>
 
                 <AnimatePresence>
@@ -198,16 +200,13 @@ export const Navbar = () => {
                 Platforms
               </a>
               <div
-                className="relative group h-20 flex items-center cursor-pointer px-4"
+                className="relative group flex h-20 shrink-0 cursor-pointer items-center"
                 onMouseEnter={() => setIsPartnerOpen(true)}
                 onMouseLeave={() => setIsPartnerOpen(false)}
               >
-                <span
-                  className={`text-[15px] font-bold text-gray-900 group-hover:text-primary flex items-center gap-1 ${
-                    isPartnerActive ? 'text-primary' : ''
-                  }`}
-                >
-                  Partnership <ChevronDown size={16} className={`transition-transform ${isPartnerOpen ? 'rotate-180' : ''}`} />
+                <span className={dropdownTriggerClass(isPartnerActive)}>
+                  Partnership
+                  <ChevronDown size={16} className={`shrink-0 transition-transform ${isPartnerOpen ? 'rotate-180' : ''}`} />
                 </span>
 
                 <AnimatePresence>
@@ -242,7 +241,10 @@ export const Navbar = () => {
                   )}
                 </AnimatePresence>
               </div>
-              <span className="inline-flex items-center px-4 py-2" aria-label="Social Trading, coming soon">
+              <span
+                className="inline-flex shrink-0 items-center px-2 py-2 xl:px-3"
+                aria-label="Social Trading, coming soon"
+              >
                 <SocialTradingNavLabel />
               </span>
               <a href={ROUTES.support} onClick={(e) => { e.preventDefault(); go(ROUTES.support); }} className={navLinkClass(ROUTES.support)}>
@@ -250,25 +252,25 @@ export const Navbar = () => {
               </a>
             </div>
 
-            <div className="flex items-center gap-3 shrink-0">
+            <div className="flex shrink-0 items-center justify-self-end gap-2 xl:gap-3">
               <button
                 type="button"
                 onClick={() => go(ROUTES.signup)}
-                className="bg-gray-50 border border-gray-100 text-[14px] font-bold text-gray-900 px-5 py-1.5 rounded-full flex items-center gap-2 hover:bg-gray-100 transition-all"
+                className="flex items-center gap-2 rounded-full border border-gray-100 bg-gray-50 px-4 py-2 text-[13px] font-bold text-gray-900 transition-all hover:bg-gray-100 xl:px-5 xl:text-[14px] xl:py-1.5"
               >
-                Start Trading
-                <div className="w-7 h-7 bg-gray-200 rounded-full flex items-center justify-center">
-                  <ArrowUpRight size={16} />
+                <span className="whitespace-nowrap">Sign up</span>
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gray-200">
+                  <ArrowUpRight size={16} className="shrink-0" />
                 </div>
               </button>
               <button
                 type="button"
                 onClick={() => go(ROUTES.login)}
-                className="btn-primary px-6 py-1.5 rounded-full font-bold text-[14px] flex items-center gap-2"
+                className="btn-primary flex items-center gap-2 rounded-full px-5 py-2 text-[13px] font-bold xl:px-6 xl:text-[14px] xl:py-1.5"
               >
-                Login
-                <div className="w-7 h-7 bg-white/20 rounded-full flex items-center justify-center">
-                  <ArrowUpRight size={16} />
+                <span className="whitespace-nowrap">Login</span>
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white/20">
+                  <ArrowUpRight size={16} className="shrink-0" />
                 </div>
               </button>
             </div>
