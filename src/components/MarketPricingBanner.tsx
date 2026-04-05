@@ -12,7 +12,7 @@ const STATS = [
 /** Slim stats strip below hero — ref: narrow dark bar, six columns, subtle edge texture. */
 export const MarketPricingBanner = () => (
   <section
-    className="relative overflow-hidden border-y border-white/6 bg-[#0a0a0a] py-2.5 text-white sm:py-3 lg:py-3"
+    className="relative overflow-hidden border-y border-white/6 bg-[#0a0a0a] py-3.5 text-white sm:py-4 lg:py-4"
     aria-label="Key trading conditions"
   >
     {/* Edge texture — faint diagonal hatch (ref: subtle side detail) */}
@@ -54,7 +54,7 @@ export const MarketPricingBanner = () => (
         {STATS.map((item) => (
           <div
             key={item.label}
-            className="flex flex-col items-center justify-center px-1.5 py-0.5 text-center sm:px-2 sm:py-0"
+            className="flex flex-col items-center justify-center px-1.5 py-1 text-center sm:px-2 sm:py-1"
           >
             <div className="text-base font-bold tabular-nums leading-none tracking-tight text-primary sm:text-lg lg:text-xl">
               {item.value}

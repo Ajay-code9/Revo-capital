@@ -11,7 +11,6 @@ import {StocksPage} from './pages/StocksPage';
 import {AccountTypesPage} from './pages/AccountTypesPage';
 import {PlatformsPage} from './pages/PlatformsPage';
 import {PartnersPage} from './pages/PartnersPage';
-import {ToolsPage} from './pages/ToolsPage';
 import {SupportPage} from './pages/SupportPage';
 import {SignUpPage} from './pages/SignUpPage';
 import {LoginPage} from './pages/LoginPage';
@@ -31,7 +30,6 @@ function App() {
         <Route path={ROUTES.accounts} element={<AccountTypesPage />} />
         <Route path={ROUTES.platforms} element={<PlatformsPage />} />
         <Route path={ROUTES.partners} element={<PartnersPage />} />
-        <Route path={ROUTES.tools} element={<ToolsPage />} />
         <Route path={ROUTES.support} element={<SupportPage />} />
         <Route path={ROUTES.signup} element={<SignUpPage />} />
         <Route path={ROUTES.login} element={<LoginPage />} />

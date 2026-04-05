@@ -144,11 +144,6 @@ export const Footer = () => {
             <h4 className="font-bold text-gray-900">Support</h4>
             <ul className="space-y-4 text-gray-500">
               <li>
-                <a href={ROUTES.tools} onClick={(e) => { e.preventDefault(); go(ROUTES.tools); }} className="hover:text-primary transition-colors">
-                  Tools
-                </a>
-              </li>
-              <li>
                 <a href={ROUTES.support} onClick={(e) => { e.preventDefault(); go(ROUTES.support); }} className="hover:text-primary transition-colors">
                   Support
                 </a>

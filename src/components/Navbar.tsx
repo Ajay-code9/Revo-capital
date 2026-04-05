@@ -16,11 +16,26 @@ import {
   Wallet,
   LayoutDashboard,
   Handshake,
-  Wrench,
   Headphones,
+  Share2,
 } from 'lucide-react';
 import {MARKET_PATHS, ROUTES} from '../routes/paths';
 import {RevoLogo} from './RevoLogo';
+
+function SocialTradingNavLabel({className = ''}: {className?: string}) {
+  return (
+    <span
+      className={`relative inline-block pr-6 text-[15px] font-bold leading-tight text-gray-900 select-none pointer-events-none ${className}`}
+    >
+      <span className="relative inline-block">
+        Social Trading
+        <span className="absolute left-full top-0 z-10 ml-0.5 -translate-y-1/4 whitespace-nowrap text-[9px] font-semibold leading-none text-gray-500 sm:text-[10px]">
+          Soon
+        </span>
+      </span>
+    </span>
+  );
+}
 
 export const Navbar = () => {
   const navigate = useNavigate();
@@ -47,13 +62,17 @@ export const Navbar = () => {
     {name: 'Stocks', path: ROUTES.stocks, Icon: TrendingUp},
   ];
 
-  const mobileNavItems = [
-    {label: 'Account Types', path: ROUTES.accounts, icon: Wallet},
-    {label: 'Platforms', path: ROUTES.platforms, icon: LayoutDashboard},
-    {label: 'Partners', path: ROUTES.partners, icon: Handshake},
-    {label: 'Tools', path: ROUTES.tools, icon: Wrench},
-    {label: 'Support', path: ROUTES.support, icon: Headphones},
-  ] as const;
+  type MobileNavItem =
+    | {kind: 'link'; label: string; path: string; icon: MarketIcon}
+    | {kind: 'soon'; label: string; icon: MarketIcon};
+
+  const mobileNavItems: MobileNavItem[] = [
+    {kind: 'link', label: 'Account Types', path: ROUTES.accounts, icon: Wallet},
+    {kind: 'link', label: 'Platforms', path: ROUTES.platforms, icon: LayoutDashboard},
+    {kind: 'link', label: 'Partners', path: ROUTES.partners, icon: Handshake},
+    {kind: 'soon', label: 'Social Trading', icon: Share2},
+    {kind: 'link', label: 'Support', path: ROUTES.support, icon: Headphones},
+  ];
 
   const navLinkClass = (path: string) =>
     `text-[15px] font-bold text-gray-900 hover:text-primary transition-all px-4 py-2 rounded-full ${
@@ -166,9 +185,9 @@ export const Navbar = () => {
               <a href={ROUTES.partners} onClick={(e) => { e.preventDefault(); go(ROUTES.partners); }} className={navLinkClass(ROUTES.partners)}>
                 Partners
               </a>
-              <a href={ROUTES.tools} onClick={(e) => { e.preventDefault(); go(ROUTES.tools); }} className={navLinkClass(ROUTES.tools)}>
-                Tools
-              </a>
+              <span className="inline-flex items-center px-4 py-2" aria-label="Social Trading, coming soon">
+                <SocialTradingNavLabel />
+              </span>
               <a href={ROUTES.support} onClick={(e) => { e.preventDefault(); go(ROUTES.support); }} className={navLinkClass(ROUTES.support)}>
                 Support
               </a>
@@ -282,7 +301,24 @@ export const Navbar = () => {
 
               {/* Remaining links */}
               <ul className="space-y-1.5 mb-4">
-                {mobileNavItems.map(({label, path, icon: Icon}) => {
+                {mobileNavItems.map((item) => {
+                  if (item.kind === 'soon') {
+                    const SoonIcon = item.icon;
+                    return (
+                      <li key="social-trading-soon">
+                        <div
+                          className="flex w-full items-center gap-3 px-3 py-3.5 select-none pointer-events-none"
+                          aria-label="Social Trading, coming soon"
+                        >
+                          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gray-100 text-gray-400">
+                            <SoonIcon size={22} strokeWidth={2} />
+                          </span>
+                          <SocialTradingNavLabel className="flex-1 text-[16px]" />
+                        </div>
+                      </li>
+                    );
+                  }
+                  const {label, path, icon: Icon} = item;
                   const active = pathname === path;
                   return (
                     <li key={path}>

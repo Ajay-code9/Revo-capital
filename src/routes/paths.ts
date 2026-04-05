@@ -9,7 +9,6 @@ export const ROUTES = {
   accounts: '/accounts',
   platforms: '/platforms',
   partners: '/partners',
-  tools: '/tools',
   support: '/support',
   signup: '/signup',
   login: '/login',
