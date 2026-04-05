@@ -133,7 +133,7 @@ export const Navbar = () => {
                       initial={{opacity: 0, y: 10}}
                       animate={{opacity: 1, y: 0}}
                       exit={{opacity: 0, y: 10}}
-                      className="absolute top-full left-0 w-[240px] bg-white dropdown-shadow rounded-xl p-4 flex flex-col gap-2 border border-gray-100"
+                      className="absolute left-0 top-full z-50 -mt-2 w-[240px] rounded-xl border border-gray-100 bg-white px-4 pb-4 pt-3 dropdown-shadow flex flex-col gap-2"
                     >
                       {markets.map((item) => {
                         const MIcon = item.Icon;
