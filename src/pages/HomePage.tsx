@@ -5,8 +5,9 @@ import {MarketPricingBanner} from '../components/MarketPricingBanner';
 import {MarketTabs} from '../components/MarketTabs';
 import {Features} from '../components/Features';
 import {CreateAccountBar} from '../components/CreateAccountBar';
-import {PaymentMethods} from '../components/PaymentMethods';
-import {Platforms} from '../components/Platforms';
+import {TradingAchievements} from '../components/TradingAchievements';
+import {AppDownloadSection} from '../components/AppDownloadSection';
+import {ReadyForNextMoveSection} from '../components/ReadyForNextMoveSection';
 import {AboutUs} from '../components/AboutUs';
 import {Footer} from '../components/Footer';
 
@@ -22,8 +23,9 @@ export function HomePage() {
         <MarketTabs />
         <Features />
         <CreateAccountBar />
-        <PaymentMethods />
-        <Platforms />
+        <TradingAchievements />
+        <AppDownloadSection />
+        <ReadyForNextMoveSection />
         <AboutUs />
       </main>
 

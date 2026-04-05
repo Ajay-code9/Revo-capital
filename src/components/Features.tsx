@@ -1,22 +1,20 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
-import {ArrowRight, Headphones, Laptop, Smartphone} from 'lucide-react';
-import {ROUTES} from '../routes/paths';
+import {Headphones, Laptop, Smartphone} from 'lucide-react';
 
 function BentoLaptopChartsVisual() {
   return (
     <div
-      className="pointer-events-none relative mx-auto flex h-44 w-full max-w-[260px] items-end justify-center pb-1"
+      className="pointer-events-none relative mx-auto flex h-44 w-full max-w-[260px] items-end justify-center overflow-hidden pb-1"
       aria-hidden
     >
       <div className="absolute bottom-18 left-1/2 flex -translate-x-1/2 gap-2 sm:bottom-20">
-        <div className="flex h-14 w-6 flex-col justify-end rounded-md bg-linear-to-t from-gray-400 to-gray-200 shadow-md" />
-        <div className="flex h-20 w-6 flex-col justify-end rounded-md bg-linear-to-t from-primary/85 to-primary/45 shadow-md" />
-        <div className="flex h-16 w-6 flex-col justify-end rounded-md bg-linear-to-t from-slate-500 to-slate-300 shadow-md" />
-        <div className="flex h-12 w-6 flex-col justify-end rounded-md bg-linear-to-t from-primary to-rose-300 shadow-md" />
+        <div className="flex h-14 w-6 flex-col justify-end rounded-md bg-linear-to-t from-white/35 to-white/10 shadow-md shadow-black/40" />
+        <div className="flex h-20 w-6 flex-col justify-end rounded-md bg-linear-to-t from-primary to-primary/60 shadow-md shadow-black/40" />
+        <div className="flex h-16 w-6 flex-col justify-end rounded-md bg-linear-to-t from-white/30 to-white/8 shadow-md shadow-black/40" />
+        <div className="flex h-12 w-6 flex-col justify-end rounded-md bg-linear-to-t from-primary/90 to-primary/50 shadow-md shadow-black/40" />
       </div>
       <Laptop
-        className="relative z-10 h-28 w-28 text-gray-800 drop-shadow-xl sm:h-32 sm:w-32"
+        className="relative z-10 h-28 w-28 text-primary drop-shadow-[0_8px_24px_rgba(0,0,0,0.45)] sm:h-32 sm:w-32"
         strokeWidth={1.05}
       />
     </div>
@@ -26,26 +24,26 @@ function BentoLaptopChartsVisual() {
 function BentoSupportVisual() {
   return (
     <div
-      className="pointer-events-none relative mt-6 flex min-h-[200px] flex-1 items-center justify-center lg:mt-0 lg:min-h-[240px]"
+      className="pointer-events-none relative mt-6 flex min-h-[200px] flex-1 items-center justify-center overflow-hidden px-1 pb-1 lg:mt-0 lg:min-h-[240px]"
       aria-hidden
     >
-      <div className="absolute right-[8%] top-[12%] rounded-lg border border-primary/25 bg-white px-2 py-1 text-[10px] font-bold text-primary shadow-md">
+      <div className="absolute right-[6%] top-[10%] rounded-lg border border-white/40 bg-white/95 px-2 py-1 text-[10px] font-bold text-primary shadow-lg shadow-black/20">
         BUY
       </div>
-      <div className="absolute bottom-[28%] left-[6%] rounded-lg border border-primary/25 bg-white px-2 py-1 text-[10px] font-bold text-primary shadow-md">
+      <div className="absolute bottom-[26%] left-[5%] rounded-lg border border-white/40 bg-white/95 px-2 py-1 text-[10px] font-bold text-primary shadow-lg shadow-black/20">
         SELL
       </div>
       <div className="relative flex items-end gap-3 sm:gap-4">
         <Laptop
-          className="h-24 w-24 text-gray-800 drop-shadow-xl sm:h-28 sm:w-28"
+          className="h-24 w-24 text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.25)] sm:h-28 sm:w-28"
           strokeWidth={1.05}
         />
-        <div className="relative mb-1 rounded-2xl border-2 border-gray-800 bg-white p-1.5 shadow-xl">
-          <Smartphone className="h-20 w-20 text-gray-700 sm:h-24 sm:w-24" strokeWidth={1.1} />
+        <div className="relative mb-1 rounded-2xl border-2 border-white/85 bg-white/15 p-1.5 shadow-xl shadow-black/20 backdrop-blur-[2px]">
+          <Smartphone className="h-20 w-20 text-white sm:h-24 sm:w-24" strokeWidth={1.1} />
         </div>
       </div>
       <Headphones
-        className="absolute -right-2 bottom-[18%] h-16 w-16 text-gray-700/90 drop-shadow-lg sm:right-4"
+        className="absolute bottom-[16%] right-2 h-16 w-16 text-white drop-shadow-[0_6px_20px_rgba(0,0,0,0.25)] sm:right-5"
         strokeWidth={1.1}
       />
     </div>
@@ -73,92 +71,71 @@ export const Features = () => {
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
           {/* Row 1 — wide left / narrow right */}
-          <article className="relative flex min-h-[280px] flex-col overflow-visible rounded-4xl bg-primary p-8 shadow-sm ring-1 ring-black/5 sm:min-h-[300px] sm:p-10 lg:col-span-7 lg:min-h-[320px]">
+          <article className="relative flex min-h-[300px] flex-col overflow-hidden rounded-4xl bg-primary p-8 shadow-sm ring-1 ring-black/5 sm:min-h-[320px] sm:p-10 lg:col-span-7 lg:min-h-[340px] lg:flex-row lg:items-stretch lg:gap-8">
+            <div className="relative z-10 flex flex-1 flex-col justify-center lg:min-w-0 lg:max-w-[min(100%,28rem)] xl:max-w-[32rem]">
+              <h3 className="text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl lg:text-[2.35rem] xl:text-[2.5rem]">
+                Ultra-Low Latency
+              </h3>
+              <p className="mt-4 text-base leading-relaxed text-white/95 sm:mt-5 sm:text-lg sm:leading-relaxed">
+                Execute trades in milliseconds with our high-performance infrastructure.
+              </p>
+            </div>
             <div
-              className="pointer-events-none absolute -right-1 -top-7 z-20 w-[min(56vw,204px)] sm:-right-2 sm:-top-9 sm:w-[252px] lg:-right-3 lg:-top-10 lg:w-[300px]"
+              className="pointer-events-none relative mt-8 flex min-h-[160px] w-full shrink-0 items-center justify-center overflow-hidden sm:min-h-[180px] lg:mt-0 lg:min-h-0 lg:flex-1 lg:max-w-[min(48%,20rem)] xl:max-w-[22rem]"
               aria-hidden
             >
               <img
                 src="/images/logos/Ultra-Low.svg"
                 alt=""
-                className="h-auto w-full object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.2)]"
+                className="max-h-[200px] w-full max-w-full object-contain object-center drop-shadow-[0_16px_36px_rgba(0,0,0,0.22)] sm:max-h-[220px] lg:max-h-[min(100%,260px)] lg:object-right"
                 width={300}
                 height={300}
                 loading="lazy"
                 decoding="async"
               />
             </div>
-            <div className="relative z-30 flex max-w-xl flex-col justify-center pr-29 sm:max-w-2xl sm:pr-36 lg:pr-44">
-              <h3 className="text-2xl font-bold text-white sm:text-3xl lg:text-4xl">
-                Ultra-Low Latency
-              </h3>
-              <p className="mt-3 max-w-md text-sm leading-relaxed text-white/90 sm:text-base">
-                Execute trades in milliseconds with our high-performance infrastructure.
-              </p>
-              <Link
-                to={ROUTES.signup}
-                className="mt-6 inline-flex w-fit items-center gap-1.5 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-primary transition hover:bg-white/95"
-              >
-                Start Trading
-                <ArrowRight className="h-4 w-4" aria-hidden />
-              </Link>
-            </div>
           </article>
 
-          <article className="relative flex min-h-[280px] flex-col overflow-visible rounded-4xl bg-[#0F172A] p-8 shadow-sm ring-1 ring-primary/15 sm:min-h-[300px] sm:p-10 lg:col-span-5 lg:min-h-[320px]">
+          <article className="relative flex min-h-[300px] flex-col overflow-hidden rounded-4xl bg-[#0F172A] p-8 shadow-sm ring-1 ring-primary/15 sm:min-h-[320px] sm:p-10 lg:col-span-5 lg:min-h-[320px] lg:flex-row lg:items-stretch lg:gap-6">
+            <div className="relative z-10 order-2 mt-6 flex flex-1 flex-col justify-end lg:order-1 lg:mt-0 lg:justify-center lg:min-w-0">
+              <h3 className="text-2xl font-bold text-white sm:text-3xl">Instant Withdrawals</h3>
+              <p className="mt-3 text-sm leading-relaxed text-white/80 sm:text-base">
+                Access your funds instantly with our automated withdrawal system.
+              </p>
+            </div>
             <div
-              className="pointer-events-none absolute -right-3 -top-8 z-20 w-[min(44vw,152px)] sm:-right-5 sm:-top-11 sm:w-[184px] lg:-right-6 lg:-top-12 lg:w-[208px]"
+              className="pointer-events-none relative order-1 flex min-h-[140px] w-full shrink-0 items-center justify-center overflow-hidden sm:min-h-[160px] lg:order-2 lg:min-h-0 lg:flex-1 lg:max-w-[min(48%,11rem)] xl:max-w-[12.5rem]"
               aria-hidden
             >
               <img
                 src="/images/logos/Instant-Withdrawals.svg"
                 alt=""
-                className="h-auto w-full object-contain"
+                className="max-h-[160px] w-full max-w-full object-contain object-center sm:max-h-[180px] lg:max-h-[min(100%,220px)] lg:object-contain lg:object-right"
                 width={208}
                 height={208}
                 loading="lazy"
                 decoding="async"
               />
             </div>
-            <div className="relative z-30 mt-auto flex flex-col pt-4 pr-27 sm:pr-32 lg:pr-36">
-              <h3 className="text-2xl font-bold text-white sm:text-3xl">Instant Withdrawals</h3>
-              <p className="mt-3 text-sm leading-relaxed text-white/80 sm:text-base">
-                Access your funds instantly with our automated withdrawal system.
-              </p>
-              <Link
-                to={ROUTES.accounts}
-                className="mt-6 inline-flex w-fit items-center gap-1.5 rounded-full border border-white/70 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10"
-              >
-                Learn more
-                <ArrowRight className="h-4 w-4" aria-hidden />
-              </Link>
-            </div>
           </article>
 
           {/* Row 2 — narrow left / wide right */}
-          <article className="flex min-h-[280px] flex-col overflow-hidden rounded-4xl bg-gray-50 p-8 shadow-sm ring-1 ring-primary/10 sm:min-h-[300px] sm:p-10 lg:col-span-4 lg:min-h-[300px]">
+          <article className="flex min-h-[280px] flex-col overflow-hidden rounded-4xl bg-black p-8 shadow-sm ring-1 ring-white/10 sm:min-h-[300px] sm:p-10 lg:col-span-4 lg:min-h-[300px]">
             <BentoLaptopChartsVisual />
             <div className="mt-auto pt-4">
-              <h3 className="text-xl font-bold text-gray-900 sm:text-2xl">Segregated Accounts</h3>
-              <p className="mt-3 text-sm leading-relaxed text-gray-600 sm:text-base">
+              <h3 className="text-xl font-bold text-white sm:text-2xl">Segregated Accounts</h3>
+              <p className="mt-3 text-sm leading-relaxed text-white/75 sm:text-base">
                 Your funds are kept in top-tier banks, separate from our company assets.
               </p>
             </div>
           </article>
 
-          <article className="relative flex min-h-[280px] flex-col overflow-hidden rounded-4xl bg-red-50/90 p-8 shadow-sm ring-1 ring-primary/15 sm:min-h-[300px] sm:p-10 lg:col-span-8 lg:min-h-[300px] lg:flex-row lg:items-stretch lg:gap-6">
+          <article className="relative flex min-h-[280px] flex-col overflow-hidden rounded-4xl bg-primary p-8 shadow-sm ring-1 ring-black/10 sm:min-h-[300px] sm:p-10 lg:col-span-8 lg:min-h-[300px] lg:flex-row lg:items-stretch lg:gap-6">
             <div className="relative z-10 flex max-w-lg flex-col justify-center lg:flex-1">
-              <h3 className="text-2xl font-bold text-gray-900 sm:text-3xl">24/7 Expert Support</h3>
-              <p className="mt-3 text-sm leading-relaxed text-gray-700 sm:text-base">
+              <h3 className="text-2xl font-bold text-white sm:text-3xl">24/7 Expert Support</h3>
+              <p className="mt-3 text-sm leading-relaxed text-white/90 sm:text-base">
                 Our dedicated team is always here to help you with any questions.
               </p>
-              <Link
-                to={ROUTES.support}
-                className="mt-6 inline-flex w-fit items-center gap-1.5 rounded-full border border-primary px-5 py-2.5 text-sm font-semibold text-primary transition hover:bg-primary/5"
-              >
-                Explore
-                <ArrowRight className="h-4 w-4" aria-hidden />
-              </Link>
             </div>
             <BentoSupportVisual />
           </article>
