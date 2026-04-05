@@ -2,9 +2,9 @@ import {motion} from 'motion/react';
 
 const STATS = [
   {value: '0.0', label: 'Pip Spreads'},
-  {value: '1:4000', label: 'Leverage up to'},
+  {value: '1:400', label: 'Leverage up to'},
   {value: '0.01', label: 'Micro Lot Trading'},
-  {value: '5000+', label: 'Instruments'},
+  {value: '1000+', label: 'Instruments'},
   {value: 'Fast', label: 'Withdrawals'},
   {value: 'Negative', label: 'Balance Protection'},
 ] as const;

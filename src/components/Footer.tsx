@@ -32,7 +32,7 @@ export const Footer = () => {
               <RevoLogo className="h-9 w-auto max-w-[220px] aspect-1432/504 object-contain object-left sm:h-10 sm:max-w-[240px]" />
             </div>
             <p className="text-gray-500 max-w-xs leading-relaxed">
-              Revo Capital is a global leader in online trading, providing access to 1200+ CFD instruments.
+              Revo Capital is a Global Leader in Online Trading, providing access to 1000+ CFD Instruments.
             </p>
             <div className="flex items-center gap-4">
               <a href="#" className="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 hover:bg-primary hover:text-white transition-all">
