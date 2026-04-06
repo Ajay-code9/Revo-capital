@@ -288,7 +288,7 @@ export const PartnersPage = () => {
             >
               {(
                 [
-                  {label: 'Web Trader', sub: 'Trade in browser', icon: 'web'},
+                  {label: 'RevoTrader', sub: 'Trade in browser', icon: 'web'},
                   {label: 'iOS', sub: 'App Store', icon: 'ios'},
                   {label: 'Android', sub: 'Google Play', icon: 'android'},
                 ] as const

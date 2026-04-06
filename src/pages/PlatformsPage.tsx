@@ -1,4 +1,5 @@
 import React, {useLayoutEffect, useRef, useState} from 'react';
+import {AnimatePresence, motion, useReducedMotion} from 'motion/react';
 import {useNavigate} from 'react-router-dom';
 import {
   Globe,
@@ -11,6 +12,14 @@ import {
   ChartCandlestick,
   ArrowLeftRight,
   Wallet,
+  AppWindow,
+  Flame,
+  Compass,
+  Monitor,
+  Smartphone,
+  Tablet,
+  Wifi,
+  Sparkles,
 } from 'lucide-react';
 import {Navbar} from '../components/Navbar';
 import {Footer} from '../components/Footer';
@@ -37,19 +46,60 @@ const sectionPad = {
 
 const transition = 'all 0.3s ease';
 
-function DashboardFeatureIcon({children}: {children: React.ReactNode}) {
+/** Key Features section: left tabs + right preview (paths under /public/images/logos/) */
+const KEY_FEATURE_TABS = [
+  {
+    title: 'Instant Market Access',
+    bullets: ['No installation required', 'Fast execution', 'Always updated'],
+    imageSrc: '/images/logos/KeyFeatures1.svg',
+    imageAlt: 'RevoTrader — instant market access',
+    frameBg: C.white,
+  },
+  {
+    title: 'Comprehensive Markets',
+    bullets: ['Forex, indices, metals & more', 'Deep liquidity', 'Competitive spreads'],
+    imageSrc: '/images/logos/KeyFeatures2.svg',
+    imageAlt: 'RevoTrader — comprehensive markets',
+    frameBg: C.white,
+  },
+  {
+    title: 'Professional Tools',
+    bullets: ['Advanced charting', 'Multiple order types', 'Risk controls'],
+    imageSrc: '/images/logos/KeyFeatures3.svg',
+    imageAlt: 'RevoTrader — professional trading tools',
+    frameBg: C.white,
+  },
+  {
+    title: 'Complete Control',
+    bullets: ['Positions & orders in one view', 'Real-time account data', 'Secure sessions'],
+    imageSrc: '/images/logos/KeyFeatures4.svg',
+    imageAlt: 'RevoTrader — account and order control',
+    frameBg: C.white,
+  },
+] as const;
+
+function DashboardFeatureIcon({
+  children,
+  compact = false,
+}: {
+  children: React.ReactNode;
+  /** Smaller tile for dashboard side cards (image-focused layout) */
+  compact?: boolean;
+}) {
   return (
     <div
       style={{
-        width: 40,
-        height: 40,
-        borderRadius: 10,
-        background: `${C.primary}18`,
-        marginBottom: 12,
-        border: `1px solid ${C.primary}44`,
+        width: compact ? 32 : 44,
+        height: compact ? 32 : 44,
+        borderRadius: compact ? 8 : 12,
+        background: 'rgba(229, 9, 20, 0.1)',
+        marginBottom: compact ? 8 : 14,
+        border: '1px solid rgba(229, 9, 20, 0.2)',
+        boxShadow: compact ? '0 1px 2px rgba(229, 9, 20, 0.06)' : undefined,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        flexShrink: 0,
       }}
     >
       {children}
@@ -94,6 +144,7 @@ function Placeholder({
 
 export const PlatformsPage = () => {
   const navigate = useNavigate();
+  const reduceMotion = useReducedMotion();
   const [benefitHover, setBenefitHover] = useState<number | null>(null);
   const [featureTab, setFeatureTab] = useState(0);
   const [ctaHover, setCtaHover] = useState(false);
@@ -106,24 +157,11 @@ export const PlatformsPage = () => {
 
   const howActiveIndex = howStepHover !== null ? howStepHover : 0;
 
-  const featureTabs = [
-    {
-      title: 'Instant Market Access',
-      bullets: ['No installation required', 'Fast execution', 'Always updated'],
-    },
-    {
-      title: 'Comprehensive Markets',
-      bullets: ['Forex, indices, metals & more', 'Deep liquidity', 'Competitive spreads'],
-    },
-    {
-      title: 'Professional Tools',
-      bullets: ['Advanced charting', 'Multiple order types', 'Risk controls'],
-    },
-    {
-      title: 'Complete Control',
-      bullets: ['Positions & orders in one view', 'Real-time account data', 'Secure sessions'],
-    },
-  ];
+  const keyFeatureIndex = Math.min(
+    Math.max(featureTab, 0),
+    KEY_FEATURE_TABS.length - 1,
+  );
+  const activeKeyFeature = KEY_FEATURE_TABS[keyFeatureIndex];
 
   const benefits = [
     {
@@ -159,7 +197,7 @@ export const PlatformsPage = () => {
   ];
 
   const howSteps = [
-    {n: 1, title: 'Open Revo Web Trading in your browser', desc: 'Navigate to the platform and load the terminal in one click.'},
+    {n: 1, title: 'Open RevoTrader in your browser', desc: 'Navigate to the platform and load the terminal in one click.'},
     {n: 2, title: 'Log in with your account', desc: 'Use your Revo Capital credentials to access your workspace.'},
     {n: 3, title: 'Analyze charts and markets', desc: 'Review instruments, watchlists, and technical studies in real time.'},
     {n: 4, title: 'Place trades and manage positions', desc: 'Execute orders and monitor P&L from a unified dashboard.'},
@@ -195,7 +233,7 @@ export const PlatformsPage = () => {
       <style>{`
         .platforms-dash-grid {
           display: grid;
-          gap: 2rem;
+          gap: clamp(20px, 4vw, 32px);
           grid-template-columns: 1fr;
           grid-template-areas:
             "dash-img"
@@ -205,9 +243,151 @@ export const PlatformsPage = () => {
         }
         @media (min-width: 1024px) {
           .platforms-dash-grid {
-            grid-template-columns: minmax(0, 1fr) minmax(280px, 1.2fr) minmax(0, 1fr);
+            grid-template-columns: minmax(160px, 0.52fr) minmax(360px, 1.96fr) minmax(160px, 0.52fr);
             grid-template-areas: "dash-left dash-img dash-right";
             align-items: center;
+            gap: clamp(14px, 2.5vw, 28px) clamp(12px, 2vw, 22px);
+          }
+        }
+        .platforms-dash-side {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          gap: 10px;
+          width: 100%;
+          max-width: 228px;
+        }
+        .platforms-dash-side--left {
+          margin-left: auto;
+          margin-right: 0;
+        }
+        .platforms-dash-side--right {
+          margin-right: auto;
+          margin-left: 0;
+        }
+        @media (max-width: 1023px) {
+          .platforms-dash-side {
+            max-width: none;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+          }
+        }
+        .platforms-dash-card {
+          padding: 12px 13px;
+          border-radius: 12px;
+          border: 1px solid rgba(148, 163, 184, 0.22);
+          background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+          box-shadow:
+            0 1px 2px rgba(15, 23, 42, 0.04),
+            0 6px 16px -6px rgba(15, 23, 42, 0.08);
+          transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+        }
+        .platforms-dash-card:hover {
+          box-shadow:
+            0 4px 12px -4px rgba(15, 23, 42, 0.1),
+            0 16px 36px -12px rgba(229, 9, 20, 0.12);
+          border-color: rgba(229, 9, 20, 0.22);
+          transform: translateY(-2px);
+        }
+        .platforms-dash-card__title {
+          font-size: 13px;
+          font-weight: 700;
+          color: ${C.navy};
+          letter-spacing: -0.02em;
+          line-height: 1.3;
+        }
+        .platforms-dash-card__desc {
+          margin: 6px 0 0;
+          font-size: 12px;
+          color: ${C.grey};
+          line-height: 1.5;
+        }
+        .platforms-dash-visual-wrap {
+          width: 100%;
+          max-width: min(100%, 820px);
+          margin: 0 auto;
+          align-self: center;
+        }
+        /* Soft spotlight behind device — Revo tint */
+        .platforms-dash-device-shell {
+          position: relative;
+          padding: clamp(20px, 4vw, 40px) clamp(12px, 3vw, 24px);
+          border-radius: 36px;
+          background: radial-gradient(ellipse 75% 65% at 50% 38%, rgba(229, 9, 20, 0.09) 0%, transparent 58%),
+            radial-gradient(ellipse 90% 55% at 50% 85%, rgba(15, 23, 42, 0.05) 0%, transparent 50%);
+        }
+        /* Very light grey tablet chassis */
+        .platforms-dash-tablet {
+          position: relative;
+          width: 100%;
+          padding: 14px 16px 18px;
+          border-radius: 26px;
+          background: linear-gradient(180deg, #ffffff 0%, #fafbfc 28%, #f4f5f7 55%, #eef0f3 100%);
+          box-shadow:
+            0 0 0 1px rgba(148, 163, 184, 0.22),
+            0 1px 0 rgba(255, 255, 255, 1) inset,
+            0 -1px 0 rgba(148, 163, 184, 0.12) inset,
+            0 12px 40px -16px rgba(15, 23, 42, 0.14),
+            0 4px 16px -8px rgba(15, 23, 42, 0.08);
+        }
+        .platforms-dash-tablet__camera {
+          width: 40px;
+          height: 5px;
+          border-radius: 100px;
+          margin: 0 auto 11px;
+          background: linear-gradient(180deg, #e8ecf0 0%, #d1d9e0 100%);
+          box-shadow:
+            inset 0 1px 1px rgba(255, 255, 255, 0.95),
+            inset 0 -1px 2px rgba(15, 23, 42, 0.08);
+        }
+        /* Screen recess on light bezel */
+        .platforms-dash-tablet__screen {
+          position: relative;
+          border-radius: 14px;
+          overflow: hidden;
+          background: #e2e8f0;
+          line-height: 0;
+          box-shadow:
+            0 0 0 1px rgba(15, 23, 42, 0.1),
+            inset 0 2px 6px rgba(15, 23, 42, 0.12),
+            inset 0 1px 0 rgba(255, 255, 255, 0.65);
+        }
+        .platforms-dash-tablet__img {
+          width: 100%;
+          height: auto;
+          display: block;
+          vertical-align: top;
+          transform: translateZ(0);
+        }
+        .platforms-dash-tablet__chin {
+          width: 128px;
+          height: 4px;
+          border-radius: 100px;
+          margin: 12px auto 0;
+          background: linear-gradient(90deg, transparent 0%, rgba(100, 116, 139, 0.35) 50%, transparent 100%);
+          opacity: 0.9;
+        }
+        .platforms-key-feature-img-host {
+          display: grid;
+          width: 100%;
+          line-height: 0;
+        }
+        .platforms-key-feature-img-host > * {
+          grid-area: 1 / 1;
+          align-self: start;
+          justify-self: stretch;
+        }
+        .platforms-key-feature-img-host .platforms-key-feature-img {
+          width: 100%;
+          height: auto;
+          max-height: none;
+          object-fit: contain;
+          object-position: center top;
+          display: block;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .platforms-dash-card:hover {
+            transform: none;
           }
         }
         @keyframes platforms-how-border-spin {
@@ -267,6 +447,44 @@ export const PlatformsPage = () => {
             animation: none;
           }
         }
+        .platforms-access-section {
+          position: relative;
+          overflow: hidden;
+        }
+        .platforms-access-bg {
+          pointer-events: none;
+          position: absolute;
+          inset: 0;
+        }
+        .platforms-access-bg::before {
+          content: '';
+          position: absolute;
+          width: min(720px, 90vw);
+          height: min(420px, 55vh);
+          top: -18%;
+          right: -12%;
+          background: radial-gradient(ellipse, rgba(229, 9, 20, 0.22) 0%, transparent 68%);
+        }
+        .platforms-access-bg::after {
+          content: '';
+          position: absolute;
+          width: min(560px, 85vw);
+          height: min(380px, 50vh);
+          bottom: -28%;
+          left: -18%;
+          background: radial-gradient(ellipse, rgba(56, 189, 248, 0.1) 0%, transparent 70%);
+        }
+        .platforms-access-grid-pattern {
+          pointer-events: none;
+          position: absolute;
+          inset: 0;
+          opacity: 0.06;
+          background-image:
+            linear-gradient(rgba(255, 255, 255, 0.7) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.7) 1px, transparent 1px);
+          background-size: 44px 44px;
+          mask-image: radial-gradient(ellipse 85% 75% at 50% 35%, black 0%, transparent 72%);
+        }
       `}</style>
       <TopContactBar />
       <Navbar />
@@ -294,7 +512,16 @@ export const PlatformsPage = () => {
           }}
         />
         <div style={{maxWidth: 1180, margin: '0 auto', position: 'relative', zIndex: 1}}>
-          <div style={{maxWidth: 720}}>
+          <div
+            style={{
+              maxWidth: 720,
+              margin: '0 auto',
+              textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
             <h1
               style={{
                 margin: 0,
@@ -305,7 +532,7 @@ export const PlatformsPage = () => {
                 color: C.white,
               }}
             >
-              Revo Web Trading
+              RevoTrader
             </h1>
             <p
               style={{
@@ -319,11 +546,12 @@ export const PlatformsPage = () => {
             </p>
             <p
               style={{
-                margin: '16px 0 0',
+                margin: '16px auto 0',
                 fontSize: 17,
                 lineHeight: 1.65,
                 color: C.greyLight,
                 maxWidth: 560,
+                width: '100%',
               }}
             >
               No downloads. No delays. Just powerful trading experience at your fingertips.
@@ -366,7 +594,7 @@ export const PlatformsPage = () => {
           >
             <img
               src="/images/logos/laptop-screen.svg"
-              alt="Revo web trading dashboard on laptop"
+              alt="RevoTrader dashboard on laptop"
               style={{
                 width: '100%',
                 height: 'auto',
@@ -402,7 +630,7 @@ export const PlatformsPage = () => {
                 letterSpacing: '-0.02em',
               }}
             >
-              Benefits of Revo Web Trading
+              Benefits of RevoTrader
             </h2>
             <p style={{margin: '14px 0 0', fontSize: 17, color: C.greyLight, lineHeight: 1.6}}>
               Trade directly from your browser with powerful features
@@ -468,19 +696,29 @@ export const PlatformsPage = () => {
               alignItems: 'center',
             }}
           >
-            <div style={{flex: '1 1 340px', minWidth: 280, maxWidth: 640}}>
-              <div className="platforms-how-visual">
-                <div className="platforms-how-visual__ring" aria-hidden />
-                <div className="platforms-how-visual__inner">
-                  <img
-                    className="platforms-how-visual__img platforms-how-visual__img--zoom"
-                    src="/images/logos/trading-dashboad-white.svg"
-                    alt="Revo web trading on laptop"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </div>
-              </div>
+            <div
+              style={{
+                flex: '1 1 340px',
+                minWidth: 280,
+                maxWidth: 640,
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              <img
+                src="/images/logos/How-Start.svg"
+                alt="RevoTrader trading dashboard"
+                loading="lazy"
+                decoding="async"
+                style={{
+                  width: '100%',
+                  maxWidth: '100%',
+                  height: 'auto',
+                  display: 'block',
+                  objectFit: 'contain',
+                  background: 'transparent',
+                }}
+              />
             </div>
             <div style={{flex: '1 1 320px', minWidth: 280}}>
               <h2
@@ -698,7 +936,7 @@ export const PlatformsPage = () => {
             }}
           >
             <div style={{flex: '1 1 300px', minWidth: 280, maxWidth: 480}}>
-              {featureTabs.map((tab, idx) => {
+              {KEY_FEATURE_TABS.map((tab, idx) => {
                 const active = idx === featureTab;
                 return (
                   <button
@@ -733,7 +971,7 @@ export const PlatformsPage = () => {
                   border: `1px solid ${C.borderSubtle}`,
                 }}
               >
-                {featureTabs[featureTab].bullets.map((line) => (
+                {activeKeyFeature.bullets.map((line) => (
                   <div
                     key={line}
                     style={{
@@ -755,15 +993,33 @@ export const PlatformsPage = () => {
             <div style={{flex: '1 1 300px', minWidth: 280}}>
               <div className="platforms-how-visual">
                 <div className="platforms-how-visual__ring" aria-hidden />
-                <div className="platforms-how-visual__inner">
-                  <img
-                    className="platforms-how-visual__img"
-                    src="/images/logos/terminal-photo.svg"
-                    alt="Revo web trading platform on laptop"
-                    style={{minHeight: 280}}
-                    loading="lazy"
-                    decoding="async"
-                  />
+                <div
+                  className="platforms-how-visual__inner"
+                  style={{
+                    background: activeKeyFeature.frameBg,
+                    transition: 'background 0.5s cubic-bezier(0.22, 1, 0.36, 1)',
+                  }}
+                >
+                  <div className="platforms-key-feature-img-host">
+                    <AnimatePresence mode="sync" initial={false}>
+                      <motion.img
+                        key={activeKeyFeature.imageSrc}
+                        className="platforms-how-visual__img platforms-key-feature-img"
+                        src={activeKeyFeature.imageSrc}
+                        alt={activeKeyFeature.imageAlt}
+                        loading="eager"
+                        decoding="async"
+                        initial={reduceMotion ? {opacity: 1} : {opacity: 0}}
+                        animate={{opacity: 1}}
+                        exit={reduceMotion ? {opacity: 1} : {opacity: 0}}
+                        transition={
+                          reduceMotion
+                            ? {duration: 0}
+                            : {duration: 0.7, ease: [0.16, 1, 0.32, 1]}
+                        }
+                      />
+                    </AnimatePresence>
+                  </div>
                 </div>
               </div>
             </div>
@@ -774,17 +1030,25 @@ export const PlatformsPage = () => {
       {/* SECTION 5 — DASHBOARD FEATURES */}
       <section style={{...sectionPad, background: C.white}}>
         <div style={{maxWidth: 1180, margin: '0 auto'}}>
-          <div style={{textAlign: 'center', marginBottom: 48}}>
-            <h2 style={{margin: 0, fontSize: 'clamp(1.75rem, 3vw, 2.2rem)', fontWeight: 800, color: C.navy}}>
+          <div style={{textAlign: 'center', marginBottom: 'clamp(40px, 6vw, 56px)'}}>
+            <h2
+              style={{
+                margin: 0,
+                fontSize: 'clamp(1.85rem, 3.2vw, 2.35rem)',
+                fontWeight: 800,
+                color: C.navy,
+                letterSpacing: '-0.03em',
+              }}
+            >
               Your Trading Dashboard
             </h2>
-            <p style={{margin: '12px 0 0', fontSize: 17, color: C.grey}}>
-              Explore the core features of Revo Web Trading
+            <p style={{margin: '14px auto 0', fontSize: 17, color: C.grey, maxWidth: 520, lineHeight: 1.55}}>
+              Explore the core features of RevoTrader
             </p>
           </div>
 
           <div className="platforms-dash-grid">
-            <div style={{display: 'flex', flexDirection: 'column', gap: 20, gridArea: 'dash-left'}}>
+            <div className="platforms-dash-side platforms-dash-side--left" style={{gridArea: 'dash-left'}}>
               {(
                 [
                   {
@@ -806,43 +1070,36 @@ export const PlatformsPage = () => {
               ).map((f) => {
                 const Icon = f.Icon;
                 return (
-                  <div
-                    key={f.t}
-                    style={{
-                      padding: 20,
-                      borderRadius: 14,
-                      border: `1px solid ${C.borderSubtle}`,
-                      background: C.greyBg,
-                      transition,
-                    }}
-                  >
-                    <DashboardFeatureIcon>
-                      <Icon size={20} strokeWidth={2} color={C.primary} aria-hidden />
+                  <div key={f.t} className="platforms-dash-card">
+                    <DashboardFeatureIcon compact>
+                      <Icon size={17} strokeWidth={2} color={C.primary} aria-hidden />
                     </DashboardFeatureIcon>
-                    <div style={{fontSize: 16, fontWeight: 700, color: C.navy}}>{f.t}</div>
-                    <p style={{margin: '8px 0 0', fontSize: 14, color: C.grey, lineHeight: 1.5}}>{f.d}</p>
+                    <div className="platforms-dash-card__title">{f.t}</div>
+                    <p className="platforms-dash-card__desc">{f.d}</p>
                   </div>
                 );
               })}
             </div>
 
-            <div style={{gridArea: 'dash-img'}}>
-              <div className="platforms-how-visual platforms-how-visual--wide">
-                <div className="platforms-how-visual__ring" aria-hidden />
-                <div className="platforms-how-visual__inner">
-                  <img
-                    className="platforms-how-visual__img"
-                    src="/images/logos/trading-dashboard-black.svg"
-                    alt="Revo web trading dashboard"
-                    style={{minHeight: 300}}
-                    loading="lazy"
-                    decoding="async"
-                  />
+            <div className="platforms-dash-visual-wrap" style={{gridArea: 'dash-img'}}>
+              <div className="platforms-dash-device-shell">
+                <div className="platforms-dash-tablet">
+                  <div className="platforms-dash-tablet__camera" aria-hidden />
+                  <div className="platforms-dash-tablet__screen">
+                    <img
+                      className="platforms-dash-tablet__img"
+                      src="/images/logos/crm-image.svg"
+                      alt="RevoTrader trading dashboard"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                  <div className="platforms-dash-tablet__chin" aria-hidden />
                 </div>
               </div>
             </div>
 
-            <div style={{display: 'flex', flexDirection: 'column', gap: 20, gridArea: 'dash-right'}}>
+            <div className="platforms-dash-side platforms-dash-side--right" style={{gridArea: 'dash-right'}}>
               {(
                 [
                   {
@@ -859,21 +1116,12 @@ export const PlatformsPage = () => {
               ).map((f) => {
                 const Icon = f.Icon;
                 return (
-                  <div
-                    key={f.t}
-                    style={{
-                      padding: 20,
-                      borderRadius: 14,
-                      border: `1px solid ${C.borderSubtle}`,
-                      background: C.greyBg,
-                      transition,
-                    }}
-                  >
-                    <DashboardFeatureIcon>
-                      <Icon size={20} strokeWidth={2} color={C.primary} aria-hidden />
+                  <div key={f.t} className="platforms-dash-card">
+                    <DashboardFeatureIcon compact>
+                      <Icon size={17} strokeWidth={2} color={C.primary} aria-hidden />
                     </DashboardFeatureIcon>
-                    <div style={{fontSize: 16, fontWeight: 700, color: C.navy}}>{f.t}</div>
-                    <p style={{margin: '8px 0 0', fontSize: 14, color: C.grey, lineHeight: 1.5}}>{f.d}</p>
+                    <div className="platforms-dash-card__title">{f.t}</div>
+                    <p className="platforms-dash-card__desc">{f.d}</p>
                   </div>
                 );
               })}
@@ -884,83 +1132,209 @@ export const PlatformsPage = () => {
 
       {/* SECTION 6 — ACCESS ANYWHERE (DARK) */}
       <section
+        className="platforms-access-section"
         style={{
           ...sectionPad,
-          background: `linear-gradient(180deg, ${C.navy} 0%, #0a1628 100%)`,
+          paddingBottom: 'clamp(44px, 6.5vw, 64px)',
+          background: `linear-gradient(180deg, ${C.navy} 0%, #070d18 42%, #0a1628 100%)`,
         }}
       >
-        <div style={{maxWidth: 1180, margin: '0 auto'}}>
-          <div style={{textAlign: 'center', marginBottom: 48}}>
-            <h2 style={{margin: 0, fontSize: 'clamp(1.75rem, 3vw, 2.2rem)', fontWeight: 800, color: C.white}}>
-              Access From Anywhere
-            </h2>
-            <p style={{margin: '12px 0 0', fontSize: 17, color: C.greyLight}}>Built for flexibility and performance</p>
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: 40,
-              justifyContent: 'center',
-            }}
+        <div className="platforms-access-bg" aria-hidden />
+        <div className="platforms-access-grid-pattern" aria-hidden />
+        <div style={{maxWidth: 1180, margin: '0 auto', position: 'relative', zIndex: 1}}>
+          <motion.div
+            initial={reduceMotion ? false : {opacity: 0, y: 20}}
+            whileInView={{opacity: 1, y: 0}}
+            viewport={{once: true, margin: '-60px'}}
+            transition={
+              reduceMotion ? {duration: 0} : {duration: 0.55, ease: [0.16, 1, 0.32, 1]}
+            }
+            style={{textAlign: 'center', marginBottom: 'clamp(32px, 5vw, 44px)'}}
           >
             <div
               style={{
-                flex: '1 1 280px',
-                maxWidth: 440,
-                padding: 32,
-                borderRadius: 16,
-                background: 'rgba(15, 23, 42, 0.5)',
-                border: `1px solid ${C.borderSubtle}`,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                marginBottom: 14,
+                padding: '6px 14px',
+                borderRadius: 999,
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase' as const,
+                color: 'rgba(248, 250, 252, 0.85)',
+                background: 'rgba(229, 9, 20, 0.12)',
+                border: '1px solid rgba(229, 9, 20, 0.28)',
               }}
             >
-              <h3 style={{margin: '0 0 20px', fontSize: 14, fontWeight: 800, letterSpacing: '0.14em', color: C.primary}}>
-                SUPPORTED BROWSERS
-              </h3>
-              {['Chrome', 'Edge', 'Firefox', 'Safari'].map((b) => (
-                <div key={b} style={{display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12, color: C.white, fontSize: 16}}>
-                  <span style={{color: C.primary, fontWeight: 700}}>✔</span>
-                  {b}
-                </div>
-              ))}
+              <Sparkles size={14} color={C.primary} aria-hidden />
+              Cross-platform
             </div>
-            <div
+            <h2
               style={{
-                flex: '1 1 280px',
-                maxWidth: 440,
-                padding: 32,
-                borderRadius: 16,
-                background: 'rgba(15, 23, 42, 0.5)',
-                border: `1px solid ${C.borderSubtle}`,
+                margin: 0,
+                fontSize: 'clamp(1.85rem, 3.2vw, 2.35rem)',
+                fontWeight: 800,
+                color: C.white,
+                letterSpacing: '-0.03em',
               }}
             >
-              <h3 style={{margin: '0 0 20px', fontSize: 14, fontWeight: 800, letterSpacing: '0.14em', color: C.primary}}>
-                SUPPORTED DEVICES
-              </h3>
-              {['Desktop', 'Mobile', 'Tablet'].map((b) => (
-                <div key={b} style={{display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12, color: C.white, fontSize: 16}}>
-                  <span style={{color: C.primary, fontWeight: 700}}>✔</span>
-                  {b}
-                </div>
-              ))}
-            </div>
+              Access From Anywhere
+            </h2>
+            <p
+              style={{
+                margin: '14px auto 0',
+                maxWidth: 480,
+                fontSize: 17,
+                lineHeight: 1.55,
+                color: C.greyLight,
+              }}
+            >
+              Built for flexibility and performance—open RevoTrader in your browser on the devices you already use.
+            </p>
+          </motion.div>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
+              gap: 'clamp(20px, 3vw, 28px)',
+              alignItems: 'stretch',
+            }}
+          >
+            {(
+              [
+                {
+                  title: 'Supported browsers',
+                  rows: [
+                    {label: 'Chrome', Icon: Globe},
+                    {label: 'Edge', Icon: AppWindow},
+                    {label: 'Firefox', Icon: Flame},
+                    {label: 'Safari', Icon: Compass},
+                  ] as const,
+                },
+                {
+                  title: 'Supported devices',
+                  rows: [
+                    {label: 'Desktop', Icon: Monitor},
+                    {label: 'Mobile', Icon: Smartphone},
+                    {label: 'Tablet', Icon: Tablet},
+                  ] as const,
+                },
+              ] as const
+            ).map((block, blockIdx) => (
+              <motion.div
+                key={block.title}
+                initial={reduceMotion ? false : {opacity: 0, y: 28}}
+                whileInView={{opacity: 1, y: 0}}
+                viewport={{once: true, margin: '-50px'}}
+                transition={
+                  reduceMotion
+                    ? {duration: 0}
+                    : {duration: 0.55, delay: blockIdx * 0.06, ease: [0.16, 1, 0.32, 1]}
+                }
+                whileHover={
+                  reduceMotion
+                    ? undefined
+                    : {y: -5, transition: {duration: 0.22, ease: [0.16, 1, 0.32, 1]}}
+                }
+                style={{
+                  padding: 'clamp(22px, 3.5vw, 30px)',
+                  borderRadius: 20,
+                  background:
+                    'linear-gradient(155deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.03) 40%, rgba(2,6,23,0.55) 100%)',
+                  border: '1px solid rgba(148, 163, 184, 0.22)',
+                  boxShadow:
+                    '0 4px 28px -10px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.07)',
+                  backdropFilter: 'blur(14px)',
+                  WebkitBackdropFilter: 'blur(14px)',
+                }}
+              >
+                <h3
+                  style={{
+                    margin: '0 0 18px',
+                    fontSize: 12,
+                    fontWeight: 800,
+                    letterSpacing: '0.16em',
+                    color: C.primary,
+                    textTransform: 'uppercase' as const,
+                  }}
+                >
+                  {block.title}
+                </h3>
+                <ul style={{listStyle: 'none', margin: 0, padding: 0}}>
+                  {block.rows.map(({label, Icon}, rowIdx) => (
+                    <li
+                      key={label}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 14,
+                        marginBottom: rowIdx === block.rows.length - 1 ? 0 : 14,
+                      }}
+                    >
+                      <span
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: 42,
+                          height: 42,
+                          flexShrink: 0,
+                          borderRadius: 12,
+                          background: 'rgba(229, 9, 20, 0.14)',
+                          border: '1px solid rgba(229, 9, 20, 0.22)',
+                          color: C.primary,
+                        }}
+                      >
+                        <Icon size={20} strokeWidth={2} aria-hidden />
+                      </span>
+                      <span style={{color: C.white, fontSize: 16, fontWeight: 600, letterSpacing: '-0.01em'}}>
+                        {label}
+                      </span>
+                      <span
+                        style={{
+                          marginLeft: 'auto',
+                          color: C.primary,
+                          fontSize: 13,
+                          fontWeight: 800,
+                        }}
+                        aria-hidden
+                      >
+                        ✓
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
           </div>
-          <div style={{textAlign: 'center', marginTop: 40}}>
+          <motion.div
+            initial={reduceMotion ? false : {opacity: 0, y: 12}}
+            whileInView={{opacity: 1, y: 0}}
+            viewport={{once: true}}
+            transition={reduceMotion ? {duration: 0} : {duration: 0.45, delay: 0.12}}
+            style={{textAlign: 'center', marginTop: 'clamp(24px, 4vw, 32px)'}}
+          >
             <span
               style={{
-                display: 'inline-block',
-                padding: '12px 24px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 10,
+                padding: '11px 22px',
                 borderRadius: 999,
                 fontSize: 13,
                 fontWeight: 600,
-                color: C.greyLight,
+                color: 'rgba(226, 232, 240, 0.92)',
                 background: 'rgba(255,255,255,0.06)',
-                border: `1px solid ${C.borderSubtle}`,
+                border: '1px solid rgba(148, 163, 184, 0.2)',
+                boxShadow: '0 8px 24px -12px rgba(0,0,0,0.35)',
               }}
             >
-              Requirement: Stable internet connection
+              <Wifi size={17} strokeWidth={2} color={C.primary} aria-hidden />
+              Stable internet connection required
             </span>
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -1020,7 +1394,7 @@ export const PlatformsPage = () => {
             Ready to Trade?
           </h2>
           <p style={{margin: '16px 0 0', fontSize: 18, color: 'rgba(255,255,255,0.85)', lineHeight: 1.55}}>
-            Access global markets with Revo Web Trading
+            Access global markets with RevoTrader
           </p>
           <button
             type="button"

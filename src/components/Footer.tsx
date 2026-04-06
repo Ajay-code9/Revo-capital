@@ -120,7 +120,7 @@ export const Footer = () => {
             <ul className="space-y-4 text-gray-500">
               <li>
                 <a href={ROUTES.platforms} onClick={(e) => { e.preventDefault(); go(ROUTES.platforms); }} className="hover:text-primary transition-colors">
-                  Revo WebTrader
+                  RevoTrader
                 </a>
               </li>
               <li>
