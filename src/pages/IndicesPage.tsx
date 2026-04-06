@@ -1,5 +1,5 @@
 import React from 'react';
-import {ArrowRight, ArrowUpRight, ChevronDown, ExternalLink, FileText} from 'lucide-react';
+import {ArrowUpRight, ChevronDown, ExternalLink, FileText} from 'lucide-react';
 import {Navbar} from '../components/Navbar';
 import {Footer} from '../components/Footer';
 import {WhyTradeRevoSection} from '../components/WhyTradeRevoSection';
@@ -125,12 +125,6 @@ export const IndicesPage = () => {
             >
               Open Live Account <ArrowUpRight size={20} />
             </button>
-            <button
-              type="button"
-              className="flex items-center gap-2 rounded-full border border-gray-200 bg-white px-10 py-4 font-bold text-gray-900 transition-all hover:bg-gray-50"
-            >
-              Try Demo Account <ArrowRight size={20} />
-            </button>
           </div>
         </div>
         <div className="pointer-events-none absolute inset-0 opacity-[0.03]">
@@ -187,12 +181,6 @@ export const IndicesPage = () => {
                 className="flex items-center justify-center gap-2 rounded-full bg-white px-10 py-4 font-bold text-primary shadow-xl transition-all hover:bg-gray-100"
               >
                 Open Live Account <ArrowUpRight size={20} />
-              </button>
-              <button
-                type="button"
-                className="flex items-center justify-center gap-2 rounded-full border border-white bg-transparent px-10 py-4 font-bold text-white transition-all hover:bg-white/10"
-              >
-                Try Demo Account <ArrowRight size={20} />
               </button>
             </div>
           </div>

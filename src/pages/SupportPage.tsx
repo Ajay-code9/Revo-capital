@@ -67,9 +67,6 @@ export const SupportPage = () => {
                     <ArrowUpRight size={18} />
                   </div>
                 </button>
-                <button className="bg-gray-50 hover:bg-gray-100 text-gray-900 px-8 py-4 rounded-full font-bold transition-all border border-gray-200">
-                  Open Demo Account
-                </button>
               </div>
 
               <div className="bg-gray-50/50 p-8 lg:p-12 rounded-[2.5rem] border border-gray-100">
@@ -274,9 +271,6 @@ export const SupportPage = () => {
                 <button className="bg-white text-primary px-10 py-4 rounded-full font-bold hover:bg-gray-50 transition-all flex items-center gap-3 shadow-xl">
                   Open Live Account 
                   <ArrowUpRight size={20} />
-                </button>
-                <button className="bg-primary-hover text-white border border-white/20 px-10 py-4 rounded-full font-bold hover:bg-white/10 transition-all">
-                  Open Demo Account
                 </button>
               </div>
             </div>

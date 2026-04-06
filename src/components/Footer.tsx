@@ -112,16 +112,6 @@ export const Footer = () => {
                   Elite
                 </a>
               </li>
-              <li>
-                <a href="#" className="hover:text-primary transition-colors">
-                  Islamic
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-primary transition-colors">
-                  Demo
-                </a>
-              </li>
             </ul>
           </div>
 
@@ -130,22 +120,17 @@ export const Footer = () => {
             <ul className="space-y-4 text-gray-500">
               <li>
                 <a href={ROUTES.platforms} onClick={(e) => { e.preventDefault(); go(ROUTES.platforms); }} className="hover:text-primary transition-colors">
-                  Revo Trader
+                  Revo WebTrader
                 </a>
               </li>
               <li>
                 <a href={ROUTES.platforms} onClick={(e) => { e.preventDefault(); go(ROUTES.platforms); }} className="hover:text-primary transition-colors">
-                  cTrader
+                  Android
                 </a>
               </li>
               <li>
                 <a href={ROUTES.platforms} onClick={(e) => { e.preventDefault(); go(ROUTES.platforms); }} className="hover:text-primary transition-colors">
-                  MT4
-                </a>
-              </li>
-              <li>
-                <a href={ROUTES.platforms} onClick={(e) => { e.preventDefault(); go(ROUTES.platforms); }} className="hover:text-primary transition-colors">
-                  TradingView
+                  iOS
                 </a>
               </li>
             </ul>
@@ -165,18 +150,8 @@ export const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-primary transition-colors">
-                  Help Center
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-primary transition-colors">
+                <a href={ROUTES.support} onClick={(e) => { e.preventDefault(); go(ROUTES.support); }} className="hover:text-primary transition-colors">
                   Contact Us
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-primary transition-colors">
-                  FAQ
                 </a>
               </li>
               <li>

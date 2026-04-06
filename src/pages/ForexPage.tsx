@@ -170,9 +170,6 @@ export const ForexPage = () => {
               <button className="bg-white text-primary px-10 py-4 rounded-full font-bold flex items-center justify-center gap-2 hover:bg-gray-100 transition-all">
                 Get Started <ArrowRight size={20} />
               </button>
-              <button className="bg-transparent border border-white text-white px-10 py-4 rounded-full font-bold flex items-center justify-center gap-2 hover:bg-white/10 transition-all">
-                Try Demo Account <ArrowRight size={20} />
-              </button>
             </div>
           </div>
           {/* Abstract 3D Symbols Background */}

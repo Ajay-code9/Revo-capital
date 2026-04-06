@@ -98,9 +98,6 @@ export const AccountTypesPage = () => {
             <button type="button" className="btn-primary px-10 py-4 rounded-full font-bold flex items-center gap-2">
               Open Live Account <ArrowUpRight size={20} />
             </button>
-            <button className="bg-gray-50 border border-gray-200 text-gray-900 px-10 py-4 rounded-full font-bold flex items-center gap-2 hover:bg-gray-100 transition-all">
-              Open Demo Account <ArrowUpRight size={20} />
-            </button>
           </motion.div>
         </div>
         

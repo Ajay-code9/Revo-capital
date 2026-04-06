@@ -1,6 +1,17 @@
 import React, {useLayoutEffect, useRef, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {Globe, Zap, LineChart, ClipboardList, ShieldCheck, MonitorSmartphone} from 'lucide-react';
+import {
+  Globe,
+  Zap,
+  LineChart,
+  ClipboardList,
+  ShieldCheck,
+  MonitorSmartphone,
+  LayoutList,
+  ChartCandlestick,
+  ArrowLeftRight,
+  Wallet,
+} from 'lucide-react';
 import {Navbar} from '../components/Navbar';
 import {Footer} from '../components/Footer';
 import {TopContactBar} from '../components/TopContactBar';
@@ -25,6 +36,26 @@ const sectionPad = {
 } as const;
 
 const transition = 'all 0.3s ease';
+
+function DashboardFeatureIcon({children}: {children: React.ReactNode}) {
+  return (
+    <div
+      style={{
+        width: 40,
+        height: 40,
+        borderRadius: 10,
+        background: `${C.primary}18`,
+        marginBottom: 12,
+        border: `1px solid ${C.primary}44`,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      {children}
+    </div>
+  );
+}
 
 function Placeholder({
   label,
@@ -179,6 +210,63 @@ export const PlatformsPage = () => {
             align-items: center;
           }
         }
+        @keyframes platforms-how-border-spin {
+          to {
+            transform: rotate(360deg);
+          }
+        }
+        .platforms-how-visual {
+          position: relative;
+          width: 100%;
+          max-width: 640px;
+          margin: 0 auto;
+          padding: 3px;
+          border-radius: 18px;
+          overflow: hidden;
+        }
+        .platforms-how-visual--wide {
+          max-width: none;
+        }
+        .platforms-how-visual__ring {
+          position: absolute;
+          inset: -120%;
+          z-index: 0;
+          background: conic-gradient(
+            from 0deg,
+            #e50914,
+            rgba(229, 9, 20, 0.2) 14%,
+            #e50914 28%,
+            rgba(229, 9, 20, 0.12) 42%,
+            #ff4d4d 56%,
+            rgba(229, 9, 20, 0.18) 70%,
+            #e50914 84%,
+            rgba(229, 9, 20, 0.25) 100%
+          );
+          animation: platforms-how-border-spin 4.8s linear infinite;
+        }
+        .platforms-how-visual__inner {
+          position: relative;
+          z-index: 1;
+          border-radius: 15px;
+          overflow: hidden;
+          background: #ffffff;
+        }
+        .platforms-how-visual__img {
+          width: 100%;
+          height: auto;
+          min-height: 0;
+          object-fit: contain;
+          display: block;
+        }
+        .platforms-how-visual__img--zoom {
+          transform: scale(1.14);
+          transform-origin: center center;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .platforms-how-visual__ring {
+            animation: none;
+          }
+        }
       `}</style>
       <TopContactBar />
       <Navbar />
@@ -271,9 +359,26 @@ export const PlatformsPage = () => {
               marginBottom: -80,
               position: 'relative',
               zIndex: 2,
+              display: 'flex',
+              justifyContent: 'center',
+              width: '100%',
             }}
           >
-            <Placeholder label="Trading dashboard mockup" ratio="21/9" minH={320} />
+            <img
+              src="/images/logos/laptop-screen.svg"
+              alt="Revo web trading dashboard on laptop"
+              style={{
+                width: '100%',
+                height: 'auto',
+                maxHeight: 'min(76vh, 720px)',
+                objectFit: 'contain',
+                display: 'block',
+                transform: 'scale(1.06)',
+                transformOrigin: 'center top',
+              }}
+              loading="lazy"
+              decoding="async"
+            />
           </div>
         </div>
       </section>
@@ -363,8 +468,19 @@ export const PlatformsPage = () => {
               alignItems: 'center',
             }}
           >
-            <div style={{flex: '1 1 300px', minWidth: 280, maxWidth: 520}}>
-              <Placeholder label="Laptop / web trading" ratio="4/3" minH={300} />
+            <div style={{flex: '1 1 340px', minWidth: 280, maxWidth: 640}}>
+              <div className="platforms-how-visual">
+                <div className="platforms-how-visual__ring" aria-hidden />
+                <div className="platforms-how-visual__inner">
+                  <img
+                    className="platforms-how-visual__img platforms-how-visual__img--zoom"
+                    src="/images/logos/trading-dashboad-white.svg"
+                    alt="Revo web trading on laptop"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              </div>
             </div>
             <div style={{flex: '1 1 320px', minWidth: 280}}>
               <h2
@@ -637,7 +753,19 @@ export const PlatformsPage = () => {
               </div>
             </div>
             <div style={{flex: '1 1 300px', minWidth: 280}}>
-              <Placeholder label="Platform laptop / dashboard" ratio="4/3" minH={340} />
+              <div className="platforms-how-visual">
+                <div className="platforms-how-visual__ring" aria-hidden />
+                <div className="platforms-how-visual__inner">
+                  <img
+                    className="platforms-how-visual__img"
+                    src="/images/logos/terminal-photo.svg"
+                    alt="Revo web trading platform on laptop"
+                    style={{minHeight: 280}}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -657,70 +785,98 @@ export const PlatformsPage = () => {
 
           <div className="platforms-dash-grid">
             <div style={{display: 'flex', flexDirection: 'column', gap: 20, gridArea: 'dash-left'}}>
-              {[
-                {t: 'Market Watch', d: 'Track symbols, spreads, and session activity at a glance.'},
-                {t: 'Chart Panel', d: 'Multi-timeframe charts with indicators and drawing tools.'},
-                {t: 'Trading Panel', d: 'Place and modify orders with clear execution feedback.'},
-              ].map((f) => (
-                <div
-                  key={f.t}
-                  style={{
-                    padding: 20,
-                    borderRadius: 14,
-                    border: `1px solid ${C.borderSubtle}`,
-                    background: C.greyBg,
-                    transition,
-                  }}
-                >
+              {(
+                [
+                  {
+                    t: 'Market Watch',
+                    d: 'Track symbols, spreads, and session activity at a glance.',
+                    Icon: LayoutList,
+                  },
+                  {
+                    t: 'Chart Panel',
+                    d: 'Multi-timeframe charts with indicators and drawing tools.',
+                    Icon: ChartCandlestick,
+                  },
+                  {
+                    t: 'Trading Panel',
+                    d: 'Place and modify orders with clear execution feedback.',
+                    Icon: ArrowLeftRight,
+                  },
+                ] as const
+              ).map((f) => {
+                const Icon = f.Icon;
+                return (
                   <div
+                    key={f.t}
                     style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 10,
-                      background: `${C.primary}18`,
-                      marginBottom: 12,
-                      border: `1px solid ${C.primary}44`,
+                      padding: 20,
+                      borderRadius: 14,
+                      border: `1px solid ${C.borderSubtle}`,
+                      background: C.greyBg,
+                      transition,
                     }}
-                  />
-                  <div style={{fontSize: 16, fontWeight: 700, color: C.navy}}>{f.t}</div>
-                  <p style={{margin: '8px 0 0', fontSize: 14, color: C.grey, lineHeight: 1.5}}>{f.d}</p>
-                </div>
-              ))}
+                  >
+                    <DashboardFeatureIcon>
+                      <Icon size={20} strokeWidth={2} color={C.primary} aria-hidden />
+                    </DashboardFeatureIcon>
+                    <div style={{fontSize: 16, fontWeight: 700, color: C.navy}}>{f.t}</div>
+                    <p style={{margin: '8px 0 0', fontSize: 14, color: C.grey, lineHeight: 1.5}}>{f.d}</p>
+                  </div>
+                );
+              })}
             </div>
 
             <div style={{gridArea: 'dash-img'}}>
-              <Placeholder label="Large trading dashboard" ratio="16/11" minH={360} />
+              <div className="platforms-how-visual platforms-how-visual--wide">
+                <div className="platforms-how-visual__ring" aria-hidden />
+                <div className="platforms-how-visual__inner">
+                  <img
+                    className="platforms-how-visual__img"
+                    src="/images/logos/trading-dashboard-black.svg"
+                    alt="Revo web trading dashboard"
+                    style={{minHeight: 300}}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              </div>
             </div>
 
             <div style={{display: 'flex', flexDirection: 'column', gap: 20, gridArea: 'dash-right'}}>
-              {[
-                {t: 'Account Overview', d: 'Balance, equity, margin, and exposure in one snapshot.'},
-                {t: 'Positions & Orders', d: 'Monitor open trades, pending orders, and history.'},
-              ].map((f) => (
-                <div
-                  key={f.t}
-                  style={{
-                    padding: 20,
-                    borderRadius: 14,
-                    border: `1px solid ${C.borderSubtle}`,
-                    background: C.greyBg,
-                    transition,
-                  }}
-                >
+              {(
+                [
+                  {
+                    t: 'Account Overview',
+                    d: 'Balance, equity, margin, and exposure in one snapshot.',
+                    Icon: Wallet,
+                  },
+                  {
+                    t: 'Positions & Orders',
+                    d: 'Monitor open trades, pending orders, and history.',
+                    Icon: ClipboardList,
+                  },
+                ] as const
+              ).map((f) => {
+                const Icon = f.Icon;
+                return (
                   <div
+                    key={f.t}
                     style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 10,
-                      background: `${C.primary}18`,
-                      marginBottom: 12,
-                      border: `1px solid ${C.primary}44`,
+                      padding: 20,
+                      borderRadius: 14,
+                      border: `1px solid ${C.borderSubtle}`,
+                      background: C.greyBg,
+                      transition,
                     }}
-                  />
-                  <div style={{fontSize: 16, fontWeight: 700, color: C.navy}}>{f.t}</div>
-                  <p style={{margin: '8px 0 0', fontSize: 14, color: C.grey, lineHeight: 1.5}}>{f.d}</p>
-                </div>
-              ))}
+                  >
+                    <DashboardFeatureIcon>
+                      <Icon size={20} strokeWidth={2} color={C.primary} aria-hidden />
+                    </DashboardFeatureIcon>
+                    <div style={{fontSize: 16, fontWeight: 700, color: C.navy}}>{f.t}</div>
+                    <p style={{margin: '8px 0 0', fontSize: 14, color: C.grey, lineHeight: 1.5}}>{f.d}</p>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>

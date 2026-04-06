@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import {
-  ArrowRight,
   ArrowUpRight,
   CheckCircle2,
   ChevronDown,
@@ -156,9 +155,6 @@ export const MetalsPage = () => {
             <button type="button" className="btn-primary px-10 py-4 rounded-full font-bold flex items-center gap-2">
               Open Live Account <ArrowUpRight size={20} />
             </button>
-            <button className="bg-white border border-gray-200 text-gray-900 px-10 py-4 rounded-full font-bold flex items-center gap-2 hover:bg-gray-50 transition-all">
-              Try Demo Account <ArrowRight size={20} />
-            </button>
           </motion.div>
         </div>
         
@@ -283,9 +279,6 @@ export const MetalsPage = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
               <button className="bg-white text-primary px-10 py-4 rounded-full font-bold flex items-center justify-center gap-2 hover:bg-gray-100 transition-all shadow-xl">
                 Open Live Account <ArrowUpRight size={20} />
-              </button>
-              <button className="bg-transparent border border-white text-white px-10 py-4 rounded-full font-bold flex items-center justify-center gap-2 hover:bg-white/10 transition-all">
-                Try Demo Account <ArrowRight size={20} />
               </button>
             </div>
           </div>

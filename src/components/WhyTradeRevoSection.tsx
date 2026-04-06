@@ -49,8 +49,8 @@ export const WhyTradeRevoSection = () => (
             src="/images/logos/fav-icon.svg"
             alt="Revo Capital"
             className="h-auto w-full max-w-lg object-contain"
-            width={734}
-            height={491}
+            width={320}
+            height={320}
             decoding="async"
             loading="lazy"
           />

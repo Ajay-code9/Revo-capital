@@ -6,98 +6,152 @@ const HERO_MAIN_SRC = '/images/logos/hero-section-homepage.svg';
 
 type HeroFloatLogo = {
   src: string;
-  /** Anchored to the hero image frame (`relative` wrapper = img bounds) */
+  /** Anchored to the hero image frame (`relative` wrapper = img bounds) — no rotate here */
   className: string;
   delay: number;
-  /** Slower loops — calm, readable drift */
+  /** Orbit period (s); linear easing for seamless loop */
   duration: number;
-  /** Organic motion: multi-point paths (px), not a single back-and-forth */
-  xPath: number[];
-  yPath: number[];
-  times: number[];
+  /** Ellipse radii (px): drift toward / away from phones */
+  rx: number;
+  ry: number;
+  /** Phase offset so icons don’t move in sync */
+  phase: number;
+  /** Mean tilt (deg) */
+  baseRotateDeg: number;
+  /** ± tilt wobble amplitude (deg), synced to CCW orbit */
+  tiltDeg: number;
+  /** +1 = left column (orbit bulges toward +x); -1 = right column (toward -x) */
+  towardSign: 1 | -1;
 };
 
-/** floating-logo1–8: hug hero artboard edges; paths are closed loops with varied rhythm */
+const ORBIT_STEPS = 14;
+
+/** CCW on screen: x = sign·rx·cos(φ), y = -ry·sin(φ), φ = 2πt + phase */
+function buildOrbitKeyframes(
+  rx: number,
+  ry: number,
+  phase: number,
+  towardSign: 1 | -1,
+  baseRotateDeg: number,
+  tiltDeg: number,
+) {
+  const x: number[] = [];
+  const y: number[] = [];
+  const scale: number[] = [];
+  const rotate: number[] = [];
+  for (let i = 0; i <= ORBIT_STEPS; i++) {
+    const t = i / ORBIT_STEPS;
+    const phi = t * Math.PI * 2 + phase;
+    x.push(towardSign * rx * Math.cos(phi));
+    y.push(-ry * Math.sin(phi));
+    // “Closer” to phones when displacement points inward
+    const inward = towardSign * Math.cos(phi);
+    const depth = (inward + 1) / 2;
+    scale.push(0.88 + 0.15 * depth);
+    // Gentle anticlockwise tilt wobble (doesn’t flip logos upside-down)
+    rotate.push(baseRotateDeg + tiltDeg * Math.sin(phi + 0.4));
+  }
+  const times = Array.from({length: ORBIT_STEPS + 1}, (_, i) => i / ORBIT_STEPS);
+  return {x, y, scale, rotate, times};
+}
+
+/** floating-logo1–8: hug hero artboard; anticlockwise orbit + depth + slow CCW spin */
 const HERO_FLOAT_LOGOS: HeroFloatLogo[] = [
   {
     src: '/images/logos/floating-logo1.svg',
-    className:
-      'absolute -left-[5%] top-[6%] z-20 w-[2.65rem] -rotate-[18deg] sm:w-[3rem] md:w-[3.35rem]',
+    className: 'absolute -left-[5%] top-[6%] z-20 w-[2.65rem] sm:w-[3rem] md:w-[3.35rem]',
     delay: 0,
-    duration: 11,
-    xPath: [0, 5, -3, 7, -4, 2, 0],
-    yPath: [0, -5, 4, -3, 6, -2, 0],
-    times: [0, 0.18, 0.34, 0.52, 0.68, 0.86, 1],
+    duration: 7,
+    rx: 16,
+    ry: 13,
+    phase: 0.35,
+    baseRotateDeg: -18,
+    tiltDeg: 9,
+    towardSign: 1,
   },
   {
     src: '/images/logos/floating-logo2.svg',
-    className:
-      'absolute -left-[6%] top-[30%] z-30 w-[2.5rem] rotate-[10deg] sm:w-[2.85rem] md:w-12',
-    delay: 1.1,
-    duration: 13,
-    xPath: [0, -4, 6, -2, 5, -5, 0],
-    yPath: [0, 6, -4, 5, -3, 4, 0],
-    times: [0, 0.22, 0.38, 0.54, 0.7, 0.88, 1],
+    className: 'absolute -left-[6%] top-[30%] z-30 w-[2.5rem] sm:w-[2.85rem] md:w-12',
+    delay: 0.9,
+    duration: 8,
+    rx: 14,
+    ry: 16,
+    phase: 2.1,
+    baseRotateDeg: 10,
+    tiltDeg: 8,
+    towardSign: 1,
   },
   {
     src: '/images/logos/floating-logo3.svg',
-    className:
-      'absolute -left-[4%] top-[54%] z-20 w-[2.4rem] -rotate-[8deg] sm:w-[2.75rem] md:w-12',
-    delay: 0.4,
-    duration: 12,
-    xPath: [0, 6, 2, -5, 4, -3, 0],
-    yPath: [0, 3, -6, 4, -5, 3, 0],
-    times: [0, 0.2, 0.36, 0.5, 0.66, 0.82, 1],
+    className: 'absolute -left-[4%] top-[54%] z-20 w-[2.4rem] sm:w-[2.75rem] md:w-12',
+    delay: 0.2,
+    duration: 7,
+    rx: 15,
+    ry: 12,
+    phase: 4.2,
+    baseRotateDeg: -8,
+    tiltDeg: 7,
+    towardSign: 1,
   },
   {
     src: '/images/logos/floating-logo4.svg',
-    className:
-      'absolute -left-[5%] bottom-[10%] z-30 w-[2.55rem] rotate-[14deg] sm:w-[2.9rem] md:w-[3.1rem]',
-    delay: 2,
-    duration: 10.5,
-    xPath: [0, -5, 4, -6, 3, 5, 0],
-    yPath: [0, -4, -6, 3, 5, -3, 0],
-    times: [0, 0.17, 0.33, 0.5, 0.67, 0.84, 1],
+    className: 'absolute -left-[5%] bottom-[10%] z-30 w-[2.55rem] sm:w-[2.9rem] md:w-[3.1rem]',
+    delay: 1.4,
+    duration: 8,
+    rx: 13,
+    ry: 15,
+    phase: 5.5,
+    baseRotateDeg: 14,
+    tiltDeg: 10,
+    towardSign: 1,
   },
   {
     src: '/images/logos/floating-logo5.svg',
-    className:
-      'absolute -right-[5%] top-[7%] z-30 w-[2.4rem] -rotate-[12deg] sm:w-[2.75rem] md:w-12',
-    delay: 0.65,
-    duration: 11.5,
-    xPath: [0, -6, 4, -3, 6, -4, 0],
-    yPath: [0, 5, -3, 6, -4, 3, 0],
-    times: [0, 0.19, 0.35, 0.51, 0.67, 0.85, 1],
+    className: 'absolute -right-[5%] top-[7%] z-30 w-[2.4rem] sm:w-[2.75rem] md:w-12',
+    delay: 0.5,
+    duration: 7,
+    rx: 15,
+    ry: 14,
+    phase: 1.2,
+    baseRotateDeg: -12,
+    tiltDeg: 8,
+    towardSign: -1,
   },
   {
     src: '/images/logos/floating-logo6.svg',
-    className:
-      'absolute -right-[6%] top-[32%] z-20 w-[2.7rem] rotate-[15deg] sm:w-[3rem] md:w-[3.25rem]',
-    delay: 1.6,
-    duration: 12.5,
-    xPath: [0, 5, -7, 3, -4, 6, 0],
-    yPath: [0, -5, 4, -6, 5, -3, 0],
-    times: [0, 0.21, 0.37, 0.53, 0.69, 0.87, 1],
+    className: 'absolute -right-[6%] top-[32%] z-20 w-[2.7rem] sm:w-[3rem] md:w-[3.25rem]',
+    delay: 1.7,
+    duration: 8,
+    rx: 17,
+    ry: 13,
+    phase: 3.4,
+    baseRotateDeg: 15,
+    tiltDeg: 9,
+    towardSign: -1,
   },
   {
     src: '/images/logos/floating-logo7.svg',
-    className:
-      'absolute -right-[4%] top-[56%] z-30 w-[2.55rem] -rotate-[10deg] sm:w-[2.9rem] md:w-[3.1rem]',
-    delay: 0.25,
+    className: 'absolute -right-[4%] top-[56%] z-30 w-[2.55rem] sm:w-[2.9rem] md:w-[3.1rem]',
+    delay: 0,
     duration: 10,
-    xPath: [0, -4, -6, 5, -3, 4, 0],
-    yPath: [0, 4, -5, 3, -6, 4, 0],
-    times: [0, 0.16, 0.32, 0.48, 0.64, 0.8, 1],
+    rx: 14,
+    ry: 15,
+    phase: 4.9,
+    baseRotateDeg: -10,
+    tiltDeg: 7,
+    towardSign: -1,
   },
   {
     src: '/images/logos/floating-logo8.svg',
-    className:
-      'absolute -right-[5%] bottom-[11%] z-20 w-[2.6rem] rotate-[20deg] sm:w-[3rem] md:w-[3.2rem]',
-    delay: 1.35,
-    duration: 13.5,
-    xPath: [0, 4, -5, 6, -3, -4, 0],
-    yPath: [0, -6, 3, -4, 5, -2, 0],
-    times: [0, 0.2, 0.36, 0.52, 0.68, 0.84, 1],
+    className: 'absolute -right-[5%] bottom-[11%] z-20 w-[2.6rem] sm:w-[3rem] md:w-[3.2rem]',
+    delay: 1.1,
+    duration: 7,
+    rx: 16,
+    ry: 14,
+    phase: 0.8,
+    baseRotateDeg: 20,
+    tiltDeg: 11,
+    towardSign: -1,
   },
 ];
 
@@ -106,35 +160,49 @@ function HeroFloatingLogos() {
 
   return (
     <>
-      {HERO_FLOAT_LOGOS.map((item, i) => (
-        <motion.img
-          key={`${item.src}-${i}`}
-          src={item.src}
-          alt=""
-          width={80}
-          height={80}
-          loading="lazy"
-          decoding="async"
-          aria-hidden
-          className={`${item.className} pointer-events-none select-none object-contain drop-shadow-[0_10px_24px_rgba(0,0,0,0.12)] will-change-transform`}
-          initial={false}
-          animate={
-            reduce
-              ? {}
-              : {
-                  x: item.xPath,
-                  y: item.yPath,
-                }
-          }
-          transition={{
-            duration: item.duration,
-            repeat: Infinity,
-            ease: 'easeInOut',
-            delay: item.delay,
-            times: item.times,
-          }}
-        />
-      ))}
+      {HERO_FLOAT_LOGOS.map((item) => {
+        const kf = buildOrbitKeyframes(
+          item.rx,
+          item.ry,
+          item.phase,
+          item.towardSign,
+          item.baseRotateDeg,
+          item.tiltDeg,
+        );
+
+        return (
+          <motion.img
+            key={item.src}
+            src={item.src}
+            alt=""
+            width={80}
+            height={80}
+            loading="lazy"
+            decoding="async"
+            aria-hidden
+            className={`${item.className} pointer-events-none select-none object-contain drop-shadow-[0_12px_28px_rgba(0,0,0,0.14)] will-change-transform`}
+            style={{transformOrigin: '50% 50%'}}
+            initial={false}
+            animate={
+              reduce
+                ? {rotate: item.baseRotateDeg}
+                : {
+                    x: kf.x,
+                    y: kf.y,
+                    scale: kf.scale,
+                    rotate: kf.rotate,
+                  }
+            }
+            transition={{
+              duration: item.duration,
+              repeat: Infinity,
+              ease: 'linear',
+              delay: item.delay,
+              times: kf.times,
+            }}
+          />
+        );
+      })}
     </>
   );
 }
