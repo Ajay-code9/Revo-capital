@@ -15,7 +15,6 @@ import {
 } from 'lucide-react';
 import { ROUTES } from '../routes/paths';
 import { RevoLogo } from '../components/RevoLogo';
-import { Footer } from '../components/Footer';
 
 export const LoginPage = () => {
   const navigate = useNavigate();
@@ -215,7 +214,6 @@ export const LoginPage = () => {
         </div>
       </div>
       </div>
-      <Footer />
     </div>
   );
 };

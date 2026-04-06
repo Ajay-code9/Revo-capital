@@ -56,14 +56,17 @@ function MeetingVisual() {
         boxShadow: '0 24px 48px -24px rgba(10, 22, 40, 0.2)',
       }}
     >
-      <svg viewBox="0 0 220 180" style={{width: '78%', height: 'auto', display: 'block'}} aria-hidden>
-        <rect x="24" y="100" width="172" height="8" rx="4" fill="rgba(255,255,255,0.12)" />
-        <circle cx="70" cy="72" r="22" fill="rgba(255,255,255,0.2)" />
-        <circle cx="150" cy="72" r="22" fill="rgba(255,255,255,0.2)" />
-        <path d="M48 118h32M140 118h32" stroke={C.primary} strokeWidth="3" strokeLinecap="round" opacity="0.9" />
-        <path d="M110 52v24M98 64h24" stroke="rgba(255,255,255,0.35)" strokeWidth="2" strokeLinecap="round" />
-        <rect x="88" y="112" width="44" height="28" rx="6" fill={C.primary} opacity="0.85" />
-      </svg>
+      <img
+        src="/images/logos/Referral.svg"
+        alt="Affiliate referral"
+        style={{
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          objectPosition: 'center',
+          display: 'block',
+        }}
+      />
     </div>
   );
 }

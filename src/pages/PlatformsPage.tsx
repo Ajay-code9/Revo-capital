@@ -1,5 +1,6 @@
 import React, {useLayoutEffect, useRef, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
+import {Globe, Zap, LineChart, ClipboardList, ShieldCheck, MonitorSmartphone} from 'lucide-react';
 import {Navbar} from '../components/Navbar';
 import {Footer} from '../components/Footer';
 import {TopContactBar} from '../components/TopContactBar';
@@ -97,32 +98,32 @@ export const PlatformsPage = () => {
     {
       title: 'Zero Installation',
       desc: 'Launch the platform instantly from any modern browser—no downloads or setup.',
-      icon: '🌐',
+      icon: Globe,
     },
     {
       title: 'Real-Time Execution',
       desc: 'Low-latency routing designed for responsive fills when markets move fast.',
-      icon: '⚡',
+      icon: Zap,
     },
     {
       title: 'Advanced Charting',
       desc: 'Professional charts, timeframes, and drawing tools built for serious analysis.',
-      icon: '📊',
+      icon: LineChart,
     },
     {
       title: 'Multiple Order Types',
       desc: 'Market, limit, stop, and more—structure entries and exits your way.',
-      icon: '📋',
+      icon: ClipboardList,
     },
     {
       title: 'Risk Management Tools',
       desc: 'Stops, limits, and visibility into exposure to help you stay in control.',
-      icon: '🛡️',
+      icon: ShieldCheck,
     },
     {
       title: 'Multi-Device Access',
       desc: 'Trade from desktop, tablet, or mobile with a consistent web experience.',
-      icon: '📱',
+      icon: MonitorSmartphone,
     },
   ];
 
@@ -341,7 +342,7 @@ export const PlatformsPage = () => {
                     marginBottom: 18,
                   }}
                 >
-                  {b.icon}
+                  <b.icon size={24} strokeWidth={2} color="#f8fafc" />
                 </div>
                 <h3 style={{margin: 0, fontSize: 18, fontWeight: 700, color: C.white}}>{b.title}</h3>
                 <p style={{margin: '10px 0 0', fontSize: 14, lineHeight: 1.55, color: C.grey}}>{b.desc}</p>

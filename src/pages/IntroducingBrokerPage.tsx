@@ -47,24 +47,17 @@ function HandshakeVisual() {
         boxShadow: '0 24px 48px -24px rgba(10, 22, 40, 0.15)',
       }}
     >
-      <svg viewBox="0 0 200 200" style={{width: '55%', maxWidth: 200, height: 'auto', display: 'block'}} aria-hidden>
-        <path
-          d="M62 108c-8-10-8-24 2-32l8-7c6-5 14-6 21-3l4 2 18-16c8-7 20-8 29-2l28 20c9 6 12 18 6 28l-2 4c-5 9-16 13-26 9l-6-3-32 36c-6 7-16 8-24 3l-40-28c-8-6-10-17-4-25l2-3z"
-          fill="none"
-          stroke={C.navy}
-          strokeWidth="3"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M118 82l28 20M96 96l18 14M78 118l24 22"
-          fill="none"
-          stroke={C.primary}
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          opacity="0.85"
-        />
-        <circle cx="100" cy="100" r="78" fill="none" stroke={C.greyLine} strokeWidth="1" strokeDasharray="6 8" opacity="0.6" />
-      </svg>
+      <img
+        src="/images/logos/img-introducing-broker.svg"
+        alt="Introducing broker"
+        style={{
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          objectPosition: 'center',
+          display: 'block',
+        }}
+      />
     </div>
   );
 }

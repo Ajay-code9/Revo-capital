@@ -124,7 +124,7 @@ export const Navbar = () => {
               role="button"
               tabIndex={0}
             >
-              <RevoLogo className="h-7 w-auto max-w-[min(200px,52vw)] aspect-1432/504 object-contain object-center" />
+              <RevoLogo className="h-9 w-auto max-w-[min(230px,62vw)] aspect-1432/504 object-contain object-center sm:h-10" />
             </div>
 
             <button

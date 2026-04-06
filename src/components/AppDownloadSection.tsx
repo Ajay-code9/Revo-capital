@@ -3,10 +3,29 @@ import {Smartphone} from 'lucide-react';
 
 export const AppDownloadSection = () => {
   return (
-    <section className="overflow-hidden bg-black text-white">
-      {/* Tight vertical rhythm: background hugs heading → download card; phone capped so it does not stretch the row */}
-      <div className="mx-auto grid max-w-7xl lg:grid-cols-[1.22fr_0.78fr] lg:items-start lg:gap-0">
-        <div className="flex w-full flex-col justify-start px-5 pb-8 pt-7 sm:pb-9 sm:pl-9 sm:pr-6 sm:pt-8 md:pl-11 lg:pb-10 lg:pl-16 lg:pr-6 lg:pt-9 xl:pl-24 xl:pr-8 2xl:pl-28 2xl:pr-10">
+    <section className="relative overflow-hidden bg-black text-white">
+      {/* Desktop: phone sits on right as a full-height visual layer behind content */}
+      <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[62%] lg:block" aria-hidden>
+        <img
+          src="/images/logos/home_trade.webp"
+          alt=""
+          className="h-full w-full object-contain object-right"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+      <div
+        className="pointer-events-none absolute inset-0 hidden lg:block"
+        style={{
+          background:
+            'linear-gradient(90deg, #000 0%, #000 44%, rgba(0,0,0,0.88) 57%, rgba(0,0,0,0.36) 76%, rgba(0,0,0,0) 100%)',
+        }}
+        aria-hidden
+      />
+
+      {/* Content stays above background image */}
+      <div className="relative z-10 mx-auto max-w-7xl">
+        <div className="flex w-full flex-col justify-start px-5 pb-8 pt-7 sm:pb-9 sm:pl-9 sm:pr-6 sm:pt-8 md:pl-11 lg:w-[56%] lg:pb-10 lg:pl-16 lg:pr-6 lg:pt-9 xl:pl-24 xl:pr-8 2xl:pl-28 2xl:pr-10">
           <h2 className="text-[2rem] font-bold leading-tight tracking-tight sm:text-4xl lg:text-[2.75rem] lg:leading-[1.12] xl:text-5xl">
             Where Everything Comes Together
             <span className="text-[#5CE1E6]">.</span>
@@ -75,12 +94,12 @@ export const AppDownloadSection = () => {
           </div>
         </div>
 
-        {/* Phone: flush right in column, larger max-height; object-contain keeps full asset visible */}
-        <div className="relative flex w-full min-w-0 shrink-0 justify-end items-start bg-black px-5 pb-7 pt-4 sm:px-7 sm:pb-8 sm:pt-5 lg:px-0 lg:pb-10 lg:pl-2 lg:pr-0 lg:pt-9 xl:pl-0 xl:pr-0 2xl:pr-0">
+        {/* Mobile/tablet fallback: keep phone visible below content */}
+        <div className="relative flex w-full min-w-0 shrink-0 justify-end items-start px-5 pb-7 pt-4 sm:px-7 sm:pb-8 sm:pt-5 lg:hidden">
           <img
             src="/images/logos/home_trade.webp"
             alt="Revo trading app — XAUUSD-ECN chart, buy and sell, and navigation"
-            className="h-auto w-auto max-h-[min(54vh,440px)] max-w-full shrink-0 object-contain object-right sm:max-h-[min(58vh,480px)] lg:max-h-[min(84vh,640px)] xl:max-h-[min(88vh,700px)] 2xl:max-h-[min(90vh,760px)]"
+            className="h-auto w-auto max-h-[min(54vh,440px)] max-w-full shrink-0 object-contain object-right sm:max-h-[min(58vh,480px)]"
             loading="lazy"
             decoding="async"
           />

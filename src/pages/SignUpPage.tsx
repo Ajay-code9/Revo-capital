@@ -14,7 +14,6 @@ import {
 } from 'lucide-react';
 import { ROUTES } from '../routes/paths';
 import { RevoLogo } from '../components/RevoLogo';
-import { Footer } from '../components/Footer';
 
 export const SignUpPage = () => {
   const navigate = useNavigate();
@@ -278,7 +277,6 @@ export const SignUpPage = () => {
         </motion.div>
       </div>
       </div>
-      <Footer />
     </div>
   );
 };

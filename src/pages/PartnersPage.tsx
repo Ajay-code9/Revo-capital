@@ -30,6 +30,12 @@ function useHoverRed() {
 }
 
 function CardTopVisual({variant}: {variant: 'ib' | 'aff' | 'mm'}) {
+  const iconSrc =
+    variant === 'ib'
+      ? '/images/logos/Introducing-Brokers.svg'
+      : variant === 'aff'
+        ? '/images/logos/Affiliates.svg'
+        : '/images/logos/Money-Managers.svg';
   const bg =
     variant === 'ib'
       ? `linear-gradient(145deg, ${C.navy} 0%, #1e293b 100%)`
@@ -49,23 +55,18 @@ function CardTopVisual({variant}: {variant: 'ib' | 'aff' | 'mm'}) {
         borderBottom: `1px solid ${C.greyLine}`,
       }}
     >
-      {variant === 'ib' && (
-        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke={C.white} strokeWidth="1.6">
-          <path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      )}
-      {variant === 'aff' && (
-        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke={C.white} strokeWidth="1.6">
-          <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" strokeLinecap="round" />
-          <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" strokeLinecap="round" />
-        </svg>
-      )}
-      {variant === 'mm' && (
-        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke={C.primary} strokeWidth="1.6">
-          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" strokeLinejoin="round" />
-          <path d="M9 22V12h6v10" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      )}
+      <img
+        src={iconSrc}
+        alt=""
+        aria-hidden
+        style={{
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          objectPosition: 'center',
+          display: 'block',
+        }}
+      />
     </div>
   );
 }
