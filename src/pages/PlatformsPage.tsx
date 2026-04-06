@@ -147,7 +147,6 @@ export const PlatformsPage = () => {
   const reduceMotion = useReducedMotion();
   const [benefitHover, setBenefitHover] = useState<number | null>(null);
   const [featureTab, setFeatureTab] = useState(0);
-  const [ctaHover, setCtaHover] = useState(false);
   const [heroCtaHover, setHeroCtaHover] = useState(false);
   const [accessCtaHover, setAccessCtaHover] = useState(false);
   const [howStepHover, setHowStepHover] = useState<number | null>(null);
@@ -1335,92 +1334,6 @@ export const PlatformsPage = () => {
               Stable internet connection required
             </span>
           </motion.div>
-        </div>
-      </section>
-
-      {/* SECTION 7 — FINAL CTA */}
-      <section
-        style={{
-          ...sectionPad,
-          position: 'relative',
-          minHeight: 380,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: `linear-gradient(135deg, ${C.navyMid} 0%, ${C.navy} 50%, #1e293b 100%)`,
-          overflow: 'hidden',
-        }}
-      >
-        <div
-          aria-hidden
-          style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'linear-gradient(90deg, rgba(2,6,23,0.92) 0%, rgba(2,6,23,0.75) 50%, rgba(2,6,23,0.88) 100%)',
-            zIndex: 1,
-          }}
-        />
-        <div
-          aria-hidden
-          style={{
-            position: 'absolute',
-            inset: 0,
-            opacity: 0.35,
-            backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 4px)',
-          }}
-        />
-        <div style={{position: 'relative', zIndex: 2, textAlign: 'center', maxWidth: 720, padding: '0 16px'}}>
-          <p
-            style={{
-              margin: '0 0 8px',
-              fontSize: 12,
-              fontWeight: 700,
-              letterSpacing: '0.2em',
-              color: C.primary,
-              textTransform: 'uppercase' as const,
-            }}
-          >
-            Banner placeholder — replace with image
-          </p>
-          <h2
-            style={{
-              margin: 0,
-              fontSize: 'clamp(2rem, 4vw, 2.75rem)',
-              fontWeight: 800,
-              color: C.white,
-              letterSpacing: '-0.02em',
-            }}
-          >
-            Ready to Trade?
-          </h2>
-          <p style={{margin: '16px 0 0', fontSize: 18, color: 'rgba(255,255,255,0.85)', lineHeight: 1.55}}>
-            Access global markets with RevoTrader
-          </p>
-          <button
-            type="button"
-            onClick={() => navigate(ROUTES.signup)}
-            onMouseEnter={() => setCtaHover(true)}
-            onMouseLeave={() => setCtaHover(false)}
-            style={{
-              marginTop: 32,
-              padding: '16px 40px',
-              borderRadius: 999,
-              border: 'none',
-              cursor: 'pointer',
-              fontFamily: font,
-              fontSize: 13,
-              fontWeight: 700,
-              letterSpacing: '0.1em',
-              color: C.white,
-              background: ctaHover ? C.primaryHover : C.primary,
-              boxShadow: `0 16px 40px -10px ${C.primary}88`,
-              transition,
-              width: '100%',
-              maxWidth: 320,
-            }}
-          >
-            START TRADING NOW
-          </button>
         </div>
       </section>
 
