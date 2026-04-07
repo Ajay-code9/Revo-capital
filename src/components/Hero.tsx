@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {motion, AnimatePresence, useReducedMotion} from 'motion/react';
 import {ArrowRight, MessageCircle} from 'lucide-react';
+import {Button} from './ui/Button';
 
 const HERO_MAIN_SRC = '/images/logos/hero-section-homepage.svg';
 
@@ -292,12 +293,9 @@ export const Hero = () => (
             transition={{delay: 0.22, duration: 0.45}}
             className="flex justify-center lg:justify-start"
           >
-            <button
-              type="button"
-              className="btn-primary flex items-center gap-2 rounded-full px-10 py-4 text-lg font-bold lg:px-12"
-            >
+            <Button size="lg" className="px-10 py-4 text-lg lg:px-12">
               Get Started <ArrowRight size={20} />
-            </button>
+            </Button>
           </motion.div>
 
           <motion.div
@@ -346,13 +344,9 @@ export const Hero = () => (
     </div>
 
     <div className="fixed bottom-6 right-6 z-100">
-      <button
-        type="button"
-        className="btn-primary flex h-14 w-14 items-center justify-center rounded-full"
-        aria-label="Open chat"
-      >
+      <Button size="icon" className="h-14 w-14" aria-label="Open chat">
         <MessageCircle size={28} fill="white" />
-      </button>
+      </Button>
     </div>
   </section>
 );

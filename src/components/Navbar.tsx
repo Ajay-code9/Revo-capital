@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import {MARKET_PATHS, PARTNER_PATHS, ROUTES} from '../routes/paths';
 import {RevoLogo} from './RevoLogo';
+import {Button} from './ui/Button';
 
 function SocialTradingNavLabel({className = ''}: {className?: string}) {
   return (
@@ -270,16 +271,16 @@ export const Navbar = () => {
                   <ArrowUpRight size={14} className="shrink-0 lg:h-4 lg:w-4" />
                 </div>
               </button>
-              <button
-                type="button"
+              <Button
                 onClick={() => go(ROUTES.login)}
-                className="btn-primary flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[11px] font-bold lg:gap-2 lg:px-4 lg:text-[12px] xl:px-5 xl:text-[13px]"
+                size="sm"
+                className="gap-1.5 px-3.5 py-1.5 text-[11px] lg:gap-2 lg:px-4 lg:text-[12px] xl:px-5 xl:text-[13px]"
               >
                 <span className="whitespace-nowrap">Login</span>
                 <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/20 lg:h-7 lg:w-7">
                   <ArrowUpRight size={14} className="shrink-0 lg:h-4 lg:w-4" />
                 </div>
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -490,13 +491,9 @@ export const Navbar = () => {
                 >
                   Log in
                 </button>
-                <button
-                  type="button"
-                  onClick={() => go(ROUTES.signup)}
-                  className="btn-primary w-full rounded-full py-3.5 text-[15px] font-bold"
-                >
+                <Button onClick={() => go(ROUTES.signup)} className="w-full py-3.5 text-[15px]">
                   Sign up
-                </button>
+                </Button>
               </div>
             </div>
           </motion.div>

@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { ROUTES } from '../routes/paths';
 import { RevoLogo } from '../components/RevoLogo';
+import {Button} from '../components/ui/Button';
 
 export const LoginPage = () => {
   const navigate = useNavigate();
@@ -171,9 +172,9 @@ export const LoginPage = () => {
                 </label>
               </div>
 
-              <button type="button" className="btn-primary w-full py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2 group">
+              <Button type="button" className="w-full rounded-xl py-4 text-lg group">
                 Login <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-              </button>
+              </Button>
 
               <div className="relative py-4">
                 <div className="absolute inset-0 flex items-center">
