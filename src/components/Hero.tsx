@@ -265,7 +265,7 @@ function RotatingHeroHeadline() {
 }
 
 export const Hero = () => (
-  <section className="relative overflow-hidden bg-white py-12 lg:py-16">
+  <section className="relative overflow-hidden bg-white pt-5 pb-10 sm:pt-6 sm:pb-11 lg:pt-7 lg:pb-14">
     <div className="relative z-10 mx-auto max-w-7xl px-4 lg:px-8">
       <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
         <div className="order-1 space-y-6 text-center lg:space-y-8 lg:text-left">
