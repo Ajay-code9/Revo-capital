@@ -1,210 +1,614 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {motion, AnimatePresence, useReducedMotion} from 'motion/react';
 import {ArrowRight, MessageCircle} from 'lucide-react';
 import {Button} from './ui/Button';
 
 const HERO_MAIN_SRC = '/images/logos/hero-section-homepage.svg';
 
-type HeroFloatLogo = {
-  src: string;
-  /** Anchored to the hero image frame (`relative` wrapper = img bounds) — no rotate here */
-  className: string;
-  delay: number;
-  /** Orbit period (s); linear easing for seamless loop */
-  duration: number;
-  /** Ellipse radii (px): drift toward / away from phones */
-  rx: number;
-  ry: number;
-  /** Phase offset so icons don’t move in sync */
-  phase: number;
-  /** Mean tilt (deg) */
-  baseRotateDeg: number;
-  /** ± tilt wobble amplitude (deg), synced to CCW orbit */
-  tiltDeg: number;
-  /** +1 = left column (orbit bulges toward +x); -1 = right column (toward -x) */
-  towardSign: 1 | -1;
-};
+const TWO_PI = Math.PI * 2;
 
-const ORBIT_STEPS = 14;
+/** One full anticlockwise lap (~seconds); all icons share one phase → equal angular gap always */
+const ORBIT_PERIOD_SEC = 360;
+/** θ decreases ⇒ anticlockwise around the hero (x right, y down). */
+const ORBIT_OMEGA = -TWO_PI / ORBIT_PERIOD_SEC;
+/** ~half visual radius of a coin on screen (px), used for orbit inset */
+const ORBIT_ICON_HALF_PX = 26;
+/** Very slow self-spin on each icon’s axis (rad/s); ~0.009 ≈ one full turn ~700s */
+const SELF_SPIN_BASE = 0.009;
+/**
+ * Intro: icon 0 at centre first; when k−1 starts flying to orbit, icon k pops in at centre (fan spread).
+ * Each icon then moves along a curved path straight to its final orbit slot — no left staging line.
+ */
+const FLOAT_INTRO_INITIAL_DELAY_SEC = 0.12;
+const FLOAT_INTRO_ASSEMBLE_STAGGER_SEC = 0.38;
+/** Centre → orbit flight duration */
+const FLOAT_INTRO_FLY_TO_ORBIT_SEC = 0.52;
 
-/** CCW on screen: x = sign·rx·cos(φ), y = -ry·sin(φ), φ = 2πt + phase */
-function buildOrbitKeyframes(
-  rx: number,
-  ry: number,
-  phase: number,
-  towardSign: 1 | -1,
-  baseRotateDeg: number,
-  tiltDeg: number,
-) {
-  const x: number[] = [];
-  const y: number[] = [];
-  const scale: number[] = [];
-  const rotate: number[] = [];
-  for (let i = 0; i <= ORBIT_STEPS; i++) {
-    const t = i / ORBIT_STEPS;
-    const phi = t * Math.PI * 2 + phase;
-    x.push(towardSign * rx * Math.cos(phi));
-    y.push(-ry * Math.sin(phi));
-    // “Closer” to phones when displacement points inward
-    const inward = towardSign * Math.cos(phi);
-    const depth = (inward + 1) / 2;
-    scale.push(0.88 + 0.15 * depth);
-    // Gentle anticlockwise tilt wobble (doesn’t flip logos upside-down)
-    rotate.push(baseRotateDeg + tiltDeg * Math.sin(phi + 0.4));
-  }
-  const times = Array.from({length: ORBIT_STEPS + 1}, (_, i) => i / ORBIT_STEPS);
-  return {x, y, scale, rotate, times};
+function clamp01(t: number) {
+  return Math.min(1, Math.max(0, t));
 }
 
-/** floating-logo1–8: hug hero artboard; anticlockwise orbit + depth + slow CCW spin */
-const HERO_FLOAT_LOGOS: HeroFloatLogo[] = [
-  {
-    src: '/images/logos/floating-logo1.svg',
-    className: 'absolute -left-[5%] top-[6%] z-20 w-[2.65rem] sm:w-[3rem] md:w-[3.35rem]',
-    delay: 0,
-    duration: 7,
-    rx: 16,
-    ry: 13,
-    phase: 0.35,
-    baseRotateDeg: -18,
-    tiltDeg: 9,
-    towardSign: 1,
-  },
-  {
-    src: '/images/logos/floating-logo2.svg',
-    className: 'absolute -left-[6%] top-[30%] z-30 w-[2.5rem] sm:w-[2.85rem] md:w-12',
-    delay: 0.9,
-    duration: 8,
-    rx: 14,
-    ry: 16,
-    phase: 2.1,
-    baseRotateDeg: 10,
-    tiltDeg: 8,
-    towardSign: 1,
-  },
-  {
-    src: '/images/logos/floating-logo3.svg',
-    className: 'absolute -left-[4%] top-[54%] z-20 w-[2.4rem] sm:w-[2.75rem] md:w-12',
-    delay: 0.2,
-    duration: 7,
-    rx: 15,
-    ry: 12,
-    phase: 4.2,
-    baseRotateDeg: -8,
-    tiltDeg: 7,
-    towardSign: 1,
-  },
-  {
-    src: '/images/logos/floating-logo4.svg',
-    className: 'absolute -left-[5%] bottom-[10%] z-30 w-[2.55rem] sm:w-[2.9rem] md:w-[3.1rem]',
-    delay: 1.4,
-    duration: 8,
-    rx: 13,
-    ry: 15,
-    phase: 5.5,
-    baseRotateDeg: 14,
-    tiltDeg: 10,
-    towardSign: 1,
-  },
-  {
-    src: '/images/logos/floating-logo5.svg',
-    className: 'absolute -right-[5%] top-[7%] z-30 w-[2.4rem] sm:w-[2.75rem] md:w-12',
-    delay: 0.5,
-    duration: 7,
-    rx: 15,
-    ry: 14,
-    phase: 1.2,
-    baseRotateDeg: -12,
-    tiltDeg: 8,
-    towardSign: -1,
-  },
-  {
-    src: '/images/logos/floating-logo6.svg',
-    className: 'absolute -right-[6%] top-[32%] z-20 w-[2.7rem] sm:w-[3rem] md:w-[3.25rem]',
-    delay: 1.7,
-    duration: 8,
-    rx: 17,
-    ry: 13,
-    phase: 3.4,
-    baseRotateDeg: 15,
-    tiltDeg: 9,
-    towardSign: -1,
-  },
-  {
-    src: '/images/logos/floating-logo7.svg',
-    className: 'absolute -right-[4%] top-[56%] z-30 w-[2.55rem] sm:w-[2.9rem] md:w-[3.1rem]',
-    delay: 0,
-    duration: 10,
-    rx: 14,
-    ry: 15,
-    phase: 4.9,
-    baseRotateDeg: -10,
-    tiltDeg: 7,
-    towardSign: -1,
-  },
-  {
-    src: '/images/logos/floating-logo8.svg',
-    className: 'absolute -right-[5%] bottom-[11%] z-20 w-[2.6rem] sm:w-[3rem] md:w-[3.2rem]',
-    delay: 1.1,
-    duration: 7,
-    rx: 16,
-    ry: 14,
-    phase: 0.8,
-    baseRotateDeg: 20,
-    tiltDeg: 11,
-    towardSign: -1,
-  },
+function easeInOutCubic(t: number) {
+  const c = clamp01(t);
+  return c < 0.5 ? 4 * c * c * c : 1 - (-2 * c + 2) ** 3 / 2;
+}
+
+/** Vertical spread at centre so visible icons don’t sit on one pixel before they fly out. */
+function introCentreFanOffsetY(i: number, n: number, ry: number) {
+  if (n <= 1) return 0;
+  const amp = Math.min(ry * 0.24, 76);
+  return ((i - (n - 1) / 2) / (n - 1)) * amp;
+}
+
+type FloatIntroSchedule = {
+  flyStart: number[];
+  flyEnd: number[];
+  introEnd: number;
+};
+
+function computeFloatIntroSchedule(n: number): FloatIntroSchedule {
+  const t0 = FLOAT_INTRO_INITIAL_DELAY_SEC;
+  const S = FLOAT_INTRO_ASSEMBLE_STAGGER_SEC;
+  const D = FLOAT_INTRO_FLY_TO_ORBIT_SEC;
+
+  const flyStart = Array.from({length: n}, (_, i) => t0 + i * S);
+  const flyEnd = flyStart.map((s) => s + D);
+  const introEnd = flyEnd[n - 1] + 0.08;
+  return {flyStart, flyEnd, introEnd};
+}
+
+function floatIntroTotalDurationSec(n: number) {
+  return computeFloatIntroSchedule(n).introEnd;
+}
+
+/** Quadratic Bezier with outward bulge — reads as cutting across an arc into orbit. */
+function introArcPoint(ax: number, ay: number, bx: number, by: number, t: number) {
+  const mx = (ax + bx) / 2;
+  const my = (ay + by) / 2;
+  const dx = bx - ax;
+  const dy = by - ay;
+  const len = Math.hypot(dx, dy) || 1;
+  let nx = -dy / len;
+  let ny = dx / len;
+  if (nx * mx + ny * my < 0) {
+    nx *= -1;
+    ny *= -1;
+  }
+  const bulge = len * 0.34;
+  const cx = mx + nx * bulge;
+  const cy = my + ny * bulge;
+  const u = 1 - t;
+  return {
+    x: u * u * ax + 2 * u * t * cx + t * t * bx,
+    y: u * u * ay + 2 * u * t * cy + t * t * by,
+  };
+}
+
+/**
+ * Vertical semi-axis of the orbit (same as the old circular radius): half diagonal of the hero
+ * box, inset for icon size.
+ */
+function heroOrbitRadiusPx(w: number, h: number) {
+  const circumRadius = Math.hypot(w, h) * 0.5;
+  const r = circumRadius - ORBIT_ICON_HALF_PX * 0.92;
+  return Math.max(Math.min(w, h) * 0.18, r);
+}
+
+/** Horizontal semi-axis = ry × this; <1 narrows orbit width, height (ry) unchanged */
+const ORBIT_ELLIPSE_RX_SCALE = 0.65;
+
+function heroOrbitEllipseAxes(w: number, h: number) {
+  const ry = heroOrbitRadiusPx(w, h);
+  const rx = ry * ORBIT_ELLIPSE_RX_SCALE;
+  return {rx, ry};
+}
+
+function wrapAngle(a: number) {
+  return ((a % TWO_PI) + TWO_PI) % TWO_PI;
+}
+
+const HERO_ORBIT_LOGOS: {src: string; baseTiltDeg: number}[] = [
+  {src: '/images/logos/floating-logo1.svg', baseTiltDeg: -14},
+  {src: '/images/logos/floating-logo2.svg', baseTiltDeg: 10},
+  {src: '/images/logos/floating-logo3.svg', baseTiltDeg: -8},
+  {src: '/images/logos/floating-logo4.svg', baseTiltDeg: 14},
+  {src: '/images/logos/floating-logo5.svg', baseTiltDeg: -11},
+  {src: '/images/logos/floating-logo6.svg', baseTiltDeg: 16},
+  {src: '/images/logos/floating-logo7.svg', baseTiltDeg: -9},
+  {src: '/images/logos/floating-logo8.svg', baseTiltDeg: 18},
 ];
 
-function HeroFloatingLogos() {
+const HERO_FLOAT_GLITTER_CSS = `
+  .hero-float-wrap {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 2.75rem;
+    height: 2.75rem;
+    isolation: isolate;
+    will-change: transform;
+  }
+  @media (min-width: 640px) {
+    .hero-float-wrap { width: 3rem; height: 3rem; }
+  }
+  @media (min-width: 768px) {
+    .hero-float-wrap { width: 3.5rem; height: 3.5rem; }
+  }
+  .hero-float-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    perspective: 520px;
+    transform-style: preserve-3d;
+  }
+  .hero-float-levitate {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    transform-style: preserve-3d;
+    animation: hero-float-levitate 4.1s ease-in-out infinite;
+    animation-delay: var(--hero-float-delay, 0s);
+  }
+  .hero-float-conic-aura {
+    position: absolute;
+    inset: -42%;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.38;
+    background: conic-gradient(
+      from 0deg,
+      rgba(220, 38, 38, 0.45),
+      rgba(255, 255, 255, 0.15),
+      rgba(250, 204, 21, 0.2),
+      rgba(255, 255, 255, 0.25),
+      rgba(220, 38, 38, 0.35),
+      transparent 140deg,
+      rgba(220, 38, 38, 0.25),
+      rgba(255, 255, 255, 0.12),
+      rgba(220, 38, 38, 0.45)
+    );
+    filter: blur(10px);
+    animation: hero-float-aura-spin 26s linear infinite;
+    animation-delay: var(--hero-float-delay, 0s);
+    transform-origin: 50% 50%;
+    will-change: transform;
+  }
+  .hero-float-pulse-ring {
+    position: absolute;
+    inset: -14%;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow:
+      0 0 14px rgba(220, 38, 38, 0.22),
+      0 0 32px rgba(255, 255, 255, 0.14),
+      inset 0 0 18px rgba(255, 255, 255, 0.22);
+    animation: hero-float-ring-pulse 3.2s ease-in-out infinite;
+    animation-delay: var(--hero-float-delay, 0s);
+  }
+  .hero-float-tumbler {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    transform-style: preserve-3d;
+    animation: hero-float-tumble 7s ease-in-out infinite;
+    animation-delay: var(--hero-float-delay, 0s);
+  }
+  .hero-float-coin-img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transform: translateZ(12px);
+    animation: hero-float-coin-sparkle 4.5s ease-in-out infinite;
+    animation-delay: var(--hero-float-delay, 0s);
+  }
+  .hero-float-shimmer {
+    position: absolute;
+    inset: -10%;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0.72;
+    transform: translateZ(18px);
+    background: linear-gradient(
+      118deg,
+      transparent 0%,
+      transparent 40%,
+      rgba(255, 255, 255, 0.55) 47%,
+      rgba(255, 252, 240, 0.95) 50%,
+      rgba(255, 255, 255, 0.6) 53%,
+      transparent 62%,
+      transparent 100%
+    );
+    background-size: 280% 280%;
+    mix-blend-mode: soft-light;
+    animation: hero-float-shimmer-sweep 2.6s ease-in-out infinite;
+    animation-delay: var(--hero-float-delay, 0s);
+  }
+  .hero-float-shimmer-2 {
+    position: absolute;
+    inset: -14%;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 3;
+    opacity: 0.35;
+    transform: translateZ(22px);
+    background: linear-gradient(
+      -65deg,
+      transparent 35%,
+      rgba(255, 255, 255, 0.25) 48%,
+      rgba(255, 255, 255, 0.85) 50%,
+      rgba(255, 255, 255, 0.3) 52%,
+      transparent 65%
+    );
+    background-size: 240% 240%;
+    mix-blend-mode: overlay;
+    animation: hero-float-shimmer-sweep-rev 3.4s ease-in-out infinite;
+    animation-delay: calc(var(--hero-float-delay, 0s) + 0.6s);
+  }
+  .hero-float-sparkles {
+    position: absolute;
+    inset: -5%;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 4;
+    transform: translateZ(24px);
+    opacity: 0.5;
+    background: radial-gradient(circle at 28% 22%, rgba(255, 255, 255, 0.98) 0%, transparent 1.1%),
+      radial-gradient(circle at 72% 35%, rgba(255, 255, 255, 0.9) 0%, transparent 1%),
+      radial-gradient(circle at 45% 78%, rgba(255, 252, 240, 0.95) 0%, transparent 1.05%),
+      radial-gradient(circle at 82% 68%, rgba(255, 255, 255, 0.82) 0%, transparent 0.95%);
+    background-size: 100% 100%;
+    animation: hero-float-sparkle-twinkle 2.1s ease-in-out infinite;
+    animation-delay: var(--hero-float-delay, 0s);
+  }
+  @keyframes hero-float-levitate {
+    0%, 100% { transform: translateY(-4px); }
+    50% { transform: translateY(5px); }
+  }
+  @keyframes hero-float-aura-spin {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes hero-float-tumble {
+    0%, 100% { transform: rotateX(6deg) rotateY(-11deg); }
+    25% { transform: rotateX(-4deg) rotateY(8deg); }
+    50% { transform: rotateX(5deg) rotateY(10deg); }
+    75% { transform: rotateX(-6deg) rotateY(-7deg); }
+  }
+  @keyframes hero-float-ring-pulse {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 0.92; transform: scale(1.05); }
+  }
+  @keyframes hero-float-coin-sparkle {
+    0%, 100% {
+      filter: drop-shadow(0 5px 14px rgba(0, 0, 0, 0.2))
+        drop-shadow(0 0 10px rgba(220, 38, 38, 0.16));
+    }
+    33% {
+      filter: drop-shadow(0 7px 20px rgba(0, 0, 0, 0.22))
+        drop-shadow(0 0 22px rgba(255, 255, 255, 0.45))
+        drop-shadow(0 0 14px rgba(220, 38, 38, 0.22));
+    }
+    66% {
+      filter: drop-shadow(0 5px 16px rgba(0, 0, 0, 0.19))
+        drop-shadow(0 0 16px rgba(250, 204, 21, 0.2))
+        drop-shadow(0 0 10px rgba(220, 38, 38, 0.18));
+    }
+  }
+  @keyframes hero-float-shimmer-sweep {
+    0% { background-position: 120% 40%; }
+    100% { background-position: -20% 60%; }
+  }
+  @keyframes hero-float-shimmer-sweep-rev {
+    0% { background-position: -30% 70%; }
+    100% { background-position: 130% 30%; }
+  }
+  @keyframes hero-float-sparkle-twinkle {
+    0%, 100% { opacity: 0.35; transform: translateZ(24px) scale(1); }
+    40% { opacity: 0.95; transform: translateZ(24px) scale(1.08); }
+    55% { opacity: 0.5; transform: translateZ(24px) scale(1.02); }
+  }
+  .hero-orbit-glitter-off .hero-float-levitate,
+  .hero-orbit-glitter-off .hero-float-conic-aura,
+  .hero-orbit-glitter-off .hero-float-tumbler,
+  .hero-orbit-glitter-off .hero-float-pulse-ring,
+  .hero-orbit-glitter-off .hero-float-coin-img,
+  .hero-orbit-glitter-off .hero-float-shimmer,
+  .hero-orbit-glitter-off .hero-float-shimmer-2,
+  .hero-orbit-glitter-off .hero-float-sparkles {
+    animation: none !important;
+  }
+  .hero-orbit-glitter-off .hero-float-conic-aura {
+    opacity: 0.12;
+    transform: none;
+    filter: blur(8px);
+  }
+  .hero-orbit-glitter-off .hero-float-tumbler {
+    transform: none;
+  }
+  .hero-orbit-glitter-off .hero-float-levitate {
+    transform: none;
+  }
+  .hero-orbit-glitter-off .hero-float-coin-img {
+    transform: none;
+    filter: drop-shadow(0 5px 14px rgba(0, 0, 0, 0.2))
+      drop-shadow(0 0 12px rgba(220, 38, 38, 0.14));
+  }
+  .hero-orbit-glitter-off .hero-float-shimmer { opacity: 0.22; }
+  .hero-orbit-glitter-off .hero-float-shimmer-2 { opacity: 0.12; }
+  .hero-orbit-glitter-off .hero-float-sparkles { opacity: 0.15; }
+  .hero-orbit-glitter-off .hero-float-pulse-ring { opacity: 0.35; }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-float-levitate,
+    .hero-float-conic-aura,
+    .hero-float-tumbler,
+    .hero-float-pulse-ring,
+    .hero-float-coin-img,
+    .hero-float-shimmer,
+    .hero-float-shimmer-2,
+    .hero-float-sparkles {
+      animation: none !important;
+    }
+    .hero-float-conic-aura { opacity: 0.1; transform: none; }
+    .hero-float-tumbler,
+    .hero-float-levitate { transform: none; }
+    .hero-float-coin-img {
+      transform: none;
+      filter: drop-shadow(0 5px 14px rgba(0, 0, 0, 0.2))
+        drop-shadow(0 0 12px rgba(220, 38, 38, 0.12));
+    }
+    .hero-float-shimmer { opacity: 0.2; }
+    .hero-float-shimmer-2 { opacity: 0.1; }
+    .hero-float-sparkles { opacity: 0.12; transform: none; }
+    .hero-float-pulse-ring { opacity: 0.3; }
+  }
+`;
+
+function paintOrbitalIcons(
+  theta: Float64Array,
+  spinRad: Float64Array,
+  w: number,
+  h: number,
+  wrapRefs: React.MutableRefObject<(HTMLDivElement | null)[]>,
+  introElapsedSec: number,
+  skipIntro: boolean,
+) {
+  const n = HERO_ORBIT_LOGOS.length;
+  const {rx, ry} = heroOrbitEllipseAxes(w, h);
+  const sch = computeFloatIntroSchedule(n);
+  const introEnd = sch.introEnd;
+  const D = FLOAT_INTRO_FLY_TO_ORBIT_SEC;
+
+  for (let i = 0; i < n; i++) {
+    const wrap = wrapRefs.current[i];
+    if (!wrap) continue;
+    const t = theta[i];
+    const ox = rx * Math.cos(t);
+    const oy = ry * Math.sin(t);
+    const yCentreFan = introCentreFanOffsetY(i, n, ry);
+
+    const visible = skipIntro || i === 0 || introElapsedSec >= sch.flyStart[i - 1];
+    wrap.style.opacity = visible ? '1' : '0';
+
+    let x: number;
+    let y: number;
+    let scaleMult: number;
+
+    if (skipIntro) {
+      x = ox;
+      y = oy;
+      scaleMult = 1;
+    } else if (!visible) {
+      x = 0;
+      y = 0;
+      scaleMult = 0.36;
+    } else {
+      const T = introElapsedSec;
+      const fs = sch.flyStart[i];
+      const fe = sch.flyEnd[i];
+      const waitStart = i === 0 ? 0 : sch.flyStart[i - 1];
+      const waitDur = Math.max(1e-6, fs - waitStart);
+
+      if (T < fs) {
+        x = 0;
+        y = yCentreFan;
+        const pop = easeInOutCubic((T - waitStart) / waitDur);
+        scaleMult = 0.34 + 0.2 * pop;
+      } else if (T < fe) {
+        const p = easeInOutCubic((T - fs) / D);
+        const pt = introArcPoint(0, yCentreFan, ox, oy, p);
+        x = pt.x;
+        y = pt.y;
+        scaleMult = 0.54 + 0.46 * p;
+      } else {
+        x = ox;
+        y = oy;
+        scaleMult = 1;
+      }
+    }
+
+    const depth = (Math.sin(t) + 1) / 2;
+    const scale = scaleMult * (0.9 + 0.14 * depth);
+    const orbitWobble = (t * 180) / Math.PI * 0.035;
+    const spinDeg = (spinRad[i] * 180) / Math.PI;
+    const tilt = HERO_ORBIT_LOGOS[i].baseTiltDeg + orbitWobble + spinDeg;
+    const introActive = !skipIntro && introElapsedSec < introEnd - 0.02;
+    const z = introActive ? 26 + i : 15 + Math.round(depth * 40);
+    wrap.style.zIndex = String(z);
+    wrap.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) rotate(${tilt}deg) scale(${scale})`;
+  }
+}
+
+type OrbitAnimState = {orbitPhase: number; spinRad: Float64Array};
+
+/**
+ * Elliptical path; single shared phase so every icon stays at exactly 360°/8 apart. Very slow
+ * orbit + slow per-icon spin on its own axis.
+ */
+function HeroOrbitalFloats({
+  containerRef,
+}: {
+  containerRef: React.RefObject<HTMLDivElement | null>;
+}) {
   const reduce = useReducedMotion();
+  const [box, setBox] = useState({w: 0, h: 0});
+  const [floatReady, setFloatReady] = useState(!!reduce);
+  const wrapRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const dimsRef = useRef({w: 0, h: 0});
+  const animRef = useRef<OrbitAnimState | null>(null);
+
+  useEffect(() => {
+    if (reduce) setFloatReady(true);
+  }, [reduce]);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => {
+      const r = el.getBoundingClientRect();
+      dimsRef.current = {w: r.width, h: r.height};
+      setBox({w: r.width, h: r.height});
+    });
+    ro.observe(el);
+    const r = el.getBoundingClientRect();
+    dimsRef.current = {w: r.width, h: r.height};
+    setBox({w: r.width, h: r.height});
+    return () => ro.disconnect();
+  }, [containerRef]);
+
+  useEffect(() => {
+    if (reduce) return;
+
+    const n = HERO_ORBIT_LOGOS.length;
+    const spinRad = new Float64Array(n);
+    const spinOmega = new Float64Array(n);
+    for (let i = 0; i < n; i++) {
+      spinRad[i] = (i / n) * TWO_PI;
+      const dir = i % 2 === 0 ? 1 : -1;
+      spinOmega[i] = dir * SELF_SPIN_BASE;
+    }
+    animRef.current = {orbitPhase: 0, spinRad};
+
+    const theta = new Float64Array(n);
+    let rafId = 0;
+    let last = performance.now();
+    let introStartMs: number | null = null;
+
+    const introDoneAt = floatIntroTotalDurationSec(n);
+
+    const step = (now: number) => {
+      const ph = animRef.current;
+      if (!ph) return;
+
+      let dt = (now - last) / 1000;
+      last = now;
+      dt = Math.min(0.045, Math.max(0, dt));
+
+      const {w, h} = dimsRef.current;
+      if (w < 48 || h < 48) return;
+
+      if (introStartMs === null) introStartMs = now;
+      const introElapsedSec = (now - introStartMs) / 1000;
+
+      if (introElapsedSec >= introDoneAt) {
+        ph.orbitPhase = wrapAngle(ph.orbitPhase + ORBIT_OMEGA * dt);
+      }
+
+      for (let i = 0; i < n; i++) {
+        ph.spinRad[i] += spinOmega[i] * dt;
+        theta[i] = wrapAngle(ph.orbitPhase + (i / n) * TWO_PI);
+      }
+
+      paintOrbitalIcons(theta, ph.spinRad, w, h, wrapRefs, introElapsedSec, false);
+    };
+
+    const loop = (now: number) => {
+      step(now);
+      rafId = requestAnimationFrame(loop);
+    };
+
+    step(performance.now());
+    setFloatReady(true);
+    rafId = requestAnimationFrame(loop);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      animRef.current = null;
+    };
+  }, [reduce, containerRef]);
+
+  const staticStyles: React.CSSProperties[] | null =
+    reduce && box.w > 48 && box.h > 48
+      ? HERO_ORBIT_LOGOS.map((item, i) => {
+          const {rx, ry} = heroOrbitEllipseAxes(box.w, box.h);
+          const t = (i / HERO_ORBIT_LOGOS.length) * TWO_PI;
+          const x = rx * Math.cos(t);
+          const y = ry * Math.sin(t);
+          const depth = (y / ry + 1) / 2;
+          const scale = 0.9 + 0.14 * depth;
+          const orbitWobble = (t * 180) / Math.PI * 0.035;
+          const tilt = item.baseTiltDeg + orbitWobble;
+          const z = 15 + Math.round(depth * 40);
+          return {
+            zIndex: z,
+            transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) rotate(${tilt}deg) scale(${scale})`,
+          };
+        })
+      : null;
+
+  const layerVisible = box.w >= 48 && floatReady;
 
   return (
-    <>
-      {HERO_FLOAT_LOGOS.map((item) => {
-        const kf = buildOrbitKeyframes(
-          item.rx,
-          item.ry,
-          item.phase,
-          item.towardSign,
-          item.baseRotateDeg,
-          item.tiltDeg,
-        );
-
-        return (
-          <motion.img
-            key={item.src}
-            src={item.src}
-            alt=""
-            width={80}
-            height={80}
-            loading="lazy"
-            decoding="async"
-            aria-hidden
-            className={`${item.className} pointer-events-none select-none object-contain drop-shadow-[0_12px_28px_rgba(0,0,0,0.14)] will-change-transform`}
-            style={{transformOrigin: '50% 50%'}}
-            initial={false}
-            animate={
-              reduce
-                ? {rotate: item.baseRotateDeg}
-                : {
-                    x: kf.x,
-                    y: kf.y,
-                    scale: kf.scale,
-                    rotate: kf.rotate,
-                  }
-            }
-            transition={{
-              duration: item.duration,
-              repeat: Infinity,
-              ease: 'linear',
-              delay: item.delay,
-              times: kf.times,
-            }}
-          />
-        );
-      })}
-    </>
+    <div
+      className={`pointer-events-none absolute inset-0 z-[20] overflow-visible transition-opacity duration-150 ${layerVisible ? 'opacity-100' : 'opacity-0'} ${reduce ? 'hero-orbit-glitter-off' : ''}`}
+      aria-hidden
+    >
+      <style>{HERO_FLOAT_GLITTER_CSS}</style>
+      {HERO_ORBIT_LOGOS.map((item, i) => (
+        <div
+          key={item.src}
+          ref={(el) => {
+            wrapRefs.current[i] = el;
+          }}
+          className="hero-float-wrap"
+          style={{
+            ...(staticStyles ? staticStyles[i] : undefined),
+            ['--hero-float-delay' as string]: `${i * 0.38}s`,
+          }}
+        >
+          <div className="hero-float-inner">
+            <div className="hero-float-levitate">
+              <div className="hero-float-conic-aura" aria-hidden />
+              <div className="hero-float-pulse-ring" aria-hidden />
+              <div className="hero-float-tumbler">
+                <img
+                  src={item.src}
+                  alt=""
+                  width={80}
+                  height={80}
+                  loading="eager"
+                  decoding="async"
+                  className="hero-float-coin-img max-w-none select-none"
+                  draggable={false}
+                />
+                <div className="hero-float-shimmer" aria-hidden />
+                <div className="hero-float-shimmer-2" aria-hidden />
+                <div className="hero-float-sparkles" aria-hidden />
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
   );
 }
 
@@ -265,8 +669,11 @@ function RotatingHeroHeadline() {
   );
 }
 
-export const Hero = () => (
-  <section className="relative overflow-hidden bg-white pt-5 pb-10 sm:pt-6 sm:pb-11 lg:pt-7 lg:pb-14">
+export const Hero = () => {
+  const heroVisualRef = useRef<HTMLDivElement>(null);
+
+  return (
+  <section className="relative overflow-x-visible overflow-y-hidden bg-white pt-5 pb-10 sm:pt-6 sm:pb-11 lg:pt-7 lg:pb-14">
     <div className="relative z-10 mx-auto max-w-7xl px-4 lg:px-8">
       <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
         <div className="order-1 space-y-6 text-center lg:space-y-8 lg:text-left">
@@ -326,7 +733,10 @@ export const Hero = () => (
             className="relative z-20 flex min-h-[320px] items-center justify-center sm:min-h-[400px] lg:min-h-[480px] lg:justify-end lg:pr-2"
           >
             {/* Wrapper = exact hero image box so floats sit on the artboard border */}
-            <div className="relative w-full max-w-[min(100%,420px)] sm:max-w-[min(100%,480px)] lg:max-w-[min(100%,520px)]">
+            <div
+              ref={heroVisualRef}
+              className="relative w-full max-w-[min(100%,420px)] overflow-visible sm:max-w-[min(100%,480px)] lg:max-w-[min(100%,520px)]"
+            >
               <img
                 src={HERO_MAIN_SRC}
                 alt="Revo Capital — web and mobile trading"
@@ -336,7 +746,7 @@ export const Hero = () => (
                 decoding="async"
                 className="relative z-10 block h-auto w-full object-contain"
               />
-              <HeroFloatingLogos />
+              <HeroOrbitalFloats containerRef={heroVisualRef} />
             </div>
           </motion.div>
         </div>
@@ -349,4 +759,5 @@ export const Hero = () => (
       </Button>
     </div>
   </section>
-);
+  );
+};
